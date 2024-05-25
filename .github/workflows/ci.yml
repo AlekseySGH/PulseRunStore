@@ -18,26 +18,15 @@ jobs:
       - name: Install JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
           distribution: 'corretto'
+          java-version: '17'
           cache: 'maven'
 
-      - name: Get list of changed files
-        run: echo "LIST_OF_CHANGED_FILES=$(git diff --name-only origin/$GITHUB_HEAD_REF $(git merge-base origin/$GITHUB_HEAD_REF origin/main) | tr '\n' ';')" >> $GITHUB_ENV
-      
       - name: Maven test
         run: mvn -B package --file pom.xml
         env:
           CHROME_OPTIONS: --disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless;--window-size=1920,1080
           CI_RUN: true
-          
-      - name: Create test report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: Unit tests Report
-          path: target/surefire-reports/TEST-*.xml
-          reporter: java-junit
 
       - name: Attach screenshots
         uses: actions/upload-artifact@v4
