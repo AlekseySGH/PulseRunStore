@@ -8,7 +8,11 @@ jobs:
   run-test:
     name: 'Run tests'
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+      
     steps:
       - name: Git clone
         uses: actions/checkout@v3
