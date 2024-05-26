@@ -37,18 +37,14 @@ public class MenCatalogTest extends BaseTest {
     }
 
 
-    @DataProvider(name = "brandNamesProvider")
-    public Object[][] brandNamesProvider() {
+    @DataProvider(name = "notExistBrandProvider")
+    public Object[][] notExistBrandProvider() {
         return new Object[][]{
                 {"Adidas"},
                 {"Asics"},
                 {"Hoka"},
                 {"Jordan"},
                 {"Native"},
-                {"New Balance"},
-                {"Nike"},
-                {"Reebok"},
-                {"Salomon"},
                 {"Vans"},
                 {"Dr.Martens"},
                 {"Converse"},
@@ -56,8 +52,35 @@ public class MenCatalogTest extends BaseTest {
         };
     }
 
-    @Test(dataProvider = "brandNamesProvider")
-    public void filterTestByBrandTest(String brandNames) {
+    @DataProvider(name = "existBrandProvider")
+    public Object[][] existBrandProvider() {
+        return new Object[][]{
+                {"New Balance"},
+                {"Nike"},
+                {"Reebok"},
+                {"Salomon"},
+        };
+    }
+
+    @Test(dataProvider = "notExistBrandProvider")
+    public void filterByNotExistBrandTest(String brandNames) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        showAllBrands();
+        chooseBandInCheckbox(brandNames);
+
+        String actualResult = getDriver().findElement(
+                By.xpath("//div[@class='sc-jIYCZY fclvYI']")).getText();
+
+        Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
+        Assert.assertTrue(getDriver().findElement(
+                By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
+
+    }
+
+    @Test(dataProvider = "existBrandProvider")
+    public void filterByBrandTest(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
@@ -75,20 +98,12 @@ public class MenCatalogTest extends BaseTest {
         int currentPage = 1;
 
         for (int i = 0; i < pageCounter; i++) {
-            try {
-                int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
-                for (int j = 0; j < itemQttOnPage; j++) {
-                    String actualResult = getProductsTextsList(PRODUCTS_LIST).get(j);
 
-                    Assert.assertTrue(actualResult.contains(brandNames));
-                    Assert.assertTrue(getDriver().findElement(
-                            By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
-                }
-            } catch (Exception e) {
-                String actualResult = getDriver().findElement(
-                        By.xpath("//div[@class='sc-jIYCZY fclvYI']")).getText();
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                String actualResult = getProductsTextsList(PRODUCTS_LIST).get(j);
 
-                Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
+                Assert.assertTrue(actualResult.contains(brandNames));
                 Assert.assertTrue(getDriver().findElement(
                         By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
             }
