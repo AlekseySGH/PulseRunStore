@@ -37,8 +37,8 @@ public class MenCatalogTest extends BaseTest {
     }
 
 
-    @DataProvider(name = "notExistBrandProvider")
-    public Object[][] notExistBrandProvider() {
+    @DataProvider(name = "notAddedBrandProvider")
+    public Object[][] notAddedBrandProvider() {
         return new Object[][]{
                 {"Adidas"},
                 {"Asics"},
@@ -52,8 +52,8 @@ public class MenCatalogTest extends BaseTest {
         };
     }
 
-    @DataProvider(name = "existBrandProvider")
-    public Object[][] existBrandProvider() {
+    @DataProvider(name = "addedBrandProvider")
+    public Object[][] addedBrandProvider() {
         return new Object[][]{
                 {"New Balance"},
                 {"Nike"},
@@ -62,8 +62,8 @@ public class MenCatalogTest extends BaseTest {
         };
     }
 
-    @Test(dataProvider = "notExistBrandProvider")
-    public void filterByNotExistBrandTest(String brandNames) {
+    @Test(dataProvider = "notAddedBrandProvider")
+    public void filterByNotAddedBrandTest(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
@@ -79,7 +79,7 @@ public class MenCatalogTest extends BaseTest {
 
     }
 
-    @Test(dataProvider = "existBrandProvider")
+    @Test(dataProvider = "addedBrandProvider")
     public void filterByBrandTest(String brandNames) {
 
         openBaseURL();
