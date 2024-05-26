@@ -23,13 +23,13 @@ public class TestUtils {
 
     public static void reLoadBaseUrlPage(WebDriver driver, WebDriverWait wait) {
         int count = 0;
-        while (count <= 3 && !(isH2HeaderExists(driver))) {
+        while (count <= 3 && !(isH1HeaderExists(driver))) {
             loadBaseUrlPage(driver, wait);
             count++;
         }
     }
 
-    public static boolean isH2HeaderExists(WebDriver driver) {
+    public static boolean isH1HeaderExists(WebDriver driver) {
         boolean isExists = true;
         try {
             driver.findElement(H1_HEADER);

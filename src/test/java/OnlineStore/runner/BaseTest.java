@@ -2,6 +2,7 @@ package OnlineStore.runner;
 
 import OnlineStore.utils.ReportUtils;
 import OnlineStore.utils.TestUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestContext;
@@ -43,10 +44,26 @@ public abstract class BaseTest {
     @AfterMethod
     protected void afterMethod(Method method, ITestResult result) {
         Reporter.log(ReportUtils.getTestStatistics(method, result), true);
+        if (driver != null) {
+            driver.close();
+            driver.quit();
 
-        driver.quit();
+            driver = null;
+        }
         webDriverWait = null;
     }
+
+
+//        try {
+//            webDriverWait = null;
+//        } finally {
+//            if (driver != null) {
+//                driver.quit();
+//
+//                driver = null;
+//            }
+//        }
+//    }
 
     protected WebDriver getDriver() {
 
@@ -86,9 +103,9 @@ public abstract class BaseTest {
     }
 
     public void openBaseURL() {
-        TestUtils.loadBaseUrlPage(getDriver(), getWait10());
+        TestUtils.loadBaseUrlPage(getDriver(), getWait30());
 
-        if (TestUtils.isH2HeaderExists(getDriver())) {
+        if (TestUtils.isH1HeaderExists(getDriver())) {
             Reporter.log("BaseURL page was loaded successfully ", true);
         } else {
             TestUtils.reLoadBaseUrlPage(getDriver(), getWait10());
