@@ -37,6 +37,43 @@ public class MenCatalogTest extends BaseTest {
         return getDriver().findElements(by).stream().map(WebElement::getText).toList();
     }
 
+    private List<String> getSizeLisByModel(String modelName) {
+
+        List<String> sizeList;
+
+        switch (modelName) {
+
+            case "New Balance 530 White Silver Navy":
+                sizeList = List.of("37", "38", "40", "42.5", "44");
+                break;
+
+            case "Reebok Zig Kinetica 2.5 Edge Grey":
+                sizeList = List.of("42", "43", "44", "45");
+                break;
+
+            case "Nike Air Max Plus Blue Gradien":
+                sizeList = List.of("41", "42", "43", "44");
+                break;
+
+            case "Nike Dunk Low Championship Purple":
+                sizeList = List.of("37", "38", "40", "42.5", "44");
+                break;
+
+            case "Salomon ACS+ CSWP Cement":
+                sizeList = List.of("42", "44");
+                break;
+
+            case "Nike Air Max 1 PRM Escape Treeline":
+                sizeList = List.of("42", "42.5", "43", "43.5", "44");
+                break;
+
+            default:
+                sizeList = List.of();
+                break;
+        }
+        return sizeList;
+    }
+
 
     @DataProvider(name = "notAddedBrandProvider")
     public Object[][] notAddedBrandProvider() {
@@ -144,38 +181,7 @@ public class MenCatalogTest extends BaseTest {
                 List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
                         By.xpath("//li[@class='sc-ZaPur lePqnx']/label")));
 
-                List<String> expectedSizeList;
-
-                switch (currentItemName) {
-
-                    case "New Balance 530 White Silver Navy":
-                        expectedSizeList = List.of("37", "38", "40", "42.5", "44");
-                        break;
-
-                    case "Reebok Zig Kinetica 2.5 Edge Grey":
-                        expectedSizeList = List.of("42", "43", "44", "45");
-                        break;
-
-                    case "Nike Air Max Plus Blue Gradien":
-                        expectedSizeList = List.of("41", "42", "43", "44");
-                        break;
-
-                    case "Nike Dunk Low Championship Purple":
-                        expectedSizeList = List.of("37", "38", "40", "42.5", "44");
-                        break;
-
-                    case "Salomon ACS+ CSWP Cement":
-                        expectedSizeList = List.of("42", "44");
-                        break;
-
-                    case "Nike Air Max 1 PRM Escape Treeline":
-                        expectedSizeList = List.of("42", "42.5", "43", "43.5", "44");
-                        break;
-
-                    default:
-                        expectedSizeList = List.of();
-                        break;
-                }
+                List<String> expectedSizeList = getSizeLisByModel(currentItemName);
 
                 getDriver().navigate().back();
 
