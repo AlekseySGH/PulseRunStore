@@ -23,13 +23,33 @@ public class MenCatalogTest extends BaseTest {
 
     final static By SHOW_ALL_BRANDS = By.xpath("(//span[text() = 'Показати все'])[1]");
 
-    private void showAllBrands() {
-        getDriver().findElement(SHOW_ALL_BRANDS).click();
-    }
+    final static By SHOW_ALL_SIZES = By.xpath("(//span[text() = 'Показати все'])[2]");
 
     private void chooseBandInCheckbox(String brandName) {
+        getDriver().findElement(SHOW_ALL_BRANDS).click();
         getDriver().findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
+    }
 
+    private void chooseSizeInCheckbox(String sizeValue) {
+        getDriver().findElement(SHOW_ALL_SIZES).click();
+        getDriver().findElement(By.xpath("//input[@value = '" + sizeValue + "']")).click();
+    }
+
+    private int getCatalogPageQtt() {
+        int pageCounter;
+
+        if ((getDriver().findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
+            pageCounter = getDriver().findElements(PAGE_BUTTON_LIST).size() - 2;
+        } else {
+            pageCounter = 1;
+        }
+        return pageCounter;
+    }
+
+    private void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog) {
+        if (pageQttInCatalog > currentPage) {
+            getDriver().findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
+        }
     }
 
     private List<String> getProductsTextsList(By by) {
@@ -39,38 +59,16 @@ public class MenCatalogTest extends BaseTest {
 
     private List<String> getSizeLisByModel(String modelName) {
 
-        List<String> sizeList;
+        List<String> sizeList = switch (modelName) {
+            case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
+                    List.of("37", "38", "40", "42.5", "44");
+            case "Reebok Zig Kinetica 2.5 Edge Grey" -> List.of("42", "43", "44", "45");
+            case "Nike Air Max Plus Blue Gradien" -> List.of("41", "42", "43", "44");
+            case "Salomon ACS+ CSWP Cement" -> List.of("42", "44");
+            case "Nike Air Max 1 PRM Escape Treeline" -> List.of("42", "42.5", "43", "43.5", "44");
+            default -> List.of();
+        };
 
-        switch (modelName) {
-
-            case "New Balance 530 White Silver Navy":
-                sizeList = List.of("37", "38", "40", "42.5", "44");
-                break;
-
-            case "Reebok Zig Kinetica 2.5 Edge Grey":
-                sizeList = List.of("42", "43", "44", "45");
-                break;
-
-            case "Nike Air Max Plus Blue Gradien":
-                sizeList = List.of("41", "42", "43", "44");
-                break;
-
-            case "Nike Dunk Low Championship Purple":
-                sizeList = List.of("37", "38", "40", "42.5", "44");
-                break;
-
-            case "Salomon ACS+ CSWP Cement":
-                sizeList = List.of("42", "44");
-                break;
-
-            case "Nike Air Max 1 PRM Escape Treeline":
-                sizeList = List.of("42", "42.5", "43", "43.5", "44");
-                break;
-
-            default:
-                sizeList = List.of();
-                break;
-        }
         return sizeList;
     }
 
@@ -100,12 +98,26 @@ public class MenCatalogTest extends BaseTest {
         };
     }
 
+    @DataProvider(name = "availableSizesProvider")
+    public Object[][] availableSizesProvider() {
+        return new Object[][]{
+                {"37"},
+                {"38"},
+                {"40"},
+                {"41"},
+                {"42"},
+                {"43"},
+                {"44"},
+                {"42.5"},
+//                {"43.5"},
+        };
+    }
+
     @Test(dataProvider = "notAddedBrandProvider")
     public void filterByNotAddedBrandTest(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        showAllBrands();
         chooseBandInCheckbox(brandNames);
 
         String actualResult = getDriver().findElement(
@@ -122,20 +134,12 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        showAllBrands();
         chooseBandInCheckbox(brandNames);
 
-        int pageCounter = 0;
-
-        if ((getDriver().findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
-            pageCounter = getDriver().findElements(PAGE_BUTTON_LIST).size() - 2;
-        } else {
-            pageCounter = 1;
-        }
-
         int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
 
-        for (int i = 0; i < pageCounter; i++) {
+        for (int i = 0; i < pageQttInCatalog; i++) {
 
             int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
@@ -145,10 +149,8 @@ public class MenCatalogTest extends BaseTest {
                 Assert.assertTrue(getDriver().findElement(
                         By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
             }
-            if (pageCounter > currentPage) {
-                getDriver().findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
-                currentPage += currentPage;
-            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
         }
     }
 
@@ -157,20 +159,12 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        showAllBrands();
         chooseBandInCheckbox(brandNames);
 
-        int pageCounter = 0;
-
-        if ((getDriver().findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
-            pageCounter = getDriver().findElements(PAGE_BUTTON_LIST).size() - 2;
-        } else {
-            pageCounter = 1;
-        }
-
         int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
 
-        for (int i = 0; i < pageCounter; i++) {
+        for (int i = 0; i < pageQttInCatalog; i++) {
 
             int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
@@ -187,11 +181,37 @@ public class MenCatalogTest extends BaseTest {
 
                 Assert.assertEquals(actualSizeList, expectedSizeList);
             }
-            if (pageCounter > currentPage) {
-                getDriver().findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
-                currentPage += currentPage;
-            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
         }
+    }
 
+    @Test(dataProvider = "availableSizesProvider")
+    public void filterBySizeTest(String sizeValue) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        chooseSizeInCheckbox(sizeValue);
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                getDriver().findElements(PRODUCTS_LIST).get(j).click();
+
+                List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
+                        By.xpath("//li[@class='sc-ZaPur lePqnx']/label")));
+
+                Assert.assertTrue(actualSizeList.contains(sizeValue));
+
+                getDriver().navigate().back();
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
+        }
     }
 }
