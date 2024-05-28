@@ -67,7 +67,6 @@ public class MenCatalogTest extends BaseTest {
         return sizeList;
     }
 
-
     @DataProvider(name = "notAddedBrandProvider")
     public Object[][] notAddedBrandProvider() {
         return new Object[][]{
