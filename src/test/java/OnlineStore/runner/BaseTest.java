@@ -52,18 +52,6 @@ public abstract class BaseTest {
         webDriverWait = null;
     }
 
-
-//        try {
-//            webDriverWait = null;
-//        } finally {
-//            if (driver != null) {
-//                driver.quit();
-//
-//                driver = null;
-//            }
-//        }
-//    }
-
     protected WebDriver getDriver() {
 
         return driver;

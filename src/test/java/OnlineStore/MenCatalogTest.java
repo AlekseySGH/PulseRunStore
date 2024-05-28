@@ -52,11 +52,6 @@ public class MenCatalogTest extends BaseTest {
         }
     }
 
-    private List<String> getProductsTextsList(By by) {
-
-        return getDriver().findElements(by).stream().map(WebElement::getText).toList();
-    }
-
     private List<String> getSizeLisByModel(String modelName) {
 
         List<String> sizeList = switch (modelName) {
@@ -143,7 +138,7 @@ public class MenCatalogTest extends BaseTest {
 
             int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
-                String actualResult = getProductsTextsList(PRODUCTS_LIST).get(j);
+                String actualResult = TestUtils.getTexts(PRODUCTS_LIST, getDriver()).get(j);
 
                 Assert.assertTrue(actualResult.contains(brandNames));
                 Assert.assertTrue(getDriver().findElement(
