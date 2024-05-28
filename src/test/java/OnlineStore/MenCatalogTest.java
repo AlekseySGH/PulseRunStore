@@ -3,7 +3,6 @@ package OnlineStore;
 import OnlineStore.runner.BaseTest;
 import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
