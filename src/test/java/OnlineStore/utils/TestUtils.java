@@ -4,9 +4,11 @@ import OnlineStore.runner.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class TestUtils {
 
@@ -37,5 +39,9 @@ public class TestUtils {
             isExists = false;
         }
         return isExists;
+    }
+
+    public static List<String> getTexts(List<WebElement> elementList) {
+        return elementList.stream().map(WebElement::getText).toList();
     }
 }
