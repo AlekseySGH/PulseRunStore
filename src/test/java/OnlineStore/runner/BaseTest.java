@@ -2,9 +2,7 @@ package OnlineStore.runner;
 
 import OnlineStore.utils.ReportUtils;
 import OnlineStore.utils.TestUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -13,8 +11,6 @@ import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
-import java.util.Collection;
-import java.util.List;
 
 public abstract class BaseTest {
 
@@ -55,18 +51,6 @@ public abstract class BaseTest {
         }
         webDriverWait = null;
     }
-
-
-//        try {
-//            webDriverWait = null;
-//        } finally {
-//            if (driver != null) {
-//                driver.quit();
-//
-//                driver = null;
-//            }
-//        }
-//    }
 
     protected WebDriver getDriver() {
 

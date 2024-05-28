@@ -44,4 +44,8 @@ public class TestUtils {
     public static List<String> getTexts(List<WebElement> elementList) {
         return elementList.stream().map(WebElement::getText).toList();
     }
+
+    public static  List<String> getTexts(By by, WebDriver driver) {
+        return driver.findElements(by).stream().map(WebElement::getText).toList();
+    }
 }
