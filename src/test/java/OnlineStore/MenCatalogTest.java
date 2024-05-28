@@ -1,6 +1,7 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
+import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -112,5 +113,79 @@ public class MenCatalogTest extends BaseTest {
                 currentPage += currentPage;
             }
         }
+    }
+
+    @Test(dataProvider = "addedBrandProvider")
+    public void sizeListByBrandsTest(String brandNames) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        showAllBrands();
+        chooseBandInCheckbox(brandNames);
+
+        int pageCounter = 0;
+
+        if ((getDriver().findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
+            pageCounter = getDriver().findElements(PAGE_BUTTON_LIST).size() - 2;
+        } else {
+            pageCounter = 1;
+        }
+
+        int currentPage = 1;
+
+        for (int i = 0; i < pageCounter; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                String currentItemName = getDriver().findElements(PRODUCTS_LIST).get(j).getText();
+                getDriver().findElements(PRODUCTS_LIST).get(j).click();
+
+                List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
+                        By.xpath("//li[@class='sc-ZaPur lePqnx']/label")));
+
+                List<String> expectedSizeList;
+
+                switch (currentItemName) {
+
+                    case "New Balance 530 White Silver Navy":
+                        expectedSizeList = List.of("37", "38", "40", "42.5", "44");
+                        break;
+
+                    case "Reebok Zig Kinetica 2.5 Edge Grey":
+                        expectedSizeList = List.of("42", "43", "44", "45");
+                        break;
+
+                    case "Nike Air Max Plus Blue Gradien":
+                        expectedSizeList = List.of("41", "42", "43", "44");
+                        break;
+
+                    case "Nike Dunk Low Championship Purple":
+                        expectedSizeList = List.of("37", "38", "40", "42.5", "44");
+                        break;
+
+                    case "Salomon ACS+ CSWP Cement":
+                        expectedSizeList = List.of("42", "44");
+                        break;
+
+                    case "Nike Air Max 1 PRM Escape Treeline":
+                        expectedSizeList = List.of("42", "42.5", "43", "43.5", "44");
+                        break;
+
+                    default:
+                        expectedSizeList = List.of();
+                        break;
+                }
+
+                getDriver().navigate().back();
+
+                Assert.assertEquals(actualSizeList, expectedSizeList);
+            }
+            if (pageCounter > currentPage) {
+                getDriver().findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
+                currentPage += currentPage;
+            }
+        }
+
     }
 }
