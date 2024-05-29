@@ -17,20 +17,22 @@ public class MenCatalogTest extends BaseTest {
 
     final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li");
 
+    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-cmfnrN dwlxWf'])[1]//label");
+
     final static By PRODUCTS_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') " +
             "and not(ancestor::div[contains(@class, 'header__inner')])]//p");
 
-    final static By SHOW_ALL_BRANDS = By.xpath("(//span[text() = 'Показати все'])[1]");
+    final static By SHOW_ALL_BRANDS_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[1]");
 
-    final static By SHOW_ALL_SIZES = By.xpath("(//span[text() = 'Показати все'])[2]");
+    final static By SHOW_ALL_SIZES_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[2]");
 
     private void chooseBandInCheckbox(String brandName) {
-        getDriver().findElement(SHOW_ALL_BRANDS).click();
+        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
         getDriver().findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
     }
 
     private void chooseSizeInCheckbox(String sizeValue) {
-        getDriver().findElement(SHOW_ALL_SIZES).click();
+        getDriver().findElement(SHOW_ALL_SIZES_IN_FILTER).click();
         getDriver().findElement(By.xpath("//input[@value = '" + sizeValue + "']")).click();
     }
 
@@ -104,6 +106,26 @@ public class MenCatalogTest extends BaseTest {
                 {"42.5"},
 //                {"43.5"},
         };
+    }
+
+    @Test
+    public void presenceOfBrandItemsInFilterTest() {
+        List<String> expectedFilterItemList = List.of("Adidas", "Asics", "Converse", "Dr.Martens", "Hoka",
+                "Jordan", "Native", "New Balance", "Nike", "Puma", "Reebok", "Salomon", "Vans");
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+
+        List<String> filterItemList = TestUtils.getTexts(FILTER_BY_BRANDS_ITEMS, getDriver());
+
+        boolean isFilterListContainsItem;
+
+        for (String expectedFilterItem : expectedFilterItemList) {
+            isFilterListContainsItem = filterItemList.contains(expectedFilterItem);
+
+            Assert.assertTrue(isFilterListContainsItem);
+        }
     }
 
     @Test(dataProvider = "notAddedBrandProvider")
