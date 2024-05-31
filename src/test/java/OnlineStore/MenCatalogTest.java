@@ -43,6 +43,10 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@value = '" + sizeValue + "']")).click();
     }
 
+    private void chooseSeasonInCheckbox(String seasonValue) {
+        getDriver().findElement(By.xpath("//input[@value = '" + seasonValue + "']")).click();
+    }
+
     private int getCatalogPageQtt() {
         int pageCounter;
 
@@ -62,7 +66,7 @@ public class MenCatalogTest extends BaseTest {
 
     private List<String> getSizeLisByModel(String modelName) {
 
-        List<String> sizeList = switch (modelName) {
+        List<String> getSizeList = switch (modelName) {
             case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
                     List.of("37", "38", "40", "42.5", "44");
             case "Reebok Zig Kinetica 2.5 Edge Grey" -> List.of("42", "43", "44", "45");
@@ -72,7 +76,23 @@ public class MenCatalogTest extends BaseTest {
             default -> List.of();
         };
 
-        return sizeList;
+        return getSizeList;
+    }
+
+    private List<String> getModelsLisBySeason(String seasonName) {
+
+        List<String> getSizeList = switch (seasonName) {
+            case "Весна/Осінь" -> List.of("Adidas ADI2000 X Blue Dawn", "Adidas Campus 00s Scarlet Gum",
+                    "New Balance 610 Angora", "Nike Air Max 1 PRM Escape Treeline", "Nike Blazer Low Platform pink",
+                    "Nike Dunk Low Championship Purple", "Nike Gamma Force Rise", "Salomon XT-6 Ghost Grey",
+                    "Salomon XT-6 Gore-Tex Desert Sage");
+            case "Зима" -> List.of("Reebok Zig Kinetica 2.5 Edge Grey", "Salomon ACS+ CSWP Cement");
+            case "Літо" -> List.of("New Balance 530 White Silver Navy", "Adidas Response W Cloud White Grey Five",
+                    "Nike Air Max Plus Blue Gradien");
+            default -> List.of();
+        };
+
+        return getSizeList;
     }
 
     @DataProvider(name = "notAddedBrandProvider")
@@ -112,6 +132,15 @@ public class MenCatalogTest extends BaseTest {
                 {"44"},
                 {"42.5"},
                 {"43.5"},
+        };
+    }
+
+    @DataProvider(name = "availableSeasonValuesProvider")
+    public Object[][] availableSeasonValuesProvider() {
+        return new Object[][]{
+                {"Весна/Осінь", 9},
+                {"Зима", 12},
+                {"Літо", 15},
         };
     }
 
@@ -278,5 +307,32 @@ public class MenCatalogTest extends BaseTest {
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
         }
+    }
+
+    @Test(dataProvider = "availableSeasonValuesProvider")
+    public void filterBySeasonTest(String seasonValue, int itemQtt) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        chooseSeasonInCheckbox(seasonValue);
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+        int productCounter = 0;
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                String currentItemName = getDriver().findElements(PRODUCTS_LIST).get(j).getText();
+                productCounter = productCounter + 1;
+
+                Assert.assertTrue(getModelsLisBySeason(seasonValue).contains(currentItemName));
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
+        }
+        Assert.assertEquals(productCounter, itemQtt);
     }
 }
