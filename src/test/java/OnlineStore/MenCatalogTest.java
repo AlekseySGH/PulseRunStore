@@ -121,10 +121,10 @@ public class MenCatalogTest extends BaseTest {
     @DataProvider(name = "addedBrandProvider")
     public Object[][] addedBrandProvider() {
         return new Object[][]{
-                {"New Balance", 37},
-                {"Nike", 38},
-                {"Reebok", 40},
-                {"Salomon", 42},
+                {"New Balance"},
+                {"Nike"},
+                {"Reebok"},
+                {"Salomon"},
         };
     }
 
@@ -254,7 +254,7 @@ public class MenCatalogTest extends BaseTest {
             currentPage += currentPage;
         }
     }
-@Ignore
+
     @Test(dataProvider = "addedBrandProvider")
     public void sizeListByBrandsTest(String brandNames) {
 
