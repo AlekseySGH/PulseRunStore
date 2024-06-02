@@ -9,6 +9,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -27,11 +29,17 @@ public class MenCatalogTest extends BaseTest {
     final static By PRODUCTS_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') " +
             "and not(ancestor::div[contains(@class, 'header__inner')])]//p");
 
+    final static By PRICES_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') ]//" +
+            "span[contains (text(), ' грн')]");
+
     final static By SHOW_ALL_BRANDS_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[1]");
 
     final static By SHOW_ALL_SIZES_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[2]");
 
     final static By SHOW_ALL_COLOR_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[3]");
+
+    final static By PRODUCTS_ID_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') "
+            + "and not(ancestor::div[contains(@class, 'header__inner')])]");
 
     private void chooseBandInCheckbox(String brandName) {
         getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
@@ -113,10 +121,10 @@ public class MenCatalogTest extends BaseTest {
     @DataProvider(name = "addedBrandProvider")
     public Object[][] addedBrandProvider() {
         return new Object[][]{
-                {"New Balance"},
-                {"Nike"},
-                {"Reebok"},
-                {"Salomon"},
+                {"New Balance", 37},
+                {"Nike", 38},
+                {"Reebok", 40},
+                {"Salomon", 42},
         };
     }
 
@@ -223,7 +231,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "addedBrandProvider")
-    public void filterByBrandTest(String brandNames) {
+    public void filterByBrandTest(String brandNames, int size) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
@@ -335,4 +343,111 @@ public class MenCatalogTest extends BaseTest {
         }
         Assert.assertEquals(productCounter, itemQtt);
     }
+
+    @Test
+    public void productsListInAscendingOderTest() {
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
+        getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
+
+        List<Integer> actualPricesList = new ArrayList<>();
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRICES_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                int currentItemPrice = Integer.parseInt(getDriver().findElements(PRICES_LIST).get(j).getText().
+                        replaceAll(" грн", ""));
+                actualPricesList.add(currentItemPrice);
+
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
+        }
+
+        List<Integer> expectedPricesList = new ArrayList<>(actualPricesList);
+        Collections.sort(expectedPricesList);
+
+        Assert.assertEquals(actualPricesList, expectedPricesList);
+    }
+
+    @Test
+    public void productsListInDescOderTest() {
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
+        getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
+
+        List<Integer> actualPricesList = new ArrayList<>();
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRICES_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                int currentItemPrice = Integer.parseInt(getDriver().findElements(PRICES_LIST).get(j).getText().
+                        replaceAll(" грн", ""));
+                actualPricesList.add(currentItemPrice);
+
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
+        }
+
+        List<Integer> expectedPricesList = new ArrayList<>(actualPricesList);
+        expectedPricesList.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(actualPricesList, expectedPricesList);
+    }
+
+    @Test
+    public void productListByNewSortListTest() {
+
+        List<String> expectedProductList = List.of("66152cd72295ced5df7b60ef", "66152cd72295ced5df7b60ed",
+                "66152cd72295ced5df7b6103", "66152d0f2295ced5df7b6106", "66152d0f2295ced5df7b6109",
+                "66152d0f2295ced5df7b6107", "65e9fc153113032e940ae831", "65f8a706c11d83d79ea7e8a2",
+                "66152cd72295ced5df7b6102", "66152cd72295ced5df7b60ee", "65f8a6e7c11d83d79ea7e8a1",
+                "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b60fa", "66152cd72295ced5df7b60fc",
+                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b60fd", "66152d0f2295ced5df7b6113",
+                "65f8a66ac11d83d79ea7e89c", "65df7b2495aaba554cab83b2", "66152d0f2295ced5df7b611c",
+                "65f8a6d0c11d83d79ea7e8a0", "65de32105e90b6233fe92633", "65f8a643c11d83d79ea7e89b",
+                "65de2dd5ae9bb15396c0fb9a", "65f8a62fc11d83d79ea7e89a", "65de2a7dae9bb15396c0fb86",
+                "66152d0f2295ced5df7b6115", "66152cd72295ced5df7b60f0", "66152d0f2295ced5df7b6108",
+                "66152d0f2295ced5df7b6110", "66152d0f2295ced5df7b611a", "66152cd72295ced5df7b60f7",
+                "66152d0f2295ced5df7b611b", "66152cd72295ced5df7b6101", "65ef2292e9f197360880b0f6",
+                "66152d0f2295ced5df7b6114");
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
+        getDriver().findElement(By.xpath("//li[text()='Новинки']")).click();
+
+        List<String> actualProductIdList = new ArrayList<>();
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_ID_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                String hrefValue = getDriver().findElements(PRODUCTS_ID_LIST).get(j).getAttribute("href");
+                actualProductIdList.add(hrefValue.substring(hrefValue.lastIndexOf("/") + 1));
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
+        }
+        Assert.assertEquals(actualProductIdList, expectedProductList);
+    }
 }
+
+
+
