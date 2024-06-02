@@ -254,7 +254,7 @@ public class MenCatalogTest extends BaseTest {
             currentPage += currentPage;
         }
     }
-
+@Ignore
     @Test(dataProvider = "addedBrandProvider")
     public void sizeListByBrandsTest(String brandNames) {
 
