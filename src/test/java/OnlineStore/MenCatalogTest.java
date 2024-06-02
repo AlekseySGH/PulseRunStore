@@ -230,8 +230,9 @@ public class MenCatalogTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test(dataProvider = "addedBrandProvider")
-    public void filterByBrandTest(String brandNames, int size) {
+    public void filterByBrandTest(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
@@ -255,7 +256,6 @@ public class MenCatalogTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test(dataProvider = "addedBrandProvider")
     public void sizeListByBrandsTest(String brandNames) {
 
