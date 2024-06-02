@@ -43,6 +43,9 @@ public abstract class BaseTest {
     @AfterMethod
     protected void afterMethod(Method method, ITestResult result) {
         Reporter.log(ReportUtils.getTestStatistics(method, result), true);
+        if (!result.isSuccess()) {
+            BaseUtils.takeScreenshot(getDriver(), result.getInstanceName(), result.getName());
+        }
         if (driver != null) {
             driver.close();
             driver.quit();
