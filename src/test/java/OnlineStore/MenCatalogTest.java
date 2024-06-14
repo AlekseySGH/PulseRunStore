@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 public class MenCatalogTest extends BaseTest {
@@ -44,6 +45,32 @@ public class MenCatalogTest extends BaseTest {
     private void chooseBandInCheckbox(String brandName) {
         getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
         getDriver().findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
+    }
+
+    private List<String> chooseRandomBandsInCheckbox(int brandQttInCheckbox) {
+        List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
+        List<String> randomBrandNamesList = new ArrayList<>();
+
+        Random r = new Random();
+
+        if (brandQttInCheckbox <= 0) {
+            brandQttInCheckbox = 1;
+        } else if (brandQttInCheckbox >= addedBrandNamesList.size()) {
+            brandQttInCheckbox = addedBrandNamesList.size();
+        }
+
+        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+
+        int i = r.nextInt(addedBrandNamesList.size());
+
+        while (randomBrandNamesList.size() != brandQttInCheckbox) {
+            if (!randomBrandNamesList.contains(addedBrandNamesList.get(i))) {
+                randomBrandNamesList.add(addedBrandNamesList.get(i));
+                getDriver().findElement(By.xpath("//input[@value = '" + addedBrandNamesList.get(i) + "']")).click();
+            }
+            i = r.nextInt(addedBrandNamesList.size());
+        }
+        return randomBrandNamesList;
     }
 
     private void chooseSizeInCheckbox(String sizeValue) {
@@ -249,6 +276,39 @@ public class MenCatalogTest extends BaseTest {
                 Assert.assertTrue(actualResult.contains(brandNames));
                 Assert.assertTrue(getDriver().findElement(
                         By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
+        }
+    }
+
+    @Test
+    public void itemListByTwoBrandsInFilterTest() {
+
+        int qttBandsInCheckbox = 2;
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        List<String> randomBandsList = chooseRandomBandsInCheckbox(qttBandsInCheckbox);
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                boolean containsAnyBrandInList = false;
+                String actualResult = TestUtils.getTexts(PRODUCTS_LIST, getDriver()).get(j);
+
+                for (String randomBandName : randomBandsList) {
+                    if (actualResult.contains(randomBandName)) {
+                        containsAnyBrandInList = true;
+                        break;
+                    }
+                }
+
+                Assert.assertTrue(containsAnyBrandInList);
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
