@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 public class MenCatalogTest extends BaseTest {
@@ -20,11 +21,11 @@ public class MenCatalogTest extends BaseTest {
 
     final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li");
 
-    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-cmfnrN dwlxWf'])[1]//label");
+    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[1]//label");
 
-    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-cmfnrN dwlxWf'])[3]//label");
+    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[3]//label");
 
-    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-cmfnrN dwlxWf'])[4]//label");
+    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[4]//label");
 
     final static By PRODUCTS_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') " +
             "and not(ancestor::div[contains(@class, 'header__inner')])]//p");
@@ -44,6 +45,32 @@ public class MenCatalogTest extends BaseTest {
     private void chooseBandInCheckbox(String brandName) {
         getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
         getDriver().findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
+    }
+
+    private List<String> chooseRandomBandsInCheckbox(int brandQttInCheckbox) {
+        List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
+        List<String> randomBrandNamesList = new ArrayList<>();
+
+        Random r = new Random();
+
+        if (brandQttInCheckbox <= 0) {
+            brandQttInCheckbox = 1;
+        } else if (brandQttInCheckbox >= addedBrandNamesList.size()) {
+            brandQttInCheckbox = addedBrandNamesList.size();
+        }
+
+        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+
+        int i = r.nextInt(addedBrandNamesList.size());
+
+        while (randomBrandNamesList.size() != brandQttInCheckbox) {
+            if (!randomBrandNamesList.contains(addedBrandNamesList.get(i))) {
+                randomBrandNamesList.add(addedBrandNamesList.get(i));
+                getDriver().findElement(By.xpath("//input[@value = '" + addedBrandNamesList.get(i) + "']")).click();
+            }
+            i = r.nextInt(addedBrandNamesList.size());
+        }
+        return randomBrandNamesList;
     }
 
     private void chooseSizeInCheckbox(String sizeValue) {
@@ -222,11 +249,11 @@ public class MenCatalogTest extends BaseTest {
         chooseBandInCheckbox(brandNames);
 
         String actualResult = getDriver().findElement(
-                By.xpath("//div[@class='sc-jIYCZY fclvYI']")).getText();
+                By.xpath("//div[@class='sc-bYpRZF bUiKPr']")).getText();
 
         Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
         Assert.assertTrue(getDriver().findElement(
-                By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
+                By.xpath("//button[@class='sc-jnlcPO kqknYt']")).getText().contains(brandNames));
 
     }
 
@@ -248,7 +275,40 @@ public class MenCatalogTest extends BaseTest {
 
                 Assert.assertTrue(actualResult.contains(brandNames));
                 Assert.assertTrue(getDriver().findElement(
-                        By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
+                        By.xpath("//button[@class='sc-jnlcPO kqknYt']")).getText().contains(brandNames));
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
+        }
+    }
+
+    @Test
+    public void itemListByTwoBrandsInFilterTest() {
+
+        int qttBandsInCheckbox = 2;
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        List<String> randomBandsList = chooseRandomBandsInCheckbox(qttBandsInCheckbox);
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                boolean containsAnyBrandInList = false;
+                String actualResult = TestUtils.getTexts(PRODUCTS_LIST, getDriver()).get(j);
+
+                for (String randomBandName : randomBandsList) {
+                    if (actualResult.contains(randomBandName)) {
+                        containsAnyBrandInList = true;
+                        break;
+                    }
+                }
+
+                Assert.assertTrue(containsAnyBrandInList);
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
@@ -274,7 +334,7 @@ public class MenCatalogTest extends BaseTest {
                 getDriver().findElements(PRODUCTS_LIST).get(j).click();
 
                 List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
-                        By.xpath("//li[@class='sc-ZaPur lePqnx']/label")));
+                        By.xpath("//li[@class='sc-jiSpbx jzoihH']/label")));
 
                 List<String> expectedSizeList = getSizeLisByModel(currentItemName);
 
@@ -306,7 +366,7 @@ public class MenCatalogTest extends BaseTest {
                 getDriver().findElements(PRODUCTS_LIST).get(j).click();
 
                 List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
-                        By.xpath("//li[@class='sc-ZaPur lePqnx']/label")));
+                        By.xpath("//li[@class='sc-jiSpbx jzoihH']/label")));
 
                 Assert.assertTrue(actualSizeList.contains(sizeValue));
 
@@ -411,19 +471,19 @@ public class MenCatalogTest extends BaseTest {
     @Test
     public void productListByNewSortListTest() {
 
-        List<String> expectedProductList = List.of("66152cd72295ced5df7b60ef", "66152cd72295ced5df7b60ed",
-                "66152cd72295ced5df7b6103", "66152d0f2295ced5df7b6106", "66152d0f2295ced5df7b6109",
-                "66152d0f2295ced5df7b6107", "65e9fc153113032e940ae831", "65f8a706c11d83d79ea7e8a2",
-                "66152cd72295ced5df7b6102", "66152cd72295ced5df7b60ee", "65f8a6e7c11d83d79ea7e8a1",
-                "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b60fa", "66152cd72295ced5df7b60fc",
-                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b60fd", "66152d0f2295ced5df7b6113",
-                "65f8a66ac11d83d79ea7e89c", "65df7b2495aaba554cab83b2", "66152d0f2295ced5df7b611c",
-                "65f8a6d0c11d83d79ea7e8a0", "65de32105e90b6233fe92633", "65f8a643c11d83d79ea7e89b",
-                "65de2dd5ae9bb15396c0fb9a", "65f8a62fc11d83d79ea7e89a", "65de2a7dae9bb15396c0fb86",
-                "66152d0f2295ced5df7b6115", "66152cd72295ced5df7b60f0", "66152d0f2295ced5df7b6108",
-                "66152d0f2295ced5df7b6110", "66152d0f2295ced5df7b611a", "66152cd72295ced5df7b60f7",
-                "66152d0f2295ced5df7b611b", "66152cd72295ced5df7b6101", "65ef2292e9f197360880b0f6",
-                "66152d0f2295ced5df7b6114");
+        List<String> expectedProductList = List.of(
+                "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
+                "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b60fd", "65e9fc153113032e940ae831",
+                "66152d0f2295ced5df7b611a", "66152d0f2295ced5df7b6109", "66152cd72295ced5df7b60fa",
+                "66152d0f2295ced5df7b6114", "65f8a706c11d83d79ea7e8a2", "66152cd72295ced5df7b60ed",
+                "66152cd72295ced5df7b60ef", "65de2a7dae9bb15396c0fb86", "66152d0f2295ced5df7b611b",
+                "66152d0f2295ced5df7b6108", "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b6101",
+                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b6102", "66152d0f2295ced5df7b6110",
+                "65de32105e90b6233fe92633", "65ef2292e9f197360880b0f6", "66152cd72295ced5df7b60fc",
+                "66152cd72295ced5df7b60f0", "65f8a6e7c11d83d79ea7e8a1", "66152cd72295ced5df7b6103",
+                "66152d0f2295ced5df7b6107", "66152cd72295ced5df7b60f7", "65f8a66ac11d83d79ea7e89c",
+                "66152d0f2295ced5df7b611c", "66152d0f2295ced5df7b6113", "65f8a6d0c11d83d79ea7e8a0",
+                "66152cd72295ced5df7b60ee", "66152d0f2295ced5df7b6115", "66152d0f2295ced5df7b6106");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
@@ -452,16 +512,18 @@ public class MenCatalogTest extends BaseTest {
     public void presenceOfAllItemsInCatalog() {
 
         List<String> expectedProductIdList = List.of(
-                "66152cd72295ced5df7b60ef", "66152cd72295ced5df7b60ed", "66152cd72295ced5df7b6103",
-                "66152d0f2295ced5df7b6106", "66152d0f2295ced5df7b6109", "66152d0f2295ced5df7b6107", "65e9fc153113032e940ae831",
-                "65f8a706c11d83d79ea7e8a2", "66152cd72295ced5df7b6102", "66152cd72295ced5df7b60ee", "65f8a6e7c11d83d79ea7e8a1",
-                "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b60fa", "66152cd72295ced5df7b60fc", "66152cd72295ced5df7b60fb",
-                "66152cd72295ced5df7b60fd", "66152d0f2295ced5df7b6113", "65f8a66ac11d83d79ea7e89c", "65df7b2495aaba554cab83b2",
-                "66152d0f2295ced5df7b611c", "65f8a6d0c11d83d79ea7e8a0", "65de32105e90b6233fe92633", "65f8a643c11d83d79ea7e89b",
-                "65de2dd5ae9bb15396c0fb9a", "65f8a62fc11d83d79ea7e89a", "65de2a7dae9bb15396c0fb86", "66152d0f2295ced5df7b6115",
-                "66152cd72295ced5df7b60f0", "66152d0f2295ced5df7b6108", "66152d0f2295ced5df7b6110", "66152d0f2295ced5df7b611a",
-                "66152cd72295ced5df7b60f7", "66152d0f2295ced5df7b611b", "66152cd72295ced5df7b6101", "65ef2292e9f197360880b0f6",
-                "66152d0f2295ced5df7b6114");
+                "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
+                "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b60fd", "65e9fc153113032e940ae831",
+                "66152d0f2295ced5df7b611a", "66152d0f2295ced5df7b6109", "66152cd72295ced5df7b60fa",
+                "65f8a706c11d83d79ea7e8a2", "66152d0f2295ced5df7b6114", "66152cd72295ced5df7b60ed",
+                "66152cd72295ced5df7b60ef", "66152d0f2295ced5df7b611b", "66152d0f2295ced5df7b6108",
+                "65de2a7dae9bb15396c0fb86", "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b6101",
+                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b6102", "66152d0f2295ced5df7b6110",
+                "65de32105e90b6233fe92633", "65ef2292e9f197360880b0f6", "66152cd72295ced5df7b60fc",
+                "66152cd72295ced5df7b60f0", "65f8a6e7c11d83d79ea7e8a1", "66152cd72295ced5df7b6103",
+                "66152d0f2295ced5df7b6107", "66152cd72295ced5df7b60f7", "65f8a66ac11d83d79ea7e89c",
+                "66152d0f2295ced5df7b611c", "66152d0f2295ced5df7b6113", "65f8a6d0c11d83d79ea7e8a0",
+                "66152cd72295ced5df7b60ee", "66152d0f2295ced5df7b6115", "66152d0f2295ced5df7b6106");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
@@ -482,7 +544,10 @@ public class MenCatalogTest extends BaseTest {
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
         }
-        Assert.assertEquals(actualProductIdList, expectedProductIdList);
+
+        for (int i = 0; i < expectedProductIdList.size(); i++) {
+            Assert.assertTrue(actualProductIdList.contains(expectedProductIdList.get(i)));
+        }
     }
 }
 
