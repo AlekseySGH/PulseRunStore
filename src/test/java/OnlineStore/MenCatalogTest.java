@@ -21,11 +21,11 @@ public class MenCatalogTest extends BaseTest {
 
     final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li");
 
-    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-cmfnrN dwlxWf'])[1]//label");
+    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[1]//label");
 
-    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-cmfnrN dwlxWf'])[3]//label");
+    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[3]//label");
 
-    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-cmfnrN dwlxWf'])[4]//label");
+    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[4]//label");
 
     final static By PRODUCTS_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') " +
             "and not(ancestor::div[contains(@class, 'header__inner')])]//p");
