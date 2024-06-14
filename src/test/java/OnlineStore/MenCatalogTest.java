@@ -471,19 +471,19 @@ public class MenCatalogTest extends BaseTest {
     @Test
     public void productListByNewSortListTest() {
 
-        List<String> expectedProductList = List.of("66152cd72295ced5df7b60ef", "66152cd72295ced5df7b60ed",
-                "66152cd72295ced5df7b6103", "66152d0f2295ced5df7b6106", "66152d0f2295ced5df7b6109",
-                "66152d0f2295ced5df7b6107", "65e9fc153113032e940ae831", "65f8a706c11d83d79ea7e8a2",
-                "66152cd72295ced5df7b6102", "66152cd72295ced5df7b60ee", "65f8a6e7c11d83d79ea7e8a1",
-                "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b60fa", "66152cd72295ced5df7b60fc",
-                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b60fd", "66152d0f2295ced5df7b6113",
-                "65f8a66ac11d83d79ea7e89c", "65df7b2495aaba554cab83b2", "66152d0f2295ced5df7b611c",
-                "65f8a6d0c11d83d79ea7e8a0", "65de32105e90b6233fe92633", "65f8a643c11d83d79ea7e89b",
-                "65de2dd5ae9bb15396c0fb9a", "65f8a62fc11d83d79ea7e89a", "65de2a7dae9bb15396c0fb86",
-                "66152d0f2295ced5df7b6115", "66152cd72295ced5df7b60f0", "66152d0f2295ced5df7b6108",
-                "66152d0f2295ced5df7b6110", "66152d0f2295ced5df7b611a", "66152cd72295ced5df7b60f7",
-                "66152d0f2295ced5df7b611b", "66152cd72295ced5df7b6101", "65ef2292e9f197360880b0f6",
-                "66152d0f2295ced5df7b6114");
+        List<String> expectedProductList = List.of(
+                "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
+                "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b60fd", "65e9fc153113032e940ae831",
+                "66152d0f2295ced5df7b611a", "66152d0f2295ced5df7b6109", "66152cd72295ced5df7b60fa",
+                "66152d0f2295ced5df7b6114", "65f8a706c11d83d79ea7e8a2", "66152cd72295ced5df7b60ed",
+                "66152cd72295ced5df7b60ef", "65de2a7dae9bb15396c0fb86", "66152d0f2295ced5df7b611b",
+                "66152d0f2295ced5df7b6108", "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b6101",
+                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b6102", "66152d0f2295ced5df7b6110",
+                "65de32105e90b6233fe92633", "65ef2292e9f197360880b0f6", "66152cd72295ced5df7b60fc",
+                "66152cd72295ced5df7b60f0", "65f8a6e7c11d83d79ea7e8a1", "66152cd72295ced5df7b6103",
+                "66152d0f2295ced5df7b6107", "66152cd72295ced5df7b60f7", "65f8a66ac11d83d79ea7e89c",
+                "66152d0f2295ced5df7b611c", "66152d0f2295ced5df7b6113", "65f8a6d0c11d83d79ea7e8a0",
+                "66152cd72295ced5df7b60ee", "66152d0f2295ced5df7b6115", "66152d0f2295ced5df7b6106");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
