@@ -253,7 +253,7 @@ public class MenCatalogTest extends BaseTest {
 
         Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
         Assert.assertTrue(getDriver().findElement(
-                By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
+                By.xpath("//button[@class='sc-jnlcPO kqknYt']")).getText().contains(brandNames));
 
     }
 
@@ -275,7 +275,7 @@ public class MenCatalogTest extends BaseTest {
 
                 Assert.assertTrue(actualResult.contains(brandNames));
                 Assert.assertTrue(getDriver().findElement(
-                        By.xpath("//button[@class='sc-imiRDh fjwUyS']")).getText().contains(brandNames));
+                        By.xpath("//button[@class='sc-jnlcPO kqknYt']")).getText().contains(brandNames));
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
@@ -334,7 +334,7 @@ public class MenCatalogTest extends BaseTest {
                 getDriver().findElements(PRODUCTS_LIST).get(j).click();
 
                 List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
-                        By.xpath("//li[@class='sc-ZaPur lePqnx']/label")));
+                        By.xpath("//li[@class='sc-jiSpbx jzoihH']/label")));
 
                 List<String> expectedSizeList = getSizeLisByModel(currentItemName);
 
@@ -366,7 +366,7 @@ public class MenCatalogTest extends BaseTest {
                 getDriver().findElements(PRODUCTS_LIST).get(j).click();
 
                 List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
-                        By.xpath("//li[@class='sc-ZaPur lePqnx']/label")));
+                        By.xpath("//li[@class='sc-jiSpbx jzoihH']/label")));
 
                 Assert.assertTrue(actualSizeList.contains(sizeValue));
 
