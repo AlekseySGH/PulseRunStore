@@ -249,7 +249,7 @@ public class MenCatalogTest extends BaseTest {
         chooseBandInCheckbox(brandNames);
 
         String actualResult = getDriver().findElement(
-                By.xpath("//div[@class='sc-jIYCZY fclvYI']")).getText();
+                By.xpath("//div[@class='sc-bYpRZF bUiKPr']")).getText();
 
         Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
         Assert.assertTrue(getDriver().findElement(
