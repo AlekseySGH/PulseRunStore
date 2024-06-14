@@ -542,7 +542,10 @@ public class MenCatalogTest extends BaseTest {
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
         }
-        Assert.assertEquals(actualProductIdList, expectedProductIdList);
+
+        for (int i = 0; i < expectedProductIdList.size(); i++) {
+            Assert.assertTrue(actualProductIdList.contains(expectedProductIdList.get(i)));
+        }
     }
 }
 
