@@ -24,9 +24,9 @@ public class MenCatalogTest extends BaseTest {
 
     final static By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-fnfGmV dxhkZX']");
 
-    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[3]//label");
+    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-bqOYya feWedw'])[3]//label");
 
-    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-jSUdEz dQooiy'])[4]//label");
+    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-bqOYya feWedw'])[4]//label");
 
     final static By PRODUCTS_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') " +
             "and not(ancestor::div[contains(@class, 'header__inner')])]//p");
@@ -248,7 +248,6 @@ public class MenCatalogTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void presenceOfSizeItemsInFilterTest() {
         List<String> expectedFilterItemList = List.of("36", "37", "38", "39", "40", "41", "42", "43", "44",
@@ -269,7 +268,6 @@ public class MenCatalogTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void presenceOfColorItemsInFilterTest() {
         List<String> expectedFilterItemList = List.of("Бежевий", "Білий", "Зелений", "Рожевий", "Синій",
@@ -419,8 +417,7 @@ public class MenCatalogTest extends BaseTest {
                 String currentItemName = getDriver().findElements(PRODUCTS_LIST).get(j).getText();
                 getDriver().findElements(PRODUCTS_LIST).get(j).click();
 
-                List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(
-                        By.xpath("//li[@class='sc-ekcpMq csxgYo']/label")));
+                List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(SIZES_LIST_IN_PRODUCT_PAGE));
 
                 List<String> expectedSizeList = getSizeLisByModel(currentItemName);
 
@@ -433,7 +430,6 @@ public class MenCatalogTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test(dataProvider = "availableSizesProvider")
     public void filterBySizeTest(String sizeValue) {
 
