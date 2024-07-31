@@ -1,7 +1,6 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
-import OnlineStore.utils.LocatorUtils;
 import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,9 +20,9 @@ public class WomenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
-        getDriver().findElement(LocatorUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
+        getDriver().findElement(TestUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
 
-        List<String> filterByBrandItemList = TestUtils.getTexts(LocatorUtils.FILTER_BY_BRANDS_ITEMS, getDriver());
+        List<String> filterByBrandItemList = TestUtils.getTexts(TestUtils.FILTER_BY_BRANDS_ITEMS, getDriver());
 
         boolean isFilterListContainsItem;
 
@@ -33,4 +32,26 @@ public class WomenCatalogTest extends BaseTest {
             Assert.assertTrue(isFilterListContainsItem, "Brand - " + expectedFilterItem + " not found in filter");
         }
     }
+
+    @Test
+    public void presenceOfSizeItemsInFilterTest() {
+        List<String> expectedFilterItemList = List.of("36", "37", "38", "39", "40", "41", "42", "43", "44",
+                "45", "36.5", "37.5", "38.5", "39.5", "40.5", "41.5", "42.5", "43.5", "44.5", "45.5", "46.5", "47.5");
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(TestUtils.SHOW_ALL_SIZES_IN_FILTER).click();
+
+        List<String> filterBySizeItemList = TestUtils.getTexts(TestUtils.FILTER_BY_SIZE_ITEMS, getDriver());
+
+        boolean isFilterListContainsItem;
+
+        for (String expectedFilterItem : expectedFilterItemList) {
+            isFilterListContainsItem = filterBySizeItemList.contains(expectedFilterItem);
+
+            Assert.assertTrue(isFilterListContainsItem, "Size - " + expectedFilterItem + " not found in filter");
+        }
+    }
+
+
 }
