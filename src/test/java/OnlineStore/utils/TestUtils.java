@@ -28,7 +28,12 @@ public class TestUtils {
 
     public static final By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
 
+    public static final By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
+            "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
+
     private final static By H1_HEADER = By.xpath("//h1");
+
+    private final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
 
     public static void loadBaseUrlPage(WebDriver driver, WebDriverWait wait) {
         driver.get(BaseTest.getBaseUrl());
@@ -68,5 +73,22 @@ public class TestUtils {
     public static void chooseBandInCheckbox(String brandName, WebDriver driver) {
         driver.findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
         driver.findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
+    }
+
+    public static int getCatalogPageQtt(WebDriver driver) {
+        int pageCounter;
+
+        if ((driver.findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
+            pageCounter = driver.findElements(PAGE_BUTTON_LIST).size() - 2;
+        } else {
+            pageCounter = 1;
+        }
+        return pageCounter;
+    }
+
+    public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriver driver) {
+        if (pageQttInCatalog > currentPage) {
+            driver.findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
+        }
     }
 }
