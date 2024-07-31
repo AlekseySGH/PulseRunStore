@@ -29,6 +29,16 @@ public class WomenCatalogTest extends BaseTest {
         };
     }
 
+    @DataProvider(name = "addedBrandProvider")
+    public Object[][] addedBrandProvider() {
+        return new Object[][]{
+                {"Adidas"},
+                {"New Balance"},
+                {"Nike"},
+                {"Salomon"},
+        };
+    }
+
     @Test
     public void presenceOfBrandsItemsInFilterTest() {
         List<String> expectedFilterItemList = List.of("Adidas", "Asics", "Converse", "Dr.Martens", "Hoka",
@@ -100,5 +110,29 @@ public class WomenCatalogTest extends BaseTest {
 
         Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
         Assert.assertTrue(getDriver().findElement(TestUtils.CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
+    }
+
+    @Test(dataProvider = "addedBrandProvider")
+    public void filterByBrandTest(String brandNames) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        TestUtils.chooseBandInCheckbox(brandNames, getDriver());
+
+        int currentPage = 1;
+        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                String actualResult = TestUtils.getTexts(TestUtils.PRODUCTS_LIST, getDriver()).get(j);
+
+                Assert.assertTrue(actualResult.contains(brandNames));
+                Assert.assertTrue(getDriver().findElement(TestUtils.CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
+            currentPage += currentPage;
+        }
     }
 }
