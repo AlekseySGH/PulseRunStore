@@ -21,8 +21,6 @@ public class MenCatalogTest extends BaseTest {
 
     final static By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
 
-    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[4]//label");
-
     final static By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
             "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
@@ -31,8 +29,6 @@ public class MenCatalogTest extends BaseTest {
 
     final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
             "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
-
-    final static By SHOW_ALL_COLOR_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[3]");
 
     final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
@@ -270,9 +266,9 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        getDriver().findElement(SHOW_ALL_COLOR_IN_FILTER).click();
+        getDriver().findElement(TestUtils.SHOW_ALL_COLOR_IN_FILTER).click();
 
-        List<String> filterByColorItemList = TestUtils.getTexts(FILTER_BY_COLOR_ITEMS, getDriver());
+        List<String> filterByColorItemList = TestUtils.getTexts(TestUtils.FILTER_BY_COLOR_ITEMS, getDriver());
 
         boolean isFilterListContainsItem;
 
