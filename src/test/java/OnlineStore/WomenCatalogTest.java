@@ -53,5 +53,23 @@ public class WomenCatalogTest extends BaseTest {
         }
     }
 
+    @Test
+    public void presenceOfColorItemsInFilterTest() {
+        List<String> expectedFilterItemList = List.of("Бежевий", "Білий", "Зелений", "Рожевий", "Синій",
+                "Сірий", "Срібний", "Фіолетовий", "Червоний", "Чорний");
 
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(TestUtils.SHOW_ALL_COLOR_IN_FILTER).click();
+
+        List<String> filterByColorItemList = TestUtils.getTexts(TestUtils.FILTER_BY_COLOR_ITEMS, getDriver());
+
+        boolean isFilterListContainsItem;
+
+        for (String expectedFilterItem : expectedFilterItemList) {
+            isFilterListContainsItem = filterByColorItemList.contains(expectedFilterItem);
+
+            Assert.assertTrue(isFilterListContainsItem, "Color - " + expectedFilterItem + " not found in filter");
+        }
+    }
 }
