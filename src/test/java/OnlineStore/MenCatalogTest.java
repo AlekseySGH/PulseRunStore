@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -16,23 +15,26 @@ public class MenCatalogTest extends BaseTest {
 
     final static By MEN_CATALOG_BUTTON = By.xpath("//li/a[text()='Чоловікам']");
 
-    final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li");
+    final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
 
-    final static By NOTHING_FOUND_MESSAGE = By.xpath("//div[@class='sc-YltrM eXjZmE']");
+    final static By NOTHING_FOUND_MESSAGE = By.xpath("//div[@class='sc-juusvx jmhMGH']");
 
-    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-bqOYya feWedw'])[1]//label");
+    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[1]//label");
 
-    final static By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-fnfGmV dxhkZX']");
+    final static By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
 
-    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-bqOYya feWedw'])[3]//label");
+    final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[3]//label");
 
-    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-bqOYya feWedw'])[4]//label");
+    final static By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[4]//label");
 
-    final static By PRODUCTS_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') " +
-            "and not(ancestor::div[contains(@class, 'header__inner')])]//p");
+    final static By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
+            "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    final static By PRICES_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') ]//" +
-            "span[contains (text(), ' грн')]");
+    final static By PRICES_LIST = By.xpath("//a[contains(@href, '/online-store-front-pulse') ]" +
+            "//span[contains (text(), ' грн') and not(ancestor::div[contains(@class, 'swiper-slide')])]");
+
+    final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
+            "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
     final static By SHOW_ALL_BRANDS_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[1]");
 
@@ -40,10 +42,7 @@ public class MenCatalogTest extends BaseTest {
 
     final static By SHOW_ALL_COLOR_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[3]");
 
-    final static By PRODUCTS_ID_LIST = By.xpath("//div/a[contains(@href, '/online-store-front-pulse') " +
-            "and not(ancestor::div[contains(@class, 'header__inner')]) and not(@href='/online-store-front-pulse')]");
-
-    final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-ekcpMq csxgYo']/label");
+     final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
     private void chooseBandInCheckbox(String brandName) {
         getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
@@ -362,7 +361,7 @@ public class MenCatalogTest extends BaseTest {
     public void productSizeFilteredBySeveralBrandsAndSizesInFilterTest() {
 
         int qttBandsInCheckbox = 2;
-        int qttSizesInCheckbox = 2;
+        int qttSizesInCheckbox = 4;
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
