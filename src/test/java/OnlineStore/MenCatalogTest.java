@@ -17,10 +17,6 @@ public class MenCatalogTest extends BaseTest {
 
     final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
 
-    final static By NOTHING_FOUND_MESSAGE = By.xpath("//div[@class='sc-juusvx jmhMGH']");
-
-    final static By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
-
     final static By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
             "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
@@ -35,11 +31,6 @@ public class MenCatalogTest extends BaseTest {
     final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
 
     final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
-
-    private void chooseBandInCheckbox(String brandName) {
-        getDriver().findElement(TestUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
-        getDriver().findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
-    }
 
     private List<String> chooseRandomBandsInCheckbox(int brandQttInCheckbox) {
         List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
@@ -280,16 +271,16 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "notAddedBrandProvider")
-    public void filterByNotAddedBrandTest(String brandNames) {
+    public void filterByNotAddedBrandsTest(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        chooseBandInCheckbox(brandNames);
+        TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        String actualResult = getDriver().findElement(NOTHING_FOUND_MESSAGE).getText();
+        String actualResult = getDriver().findElement(TestUtils.NOTHING_FOUND_MESSAGE).getText();
 
         Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
-        Assert.assertTrue(getDriver().findElement(CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
+        Assert.assertTrue(getDriver().findElement(TestUtils.CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
     }
 
     @Test(dataProvider = "addedBrandProvider")
@@ -297,7 +288,7 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        chooseBandInCheckbox(brandNames);
+        TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt();
@@ -309,7 +300,7 @@ public class MenCatalogTest extends BaseTest {
                 String actualResult = TestUtils.getTexts(PRODUCTS_LIST, getDriver()).get(j);
 
                 Assert.assertTrue(actualResult.contains(brandNames));
-                Assert.assertTrue(getDriver().findElement(CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
+                Assert.assertTrue(getDriver().findElement(TestUtils.CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
@@ -395,7 +386,7 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        chooseBandInCheckbox(brandNames);
+        TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt();

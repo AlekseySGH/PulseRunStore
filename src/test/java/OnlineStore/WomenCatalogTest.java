@@ -5,6 +5,7 @@ import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -12,6 +13,21 @@ import java.util.List;
 public class WomenCatalogTest extends BaseTest {
 
     final static By WOMEN_CATALOG_BUTTON = By.xpath("//li/a[text()='Жінкам']");
+
+    @DataProvider(name = "notAddedBrandProvider")
+    public Object[][] notAddedBrandProvider() {
+        return new Object[][]{
+                {"Asics"},
+                {"Converse"},
+                {"Dr.Martens"},
+                {"Hoka"},
+                {"Jordan"},
+                {"Native"},
+                {"Puma"},
+                {"Reebok"},
+                {"Vans"},
+        };
+    }
 
     @Test
     public void presenceOfBrandsItemsInFilterTest() {
@@ -71,5 +87,18 @@ public class WomenCatalogTest extends BaseTest {
 
             Assert.assertTrue(isFilterListContainsItem, "Color - " + expectedFilterItem + " not found in filter");
         }
+    }
+
+    @Test(dataProvider = "notAddedBrandProvider")
+    public void filterByNotAddedBrandsTest(String brandNames) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        TestUtils.chooseBandInCheckbox(brandNames, getDriver());
+
+        String actualResult = getDriver().findElement(TestUtils.NOTHING_FOUND_MESSAGE).getText();
+
+        Assert.assertEquals(actualResult, "За вашим запитом нічого не знайдено");
+        Assert.assertTrue(getDriver().findElement(TestUtils.CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
     }
 }

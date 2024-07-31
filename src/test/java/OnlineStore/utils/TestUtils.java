@@ -24,6 +24,10 @@ public class TestUtils {
 
     public static final By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[4]//label");
 
+    public static final By NOTHING_FOUND_MESSAGE = By.xpath("//div[@class='sc-juusvx jmhMGH']");
+
+    public static final By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
+
     private final static By H1_HEADER = By.xpath("//h1");
 
     public static void loadBaseUrlPage(WebDriver driver, WebDriverWait wait) {
@@ -59,5 +63,10 @@ public class TestUtils {
 
     public static  List<String> getTexts(By by, WebDriver driver) {
         return driver.findElements(by).stream().map(WebElement::getText).toList();
+    }
+
+    public static void chooseBandInCheckbox(String brandName, WebDriver driver) {
+        driver.findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+        driver.findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
     }
 }
