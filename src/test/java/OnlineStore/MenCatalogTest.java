@@ -438,7 +438,8 @@ public class MenCatalogTest extends BaseTest {
 
                 getDriver().findElements(PRODUCTS_LIST).get(j).click();
 
-                List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(SIZES_LIST_IN_PRODUCT_PAGE));
+                List<String> actualSizeList = TestUtils.getTexts(getWait10()
+                        .until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
 
                 Assert.assertTrue(actualSizeList.contains(sizeValue));
 
