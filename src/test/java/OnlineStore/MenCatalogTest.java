@@ -44,6 +44,9 @@ public class MenCatalogTest extends BaseTest {
 
      final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
+    final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
+
+
     private void chooseBandInCheckbox(String brandName) {
         getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
         getDriver().findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
@@ -221,9 +224,9 @@ public class MenCatalogTest extends BaseTest {
     @DataProvider(name = "availableSeasonValuesProvider")
     public Object[][] availableSeasonValuesProvider() {
         return new Object[][]{
-                {"Весна/Осінь", 9},
-                {"Зима", 12},
-                {"Літо", 15},
+                {"Весна/Осінь"},
+                {"Зима"},
+                {"Літо"},
         };
     }
 
@@ -458,7 +461,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
-    public void filterBySeasonTest(String seasonValue, int itemQtt) {
+    public void filterBySeasonTest(String seasonValue) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
@@ -466,23 +469,24 @@ public class MenCatalogTest extends BaseTest {
 
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt();
-        int productCounter = 0;
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
             int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
 
-                String currentItemName = getDriver().findElements(PRODUCTS_LIST).get(j).getText();
-                productCounter = productCounter + 1;
+                getDriver().findElements(PRODUCTS_LIST).get(j).click();
 
-                Assert.assertTrue(getModelsLisBySeason(seasonValue).contains(currentItemName));
+                String actualSeasonValue = getDriver().findElement(SEASON_VALUE_IN_PRODUCT_PAGE).getText();
+
+                Assert.assertEquals(actualSeasonValue, seasonValue);
+
+                getDriver().navigate().back();
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
         }
-        Assert.assertEquals(productCounter, itemQtt);
-    }
+     }
 
     @Test
     public void productsListInAscendingOderTest() {
