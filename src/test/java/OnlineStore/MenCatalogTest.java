@@ -42,10 +42,11 @@ public class MenCatalogTest extends BaseTest {
 
     final static By SHOW_ALL_COLOR_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[3]");
 
-     final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
+    final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
     final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
 
+    final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
 
     private void chooseBandInCheckbox(String brandName) {
         getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
@@ -387,7 +388,7 @@ public class MenCatalogTest extends BaseTest {
                 for (String randomSizesValue : randomSizesList) {
                     if (actualSizeList.contains(randomSizesValue)) {
                         containsAnySizeInList = true;
-                    }else if (containsAnySizeInList) {
+                    } else if (containsAnySizeInList) {
                         break;
                     }
                 }
@@ -486,7 +487,7 @@ public class MenCatalogTest extends BaseTest {
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
             currentPage += currentPage;
         }
-     }
+    }
 
     @Test
     public void productsListInAscendingOderTest() {
@@ -631,6 +632,34 @@ public class MenCatalogTest extends BaseTest {
 
         for (int i = 0; i < expectedProductIdList.size(); i++) {
             Assert.assertTrue(actualProductIdList.contains(expectedProductIdList.get(i)));
+        }
+    }
+
+    @Test
+    public void onlyMensItemsAreShownTest() {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt();
+        String expectedCategoryValue = "Чоловіче взуття";
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                getDriver().findElements(PRODUCTS_LIST).get(j).click();
+
+                String actualCategoryValue = getDriver().findElement(CATEGORY_VALUE_IN_PRODUCT_PAGE).getText();
+
+                Assert.assertEquals(actualCategoryValue, expectedCategoryValue);
+
+                getDriver().navigate().back();
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog);
+            currentPage += currentPage;
         }
     }
 }
