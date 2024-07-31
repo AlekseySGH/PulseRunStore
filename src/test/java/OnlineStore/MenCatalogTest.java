@@ -1,6 +1,7 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
+import OnlineStore.utils.LocatorUtils;
 import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,8 +20,6 @@ public class MenCatalogTest extends BaseTest {
 
     final static By NOTHING_FOUND_MESSAGE = By.xpath("//div[@class='sc-juusvx jmhMGH']");
 
-    final static By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[1]//label");
-
     final static By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
 
     final static By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[3]//label");
@@ -36,8 +35,6 @@ public class MenCatalogTest extends BaseTest {
     final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
             "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    final static By SHOW_ALL_BRANDS_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[1]");
-
     final static By SHOW_ALL_SIZES_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[2]");
 
     final static By SHOW_ALL_COLOR_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[3]");
@@ -49,7 +46,7 @@ public class MenCatalogTest extends BaseTest {
     final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
 
     private void chooseBandInCheckbox(String brandName) {
-        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+        getDriver().findElement(LocatorUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
         getDriver().findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
     }
 
@@ -65,7 +62,7 @@ public class MenCatalogTest extends BaseTest {
             brandQttInCheckbox = addedBrandNamesList.size();
         }
 
-        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+        getDriver().findElement(LocatorUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
 
         int i = r.nextInt(addedBrandNamesList.size());
 
@@ -98,7 +95,7 @@ public class MenCatalogTest extends BaseTest {
             sizeQttInCheckbox = sizeListByBrand.size();
         }
 
-        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+        getDriver().findElement(LocatorUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
 
         int i = r.nextInt(sizeListByBrand.size());
 
@@ -238,9 +235,9 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        getDriver().findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+        getDriver().findElement(LocatorUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
 
-        List<String> filterByBrandItemList = TestUtils.getTexts(FILTER_BY_BRANDS_ITEMS, getDriver());
+        List<String> filterByBrandItemList = TestUtils.getTexts(LocatorUtils.FILTER_BY_BRANDS_ITEMS, getDriver());
 
         boolean isFilterListContainsItem;
 
