@@ -1,4 +1,4 @@
-package OnlineStore.runner;
+package OnlineStore.utils;
 
 import org.openqa.selenium.By;
 

@@ -1,7 +1,7 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
-import OnlineStore.runner.LocatorUtils;
+import OnlineStore.utils.LocatorUtils;
 import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
