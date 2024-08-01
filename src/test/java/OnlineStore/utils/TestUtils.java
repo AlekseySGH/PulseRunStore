@@ -147,7 +147,34 @@ public class TestUtils {
         return getSizeByBrandList;
     }
 
-    public static List<String> chooseRandomSizesInFilter(String category, List<String> brandNamesList, int sizeQttInCheckbox, WebDriver driver) {
+    private static List<String> getSizeLisByModel(String category, String modelName) {
+
+        List<String> getSizeByModelList = switch (category) {
+            case "Men" -> switch (modelName) {
+                case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
+                        List.of("37", "38", "40", "42.5", "44");
+                case "Reebok Zig Kinetica 2.5 Edge Grey" -> List.of("42", "43", "44", "45");
+                case "Nike Air Max Plus Blue Gradien" -> List.of("41", "42", "43", "44");
+                case "Salomon ACS+ CSWP Cement" -> List.of("42", "44");
+                case "Nike Air Max 1 PRM Escape Treeline" -> List.of("42", "42.5", "43", "43.5", "44");
+                default -> List.of();
+            };
+            case "Women" -> switch (modelName) {
+                case "Adidas ADI2000 X Blue Dawn", "Nike Blazer Low Platform pink" -> List.of("36", "37", "38", "39");
+                case "Adidas Campus 00s Scarlet Gum" -> List.of("37", "37.5", "38", "38.5");
+                case "Adidas Response W Cloud White Grey Five" -> List.of("37", "38", "39", "40");
+                case "New Balance 610 Angora" -> List.of("37.5", "38", "39", "40", "42");
+                case "Nike Gamma Force Rise", "Salomon XT-6 Ghost Grey" -> List.of("36.5", "37", "38", "39", "40");
+                case "Salomon XT-6 Gore-Tex Desert Sage" -> List.of("42", "43");
+                default -> List.of();
+            };
+            default -> List.of();
+        };
+        return getSizeByModelList;
+    }
+
+    public static List<String> chooseRandomSizesInFilter(String category, List<String> brandNamesList,
+                                                         int sizeQttInCheckbox, WebDriver driver) {
         HashSet<String> sizeSetByBrand = new HashSet<>();
 
         for (String brandName : brandNamesList) {
@@ -198,7 +225,8 @@ public class TestUtils {
         }
     }
 
-    public static void isFilteredByRandomBrandsInTheCatalogCorrect(List<String> randomBrandsList, WebDriver driver, WebDriverWait wait) {
+    public static void isFilteredByRandomBrandsInTheCatalogCorrect(List<String> randomBrandsList, WebDriver
+            driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 
@@ -223,9 +251,10 @@ public class TestUtils {
         }
     }
 
-    public static void isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(List<String> randomSizesList, WebDriver driver, WebDriverWait wait) {
+    public static void isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect
+            (List<String> randomSizesList, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(driver);
+        int pageQttInCatalog = getCatalogPageQtt(driver);
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
@@ -234,7 +263,7 @@ public class TestUtils {
                 boolean containsAnySizeInList = false;
                 driver.findElements(PRODUCTS_LIST).get(j).click();
 
-                List<String> actualSizeList = TestUtils.getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
+                List<String> actualSizeList = getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
 
                 for (String randomSizesValue : randomSizesList) {
                     if (actualSizeList.contains(randomSizesValue)) {
@@ -247,6 +276,31 @@ public class TestUtils {
                 Assert.assertTrue(containsAnySizeInList);
 
                 driver.navigate().back();
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+    }
+
+    public static void isTheSizeListOnTheProductPageCorrect(String category, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = TestUtils.getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                String currentItemName = driver.findElements(PRODUCTS_LIST).get(j).getText();
+                driver.findElements(PRODUCTS_LIST).get(j).click();
+
+                List<String> actualSizeList = TestUtils.getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
+
+                List<String> expectedSizeList = getSizeLisByModel(category, currentItemName);
+
+                driver.navigate().back();
+
+                Assert.assertEquals(actualSizeList, expectedSizeList);
             }
             TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
