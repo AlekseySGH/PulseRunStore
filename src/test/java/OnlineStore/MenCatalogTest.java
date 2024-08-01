@@ -27,32 +27,6 @@ public class MenCatalogTest extends BaseTest {
 
     final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
 
-    private List<String> chooseRandomBandsInCheckbox(int brandQttInCheckbox) {
-        List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
-        List<String> randomBrandNamesList = new ArrayList<>();
-
-        Random r = new Random();
-
-        if (brandQttInCheckbox <= 0) {
-            brandQttInCheckbox = 1;
-        } else if (brandQttInCheckbox >= addedBrandNamesList.size()) {
-            brandQttInCheckbox = addedBrandNamesList.size();
-        }
-
-        getDriver().findElement(TestUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
-
-        int i = r.nextInt(addedBrandNamesList.size());
-
-        while (randomBrandNamesList.size() != brandQttInCheckbox) {
-            if (!randomBrandNamesList.contains(addedBrandNamesList.get(i))) {
-                randomBrandNamesList.add(addedBrandNamesList.get(i));
-                getDriver().findElement(By.xpath("//input[@value = '" + addedBrandNamesList.get(i) + "']")).click();
-            }
-            i = r.nextInt(addedBrandNamesList.size());
-        }
-        return randomBrandNamesList;
-    }
-
     private List<String> chooseRandomSizesInCheckbox(List<String> brandNamesList, int sizeQttInCheckbox) {
         HashSet<String> sizeSetByBrand = new HashSet<>();
 
@@ -275,33 +249,13 @@ public class MenCatalogTest extends BaseTest {
     public void itemListBySeveralBrandsInFilterTest() {
 
         int qttBandsInCheckbox = 2;
+        List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        List<String> randomBandsList = chooseRandomBandsInCheckbox(qttBandsInCheckbox);
+        List<String> randomBrandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-                boolean containsAnyBrandInList = false;
-                String actualResult = TestUtils.getTexts(TestUtils.PRODUCTS_LIST, getDriver()).get(j);
-
-                for (String randomBandName : randomBandsList) {
-                    if (actualResult.contains(randomBandName)) {
-                        containsAnyBrandInList = true;
-                        break;
-                    }
-                }
-
-                Assert.assertTrue(containsAnyBrandInList);
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
     }
 
     @Test
@@ -309,10 +263,11 @@ public class MenCatalogTest extends BaseTest {
 
         int qttBandsInCheckbox = 2;
         int qttSizesInCheckbox = 4;
+        List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        List<String> randomBandsList = chooseRandomBandsInCheckbox(qttBandsInCheckbox);
+        List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
         List<String> randomSizesList = chooseRandomSizesInCheckbox(randomBandsList, qttSizesInCheckbox);
 
 
