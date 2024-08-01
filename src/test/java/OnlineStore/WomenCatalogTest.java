@@ -134,4 +134,19 @@ public class WomenCatalogTest extends BaseTest {
 
         TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
     }
+
+    @Test
+    public void itemListBySeveralBrandsAndSizesInFilterTest() {
+
+        int qttBandsInCheckbox = 2;
+        int qttSizesInCheckbox = 4;
+        List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Salomon");
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
+        List<String> randomSizesList = TestUtils.chooseRandomSizesInCheckbox(randomBandsList, qttSizesInCheckbox, getDriver());
+
+        TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
+    }
 }
