@@ -82,6 +82,11 @@ public class TestUtils {
         driver.findElement(By.xpath("//input[@value = '" + brandName + "']")).click();
     }
 
+    public static void chooseSizeInCheckbox(String sizeValue, WebDriver driver) {
+        driver.findElement(SHOW_ALL_SIZES_IN_FILTER).click();
+        driver.findElement(By.xpath("//input[@value = '" + sizeValue + "']")).click();
+    }
+
     public static int getCatalogPageQtt(WebDriver driver) {
         int pageCounter;
 
@@ -301,6 +306,29 @@ public class TestUtils {
                 driver.navigate().back();
 
                 Assert.assertEquals(actualSizeList, expectedSizeList);
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+    }
+
+    public static void isFilteredBySizeInTheCatalogCorrect(String sizeValue, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = TestUtils.getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                driver.findElements(PRODUCTS_LIST).get(j).click();
+
+                List<String> actualSizeList = TestUtils.getTexts(wait
+                        .until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
+
+                Assert.assertTrue(actualSizeList.contains(sizeValue));
+
+                driver.navigate().back();
             }
             TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;

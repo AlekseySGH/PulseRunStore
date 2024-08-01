@@ -39,6 +39,22 @@ public class WomenCatalogTest extends BaseTest {
         };
     }
 
+    @DataProvider(name = "availableSizesProvider")
+    public Object[][] availableSizesProvider() {
+        return new Object[][]{
+                {"36"},
+                {"36.5"},
+                {"37"},
+                {"37.5"},
+                {"38"},
+                {"38.5"},
+                {"39"},
+                {"40"},
+                {"42"},
+                {"43"},
+        };
+    }
+
     @Test
     public void presenceOfBrandsItemsInFilterTest() {
         List<String> expectedFilterItemList = List.of("Adidas", "Asics", "Converse", "Dr.Martens", "Hoka",
@@ -158,5 +174,15 @@ public class WomenCatalogTest extends BaseTest {
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
         TestUtils.isTheSizeListOnTheProductPageCorrect("Women", getDriver(), getWait10());
+    }
+
+    @Test(dataProvider = "availableSizesProvider")
+    public void filterBySizeTest(String sizeValue) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
+
+        TestUtils.isFilteredBySizeInTheCatalogCorrect(sizeValue, getDriver(), getWait10());
     }
 }

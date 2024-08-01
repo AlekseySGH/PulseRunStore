@@ -25,11 +25,6 @@ public class MenCatalogTest extends BaseTest {
 
     final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
 
-    private void chooseSizeInCheckbox(String sizeValue) {
-        getDriver().findElement(TestUtils.SHOW_ALL_SIZES_IN_FILTER).click();
-        getDriver().findElement(By.xpath("//input[@value = '" + sizeValue + "']")).click();
-    }
-
     private void chooseSeasonInCheckbox(String seasonValue) {
         getDriver().findElement(By.xpath("//input[@value = '" + seasonValue + "']")).click();
     }
@@ -225,28 +220,9 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        chooseSizeInCheckbox(sizeValue);
+        TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                getDriver().findElements(TestUtils.PRODUCTS_LIST).get(j).click();
-
-                List<String> actualSizeList = TestUtils.getTexts(getWait10()
-                        .until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.SIZES_LIST_IN_PRODUCT_PAGE)));
-
-                Assert.assertTrue(actualSizeList.contains(sizeValue));
-
-                getDriver().navigate().back();
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        TestUtils.isFilteredBySizeInTheCatalogCorrect(sizeValue, getDriver(), getWait10());
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
