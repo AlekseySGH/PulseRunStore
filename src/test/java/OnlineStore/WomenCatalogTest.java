@@ -119,20 +119,6 @@ public class WomenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-                String actualResult = TestUtils.getTexts(TestUtils.PRODUCTS_LIST, getDriver()).get(j);
-
-                Assert.assertTrue(actualResult.contains(brandNames));
-                Assert.assertTrue(getDriver().findElement(TestUtils.CANCEL_FILTER_BY_BRANDS).getText().contains(brandNames));
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        TestUtils.isFilteredByBrandInTheCatalogCorrect(brandNames, getDriver(), getWait10());
     }
 }
