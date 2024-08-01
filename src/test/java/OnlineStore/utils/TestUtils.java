@@ -10,7 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class TestUtils {
 
@@ -94,6 +96,31 @@ public class TestUtils {
         }
     }
 
+    public static List<String> chooseRandomBrandsInFilter(List<String> brandNamesList, int brandQttInCheckbox, WebDriver driver) {
+        List<String> randomBrandNamesList = new ArrayList<>();
+
+        Random r = new Random();
+
+        if (brandQttInCheckbox <= 0) {
+            brandQttInCheckbox = 1;
+        } else if (brandQttInCheckbox >= brandNamesList.size()) {
+            brandQttInCheckbox = brandNamesList.size();
+        }
+
+        driver.findElement(TestUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
+
+        int i = r.nextInt(brandNamesList.size());
+
+        while (randomBrandNamesList.size() != brandQttInCheckbox) {
+            if (!randomBrandNamesList.contains(brandNamesList.get(i))) {
+                randomBrandNamesList.add(brandNamesList.get(i));
+                driver.findElement(By.xpath("//input[@value = '" + brandNamesList.get(i) + "']")).click();
+            }
+            i = r.nextInt(brandNamesList.size());
+        }
+        return randomBrandNamesList;
+    }
+
     public static void isFilteredByBrandInTheCatalogCorrect(String brandName, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
@@ -106,6 +133,31 @@ public class TestUtils {
 
                 Assert.assertTrue(actualResult.contains(brandName));
                 Assert.assertTrue(driver.findElement(CANCEL_FILTER_BY_BRANDS).getText().contains(brandName));
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+    }
+
+    public static void isFilteredByRandomBrandsInTheCatalogCorrect(List<String> randomBrandsList, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                boolean containsAnyBrandInList = false;
+                String actualResult = TestUtils.getTexts(PRODUCTS_LIST, driver).get(j);
+
+                for (String randomBandName : randomBrandsList) {
+                    if (actualResult.contains(randomBandName)) {
+                        containsAnyBrandInList = true;
+                        break;
+                    }
+                }
+
+                Assert.assertTrue(containsAnyBrandInList);
             }
             TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
