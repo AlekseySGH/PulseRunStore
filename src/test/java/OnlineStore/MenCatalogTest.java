@@ -225,6 +225,7 @@ public class MenCatalogTest extends BaseTest {
         TestUtils.isFilteredBySizeInTheCatalogCorrect(sizeValue, getDriver(), getWait10());
     }
 
+
     @Test(dataProvider = "availableSeasonValuesProvider")
     public void filterBySeasonTest(String seasonValue) {
 
