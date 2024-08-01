@@ -55,6 +55,14 @@ public class WomenCatalogTest extends BaseTest {
         };
     }
 
+    @DataProvider(name = "availableSeasonValuesProvider")
+    public Object[][] availableSeasonValuesProvider() {
+        return new Object[][]{
+                {"Весна/Осінь"},
+                {"Літо"},
+        };
+    }
+
     @Test
     public void presenceOfBrandsItemsInFilterTest() {
         List<String> expectedFilterItemList = List.of("Adidas", "Asics", "Converse", "Dr.Martens", "Hoka",
@@ -184,5 +192,15 @@ public class WomenCatalogTest extends BaseTest {
         TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
 
         TestUtils.isFilteredBySizeInTheCatalogCorrect(sizeValue, getDriver(), getWait10());
+    }
+
+    @Test(dataProvider = "availableSeasonValuesProvider")
+    public void filterBySeasonTest(String seasonValue) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
+
+        TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
     }
 }
