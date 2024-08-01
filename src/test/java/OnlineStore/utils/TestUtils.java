@@ -38,6 +38,8 @@ public class TestUtils {
 
     public static final By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
+    public static final By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
+
     private final static By H1_HEADER = By.xpath("//h1");
 
     private final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
@@ -85,6 +87,10 @@ public class TestUtils {
     public static void chooseSizeInCheckbox(String sizeValue, WebDriver driver) {
         driver.findElement(SHOW_ALL_SIZES_IN_FILTER).click();
         driver.findElement(By.xpath("//input[@value = '" + sizeValue + "']")).click();
+    }
+
+    public static void chooseSeasonInFilter(String seasonValue, WebDriver driver) {
+        driver.findElement(By.xpath("//input[@value = '" + seasonValue + "']")).click();
     }
 
     public static int getCatalogPageQtt(WebDriver driver) {
@@ -314,7 +320,7 @@ public class TestUtils {
 
     public static void isFilteredBySizeInTheCatalogCorrect(String sizeValue, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(driver);
+        int pageQttInCatalog = getCatalogPageQtt(driver);
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
@@ -327,6 +333,28 @@ public class TestUtils {
                         .until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
 
                 Assert.assertTrue(actualSizeList.contains(sizeValue));
+
+                driver.navigate().back();
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+    }
+
+    public static void isFilteredBySeasonInTheCatalogCorrect(String seasonValue, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                driver.findElements(PRODUCTS_LIST).get(j).click();
+
+                String actualSeasonValue = driver.findElement(SEASON_VALUE_IN_PRODUCT_PAGE).getText();
+
+                Assert.assertEquals(actualSeasonValue, seasonValue);
 
                 driver.navigate().back();
             }

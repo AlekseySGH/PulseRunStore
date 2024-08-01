@@ -21,13 +21,7 @@ public class MenCatalogTest extends BaseTest {
     final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
             "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
-
     final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
-
-    private void chooseSeasonInCheckbox(String seasonValue) {
-        getDriver().findElement(By.xpath("//input[@value = '" + seasonValue + "']")).click();
-    }
 
     private List<String> getModelsLisBySeason(String seasonName) {
 
@@ -230,27 +224,9 @@ public class MenCatalogTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        chooseSeasonInCheckbox(seasonValue);
+        TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                getDriver().findElements(TestUtils.PRODUCTS_LIST).get(j).click();
-
-                String actualSeasonValue = getDriver().findElement(SEASON_VALUE_IN_PRODUCT_PAGE).getText();
-
-                Assert.assertEquals(actualSeasonValue, seasonValue);
-
-                getDriver().navigate().back();
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
     }
 
     @Test
