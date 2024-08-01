@@ -34,21 +34,6 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@value = '" + seasonValue + "']")).click();
     }
 
-    private List<String> getSizeLisByModel(String modelName) {
-
-        List<String> getSizeByModelList = switch (modelName) {
-            case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
-                    List.of("37", "38", "40", "42.5", "44");
-            case "Reebok Zig Kinetica 2.5 Edge Grey" -> List.of("42", "43", "44", "45");
-            case "Nike Air Max Plus Blue Gradien" -> List.of("41", "42", "43", "44");
-            case "Salomon ACS+ CSWP Cement" -> List.of("42", "44");
-            case "Nike Air Max 1 PRM Escape Treeline" -> List.of("42", "42.5", "43", "43.5", "44");
-            default -> List.of();
-        };
-
-        return getSizeByModelList;
-    }
-
     private List<String> getModelsLisBySeason(String seasonName) {
 
         List<String> getModelList = switch (seasonName) {
@@ -232,28 +217,7 @@ public class MenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                String currentItemName = getDriver().findElements(TestUtils.PRODUCTS_LIST).get(j).getText();
-                getDriver().findElements(TestUtils.PRODUCTS_LIST).get(j).click();
-
-                List<String> actualSizeList = TestUtils.getTexts(getDriver().findElements(TestUtils.SIZES_LIST_IN_PRODUCT_PAGE));
-
-                List<String> expectedSizeList = getSizeLisByModel(currentItemName);
-
-                getDriver().navigate().back();
-
-                Assert.assertEquals(actualSizeList, expectedSizeList);
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        TestUtils.isTheSizeListOnTheProductPageCorrect("Men", getDriver(), getWait10());
     }
 
     @Test(dataProvider = "availableSizesProvider")

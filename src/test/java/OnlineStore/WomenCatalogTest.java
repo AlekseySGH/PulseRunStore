@@ -149,4 +149,14 @@ public class WomenCatalogTest extends BaseTest {
 
         TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
     }
+
+    @Test(dataProvider = "addedBrandProvider")
+    public void sizeListByBrandsTest(String brandNames) {
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        TestUtils.chooseBandInCheckbox(brandNames, getDriver());
+
+        TestUtils.isTheSizeListOnTheProductPageCorrect("Women", getDriver(), getWait10());
+    }
 }
