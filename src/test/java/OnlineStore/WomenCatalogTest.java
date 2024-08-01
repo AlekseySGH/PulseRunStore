@@ -145,7 +145,7 @@ public class WomenCatalogTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
-        List<String> randomSizesList = TestUtils.chooseRandomSizesInCheckbox(randomBandsList, qttSizesInCheckbox, getDriver());
+        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter("Women", randomBandsList, qttSizesInCheckbox, getDriver());
 
         TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
     }

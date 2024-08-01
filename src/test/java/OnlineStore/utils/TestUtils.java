@@ -124,24 +124,34 @@ public class TestUtils {
         return randomBrandNamesList;
     }
 
-    private static List<String> getSizeLisByBrand(String brandName) {
+    private static List<String> getSizeLisByBrand(String category, String brandName) {
 
-        List<String> getSizeByBrandList = switch (brandName) {
-            case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
-            case "Nike" -> List.of("37", "38", "40", "41", "42", "42.5", "43", "43.5", "44");
-            case "Reebok" -> List.of("42", "43", "44", "45");
-            case "Salomon" -> List.of("42", "44");
+        List<String> getSizeByBrandList = switch (category) {
+            case "Men" -> switch (brandName) {
+                case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
+                case "Nike" -> List.of("37", "38", "40", "41", "42", "42.5", "43", "43.5", "44");
+                case "Reebok" -> List.of("42", "43", "44", "45");
+                case "Salomon" -> List.of("42", "44");
+                default -> List.of();
+            };
+            case "Women" -> switch (brandName) {
+                case "Adidas" -> List.of("36", "37", "37.5", "38", "38.5", "39", "40");
+                case "New Balance" -> List.of("37.5", "38", "39", "40", "42");
+                case "Nike" -> List.of("36", "36.5", "37", "38", "39", "40");
+                case "Salomon" -> List.of("36.5", "37", "38", "39", "40", "42", "43");
+                default -> List.of();
+            };
             default -> List.of();
         };
 
         return getSizeByBrandList;
     }
 
-    public static List<String> chooseRandomSizesInCheckbox(List<String> brandNamesList, int sizeQttInCheckbox, WebDriver driver) {
+    public static List<String> chooseRandomSizesInFilter(String category, List<String> brandNamesList, int sizeQttInCheckbox, WebDriver driver) {
         HashSet<String> sizeSetByBrand = new HashSet<>();
 
-        for (String s : brandNamesList) {
-            sizeSetByBrand.addAll(getSizeLisByBrand(s));
+        for (String brandName : brandNamesList) {
+            sizeSetByBrand.addAll(getSizeLisByBrand(category, brandName));
         }
 
         List<String> randomSizeListByBrand = new ArrayList<>();
