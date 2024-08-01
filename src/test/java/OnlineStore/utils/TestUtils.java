@@ -11,6 +11,7 @@ import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +35,8 @@ public class TestUtils {
 
     public static final By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
             "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
+
+    public static final By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
     private final static By H1_HEADER = By.xpath("//h1");
 
@@ -121,6 +124,52 @@ public class TestUtils {
         return randomBrandNamesList;
     }
 
+    private static List<String> getSizeLisByBrand(String brandName) {
+
+        List<String> getSizeByBrandList = switch (brandName) {
+            case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
+            case "Nike" -> List.of("37", "38", "40", "41", "42", "42.5", "43", "43.5", "44");
+            case "Reebok" -> List.of("42", "43", "44", "45");
+            case "Salomon" -> List.of("42", "44");
+            default -> List.of();
+        };
+
+        return getSizeByBrandList;
+    }
+
+    public static List<String> chooseRandomSizesInCheckbox(List<String> brandNamesList, int sizeQttInCheckbox, WebDriver driver) {
+        HashSet<String> sizeSetByBrand = new HashSet<>();
+
+        for (String s : brandNamesList) {
+            sizeSetByBrand.addAll(getSizeLisByBrand(s));
+        }
+
+        List<String> randomSizeListByBrand = new ArrayList<>();
+
+        List<String> sizeListByBrand = new ArrayList<>(sizeSetByBrand);
+
+        Random r = new Random();
+
+        if (sizeQttInCheckbox <= 0) {
+            sizeQttInCheckbox = 1;
+        } else if (sizeQttInCheckbox >= sizeListByBrand.size()) {
+            sizeQttInCheckbox = sizeListByBrand.size();
+        }
+
+        driver.findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+
+        int i = r.nextInt(sizeListByBrand.size());
+
+        while (randomSizeListByBrand.size() != sizeQttInCheckbox) {
+            if (!randomSizeListByBrand.contains(sizeListByBrand.get(i))) {
+                randomSizeListByBrand.add(sizeListByBrand.get(i));
+                driver.findElement(By.xpath("//input[@value = '" + sizeListByBrand.get(i) + "']")).click();
+            }
+            i = r.nextInt(sizeListByBrand.size());
+        }
+        return randomSizeListByBrand;
+    }
+
     public static void isFilteredByBrandInTheCatalogCorrect(String brandName, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
@@ -158,6 +207,36 @@ public class TestUtils {
                 }
 
                 Assert.assertTrue(containsAnyBrandInList);
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+    }
+
+    public static void isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(List<String> randomSizesList, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = TestUtils.getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                boolean containsAnySizeInList = false;
+                driver.findElements(PRODUCTS_LIST).get(j).click();
+
+                List<String> actualSizeList = TestUtils.getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
+
+                for (String randomSizesValue : randomSizesList) {
+                    if (actualSizeList.contains(randomSizesValue)) {
+                        containsAnySizeInList = true;
+                    } else if (containsAnySizeInList) {
+                        break;
+                    }
+                }
+
+                Assert.assertTrue(containsAnySizeInList);
+
+                driver.navigate().back();
             }
             TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
