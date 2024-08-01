@@ -5,7 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.List;
@@ -66,7 +68,7 @@ public class TestUtils {
         return elementList.stream().map(WebElement::getText).toList();
     }
 
-    public static  List<String> getTexts(By by, WebDriver driver) {
+    public static List<String> getTexts(By by, WebDriver driver) {
         return driver.findElements(by).stream().map(WebElement::getText).toList();
     }
 
@@ -89,6 +91,24 @@ public class TestUtils {
     public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriver driver) {
         if (pageQttInCatalog > currentPage) {
             driver.findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
+        }
+    }
+
+    public static void isFilteredByBrandInTheCatalogCorrect(String brandName, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                String actualResult = TestUtils.getTexts(PRODUCTS_LIST, driver).get(j);
+
+                Assert.assertTrue(actualResult.contains(brandName));
+                Assert.assertTrue(driver.findElement(CANCEL_FILTER_BY_BRANDS).getText().contains(brandName));
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
         }
     }
 }
