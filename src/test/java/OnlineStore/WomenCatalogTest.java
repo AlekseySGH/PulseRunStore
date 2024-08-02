@@ -290,7 +290,7 @@ public class WomenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void onlyMensItemsAreShownTest() {
+    public void onlyWomensItemsAreShownTest() {
 
         String expectedCategoryValue = "Жіноче взуття";
 
