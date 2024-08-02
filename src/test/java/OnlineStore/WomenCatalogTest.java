@@ -170,7 +170,7 @@ public class WomenCatalogTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
-        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter("Women", randomBandsList, qttSizesInCheckbox, getDriver());
+        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(TestUtils.Category.WOMEN, randomBandsList, qttSizesInCheckbox, getDriver());
 
         TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
     }
@@ -182,7 +182,7 @@ public class WomenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        TestUtils.isTheSizeListOnTheProductPageCorrect("Women", getDriver(), getWait10());
+        TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.WOMEN, getDriver(), getWait10());
     }
 
     @Test(dataProvider = "availableSizesProvider")
