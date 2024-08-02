@@ -30,20 +30,20 @@ public class TestUtils {
 
     public static final By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
 
-    public static final By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
+    private final static By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
             "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    public static final By PRICES_LIST = By.xpath("//a[contains(@href, '/online-store-front-pulse') ]" +
+    private final static By PRICES_LIST = By.xpath("//a[contains(@href, '/online-store-front-pulse') ]" +
             "//span[contains (text(), ' грн') and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    public static final By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
+    private final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
             "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    public static final By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
+    private final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
-    public static final By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
+    private final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
 
-    final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
+    private final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
 
     private final static By H1_HEADER = By.xpath("//h1");
 
