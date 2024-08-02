@@ -30,18 +30,20 @@ public class TestUtils {
 
     public static final By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
 
-    public static final By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
+    private final static By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
             "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    public static final By PRICES_LIST = By.xpath("//a[contains(@href, '/online-store-front-pulse') ]" +
+    private final static By PRICES_LIST = By.xpath("//a[contains(@href, '/online-store-front-pulse') ]" +
             "//span[contains (text(), ' грн') and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    public static final By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
+    private final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
             "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    public static final By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
+    private final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
-    public static final By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
+    private final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
+
+    private final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
 
     private final static By H1_HEADER = By.xpath("//h1");
 
@@ -368,6 +370,29 @@ public class TestUtils {
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+    }
+
+    public static void isFilteredByCategoryInTheCatalogCorrect(String expectedCategoryValue, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                driver.findElements(PRODUCTS_LIST).get(j).click();
+
+                String actualCategoryValue = driver.findElement(CATEGORY_VALUE_IN_PRODUCT_PAGE).getText();
+
+                Assert.assertEquals(actualCategoryValue, expectedCategoryValue);
+
+                driver.navigate().back();
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+
     }
 
     public static List<Integer> getAllPricesInTheCatalogList(WebDriver driver, WebDriverWait wait) {
