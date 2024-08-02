@@ -10,10 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TestUtils {
 
@@ -386,5 +383,19 @@ public class TestUtils {
             currentPage += currentPage;
         }
         return actualPricesList;
+    }
+
+    public static List<Integer> sortInAscendingOder(List<Integer> randomSortedList) {
+        List<Integer> sortedInAscendingOderList = new ArrayList<>(randomSortedList);
+        Collections.sort(sortedInAscendingOderList);
+
+        return sortedInAscendingOderList;
+    }
+
+    public static List<Integer> sortInDescendingOder(List<Integer> randomSortedList) {
+        List<Integer> sortedInDescOderList = new ArrayList<>(randomSortedList);
+        sortedInDescOderList.sort(Collections.reverseOrder());
+
+        return sortedInDescOderList;
     }
 }

@@ -233,27 +233,9 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
 
-        List<Integer> actualPricesList = new ArrayList<>();
+        List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRICES_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                int currentItemPrice = Integer.parseInt(getDriver().findElements(TestUtils.PRICES_LIST).get(j).getText().
-                        replaceAll(" грн", ""));
-                actualPricesList.add(currentItemPrice);
-
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
-
-        List<Integer> expectedPricesList = new ArrayList<>(actualPricesList);
-        Collections.sort(expectedPricesList);
+        List<Integer> expectedPricesList = TestUtils.sortInAscendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
     }
@@ -267,8 +249,7 @@ public class MenCatalogTest extends BaseTest {
 
         List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
 
-        List<Integer> expectedPricesList = new ArrayList<>(actualPricesList);
-        expectedPricesList.sort(Collections.reverseOrder());
+        List<Integer> expectedPricesList = TestUtils.sortInDescendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
     }

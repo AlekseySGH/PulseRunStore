@@ -8,8 +8,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class WomenCatalogTest extends BaseTest {
@@ -207,6 +205,20 @@ public class WomenCatalogTest extends BaseTest {
     }
 
     @Test
+    public void productsListInAscendingOderTest() {
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
+        getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
+
+        List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
+
+        List<Integer> expectedPricesList = TestUtils.sortInAscendingOder(actualPricesList);
+
+        Assert.assertEquals(actualPricesList, expectedPricesList);
+    }
+
+    @Test
     public void productsListInDescOderTest() {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
@@ -215,8 +227,7 @@ public class WomenCatalogTest extends BaseTest {
 
         List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
 
-        List<Integer> expectedPricesList = new ArrayList<>(actualPricesList);
-        expectedPricesList.sort(Collections.reverseOrder());
+        List<Integer> expectedPricesList = TestUtils.sortInDescendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
     }
