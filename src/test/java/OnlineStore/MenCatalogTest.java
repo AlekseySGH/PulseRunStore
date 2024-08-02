@@ -15,26 +15,7 @@ public class MenCatalogTest extends BaseTest {
 
     final static By MEN_CATALOG_BUTTON = By.xpath("//li/a[text()='Чоловікам']");
 
-    final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
-            "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
-
     final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
-
-    private List<String> getModelsLisBySeason(String seasonName) {
-
-        List<String> getModelList = switch (seasonName) {
-            case "Весна/Осінь" -> List.of("Adidas ADI2000 X Blue Dawn", "Adidas Campus 00s Scarlet Gum",
-                    "New Balance 610 Angora", "Nike Air Max 1 PRM Escape Treeline", "Nike Blazer Low Platform pink",
-                    "Nike Dunk Low Championship Purple", "Nike Gamma Force Rise", "Salomon XT-6 Ghost Grey",
-                    "Salomon XT-6 Gore-Tex Desert Sage");
-            case "Зима" -> List.of("Reebok Zig Kinetica 2.5 Edge Grey", "Salomon ACS+ CSWP Cement");
-            case "Літо" -> List.of("New Balance 530 White Silver Navy", "Adidas Response W Cloud White Grey Five",
-                    "Nike Air Max Plus Blue Gradien");
-            default -> List.of();
-        };
-
-        return getModelList;
-    }
 
     @DataProvider(name = "notAddedBrandProvider")
     public Object[][] notAddedBrandProvider() {
@@ -233,7 +214,7 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
 
-        List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
+        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
 
         List<Integer> expectedPricesList = TestUtils.sortInAscendingOder(actualPricesList);
 
@@ -247,7 +228,7 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
 
-        List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
+        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
 
         List<Integer> expectedPricesList = TestUtils.sortInDescendingOder(actualPricesList);
 
@@ -255,7 +236,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void productListByNewSortListTest() {
+    public void productListSortedByNewestTest() {
 
         List<String> expectedProductList = List.of(
                 "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
@@ -276,21 +257,8 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Новинки']")).click();
 
-        List<String> actualProductIdList = new ArrayList<>();
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
+        List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalogList(getDriver(), getWait10());
 
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_ID_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                String hrefValue = getDriver().findElements(PRODUCTS_ID_LIST).get(j).getAttribute("href");
-                actualProductIdList.add(hrefValue.substring(hrefValue.lastIndexOf("/") + 1));
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
         Assert.assertEquals(actualProductIdList, expectedProductList);
     }
 
@@ -321,10 +289,10 @@ public class MenCatalogTest extends BaseTest {
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_ID_LIST)).size();
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_ID_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
 
-                String hrefValue = getDriver().findElements(PRODUCTS_ID_LIST).get(j).getAttribute("href");
+                String hrefValue = getDriver().findElements(TestUtils.PRODUCTS_ID_LIST).get(j).getAttribute("href");
                 actualProductIdList.add(hrefValue.substring(hrefValue.lastIndexOf("/") + 1));
             }
             TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
