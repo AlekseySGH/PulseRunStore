@@ -257,7 +257,7 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Новинки']")).click();
 
-        List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalogList(getDriver(), getWait10());
+        List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalog(getDriver(), getWait10());
 
         Assert.assertEquals(actualProductIdList, expectedProductList);
     }
@@ -282,22 +282,7 @@ public class MenCatalogTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-
-        List<String> actualProductIdList = new ArrayList<>();
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_ID_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                String hrefValue = getDriver().findElements(TestUtils.PRODUCTS_ID_LIST).get(j).getAttribute("href");
-                actualProductIdList.add(hrefValue.substring(hrefValue.lastIndexOf("/") + 1));
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalog(getDriver(), getWait10());
 
         for (int i = 0; i < expectedProductIdList.size(); i++) {
             Assert.assertTrue(actualProductIdList.contains(expectedProductIdList.get(i)));
