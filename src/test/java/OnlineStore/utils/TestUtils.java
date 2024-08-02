@@ -36,6 +36,9 @@ public class TestUtils {
     public static final By PRICES_LIST = By.xpath("//a[contains(@href, '/online-store-front-pulse') ]" +
             "//span[contains (text(), ' грн') and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
+    public static final By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
+            "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
+
     public static final By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
     public static final By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
@@ -94,18 +97,22 @@ public class TestUtils {
     }
 
     public static int getCatalogPageQtt(WebDriver driver) {
-        int pageCounter;
+//        int pageCounter;
 
-        if ((driver.findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
-            pageCounter = driver.findElements(PAGE_BUTTON_LIST).size() - 2;
-        } else {
-            pageCounter = 1;
-        }
+//        if ((driver.findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
+//            pageCounter = driver.findElements(PAGE_BUTTON_LIST).size() - 2;
+//        } else {
+//            pageCounter = 1;
+//        }
+
+        List<String> pageList = getTexts(PAGE_BUTTON_LIST, driver);
+        int pageCounter = Integer.parseInt(pageList.get(pageList.size() - 2));
+
         return pageCounter;
     }
 
     public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriver driver) {
-        if (pageQttInCatalog > currentPage) {
+        if (pageQttInCatalog >= currentPage) {
             driver.findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
         }
     }
@@ -121,7 +128,7 @@ public class TestUtils {
             brandQttInCheckbox = brandNamesList.size();
         }
 
-        driver.findElement(TestUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
+        driver.findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
 
         int i = r.nextInt(brandNamesList.size());
 
@@ -226,12 +233,12 @@ public class TestUtils {
 
             int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
-                String actualResult = TestUtils.getTexts(PRODUCTS_LIST, driver).get(j);
+                String actualResult = getTexts(PRODUCTS_LIST, driver).get(j);
 
                 Assert.assertTrue(actualResult.contains(brandName));
                 Assert.assertTrue(driver.findElement(CANCEL_FILTER_BY_BRANDS).getText().contains(brandName));
             }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
     }
@@ -246,7 +253,7 @@ public class TestUtils {
             int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
                 boolean containsAnyBrandInList = false;
-                String actualResult = TestUtils.getTexts(PRODUCTS_LIST, driver).get(j);
+                String actualResult = getTexts(PRODUCTS_LIST, driver).get(j);
 
                 for (String randomBandName : randomBrandsList) {
                     if (actualResult.contains(randomBandName)) {
@@ -257,7 +264,7 @@ public class TestUtils {
 
                 Assert.assertTrue(containsAnyBrandInList);
             }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
     }
@@ -288,14 +295,14 @@ public class TestUtils {
 
                 driver.navigate().back();
             }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
     }
 
     public static void isTheSizeListOnTheProductPageCorrect(String category, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(driver);
+        int pageQttInCatalog = getCatalogPageQtt(driver);
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
@@ -305,7 +312,7 @@ public class TestUtils {
                 String currentItemName = driver.findElements(PRODUCTS_LIST).get(j).getText();
                 driver.findElements(PRODUCTS_LIST).get(j).click();
 
-                List<String> actualSizeList = TestUtils.getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
+                List<String> actualSizeList = getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
 
                 List<String> expectedSizeList = getSizeLisByModel(category, currentItemName);
 
@@ -313,7 +320,7 @@ public class TestUtils {
 
                 Assert.assertEquals(actualSizeList, expectedSizeList);
             }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
     }
@@ -329,14 +336,14 @@ public class TestUtils {
 
                 driver.findElements(PRODUCTS_LIST).get(j).click();
 
-                List<String> actualSizeList = TestUtils.getTexts(wait
+                List<String> actualSizeList = getTexts(wait
                         .until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
 
                 Assert.assertTrue(actualSizeList.contains(sizeValue));
 
                 driver.navigate().back();
             }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
     }
@@ -358,12 +365,12 @@ public class TestUtils {
 
                 driver.navigate().back();
             }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
     }
 
-    public static List<Integer> getAllPricesInCatalogList(WebDriver driver, WebDriverWait wait) {
+    public static List<Integer> getAllPricesInTheCatalogList(WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 
@@ -379,10 +386,30 @@ public class TestUtils {
                 actualPricesList.add(currentItemPrice);
 
             }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
         return actualPricesList;
+    }
+
+    public static List<String> getAllProductsIdInTheCatalogList(WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        List<String> productIdList = new ArrayList<>();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_ID_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                String hrefValue = driver.findElements(PRODUCTS_ID_LIST).get(j).getAttribute("href");
+                productIdList.add(hrefValue.substring(hrefValue.lastIndexOf("/") + 1));
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+        return productIdList;
     }
 
     public static List<Integer> sortInAscendingOder(List<Integer> randomSortedList) {

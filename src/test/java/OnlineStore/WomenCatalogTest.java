@@ -211,7 +211,7 @@ public class WomenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
 
-        List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
+        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
 
         List<Integer> expectedPricesList = TestUtils.sortInAscendingOder(actualPricesList);
 
@@ -225,10 +225,38 @@ public class WomenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
 
-        List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
+        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
 
         List<Integer> expectedPricesList = TestUtils.sortInDescendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
+    }
+
+    @Test
+    public void productListSortedByNewestTest() {
+
+        List<String> expectedProductList = List.of(
+                "65f8a6aec11d83d79ea7e89e", "66152d0f2295ced5df7b611e", "66152cd72295ced5df7b60f3",
+                "66152cd72295ced5df7b60f1", "66152d0f2295ced5df7b610d", "66152d0f2295ced5df7b610f",
+                "66152cd72295ced5df7b6104", "66152cd72295ced5df7b6100", "65df7f7607e96ef8fa1719b4",
+                "66152cd72295ced5df7b6105", "66152d0f2295ced5df7b6111", "65df894fa018734b655645cc",
+                "66152d0f2295ced5df7b610a", "66152cd72295ced5df7b60f5", "66152d0f2295ced5df7b6112",
+                "66152cd72295ced5df7b60f2", "65e5ff1bdaa755d5047b8610", "66152cd72295ced5df7b60f9",
+                "65f8a6c9c11d83d79ea7e89f", "65e5bb20cc4afedcaaa6fab1", "66152cd72295ced5df7b60fe",
+                "65e9fe8b3113032e940ae844", "66152d0f2295ced5df7b610e", "66152d0f2295ced5df7b611d",
+                "66152d0f2295ced5df7b6118", "65e5bf9561d46ef73bab33e6", "65f8a718c11d83d79ea7e8a3",
+                "65ef1bf10e19461a6e285cef", "66152cd72295ced5df7b60f6", "66152cd72295ced5df7b60f4",
+                "66152cd72295ced5df7b60ff", "66152d0f2295ced5df7b6117", "65f8a724c11d83d79ea7e8a4",
+                "66152d0f2295ced5df7b610c", "66152d0f2295ced5df7b6119", "65df816b07e96ef8fa1719c1",
+                "66152cd72295ced5df7b60f8", "66152d0f2295ced5df7b610b", "65f8a68bc11d83d79ea7e89d");
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
+        getDriver().findElement(By.xpath("//li[text()='Новинки']")).click();
+
+        List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalogList(getDriver(), getWait10());
+
+        Assert.assertEquals(actualProductIdList, expectedProductList);
     }
 }
