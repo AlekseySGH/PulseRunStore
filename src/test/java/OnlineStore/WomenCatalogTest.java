@@ -288,4 +288,15 @@ public class WomenCatalogTest extends BaseTest {
             Assert.assertTrue(actualProductIdList.contains(expectedProductIdList.get(i)));
         }
     }
+
+    @Test
+    public void onlyMensItemsAreShownTest() {
+
+        String expectedCategoryValue = "Жіноче взуття";
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+
+        TestUtils.isFilteredByCategoryInTheCatalogCorrect(expectedCategoryValue, getDriver(), getWait10());
+    }
 }

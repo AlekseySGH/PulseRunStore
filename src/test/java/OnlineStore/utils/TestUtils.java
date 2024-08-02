@@ -43,6 +43,8 @@ public class TestUtils {
 
     public static final By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
 
+    final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
+
     private final static By H1_HEADER = By.xpath("//h1");
 
     private final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
@@ -368,6 +370,29 @@ public class TestUtils {
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+    }
+
+    public static void isFilteredByCategoryInTheCatalogCorrect(String expectedCategoryValue, WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                driver.findElements(PRODUCTS_LIST).get(j).click();
+
+                String actualCategoryValue = driver.findElement(CATEGORY_VALUE_IN_PRODUCT_PAGE).getText();
+
+                Assert.assertEquals(actualCategoryValue, expectedCategoryValue);
+
+                driver.navigate().back();
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+
     }
 
     public static List<Integer> getAllPricesInTheCatalogList(WebDriver driver, WebDriverWait wait) {

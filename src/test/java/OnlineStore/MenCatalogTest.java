@@ -15,8 +15,6 @@ public class MenCatalogTest extends BaseTest {
 
     final static By MEN_CATALOG_BUTTON = By.xpath("//li/a[text()='Чоловікам']");
 
-    final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
-
     @DataProvider(name = "notAddedBrandProvider")
     public Object[][] notAddedBrandProvider() {
         return new Object[][]{
@@ -292,29 +290,12 @@ public class MenCatalogTest extends BaseTest {
     @Test
     public void onlyMensItemsAreShownTest() {
 
+        String expectedCategoryValue = "Чоловіче взуття";
+
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
-        String expectedCategoryValue = "Чоловіче взуття";
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(TestUtils.PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                getDriver().findElements(TestUtils.PRODUCTS_LIST).get(j).click();
-
-                String actualCategoryValue = getDriver().findElement(CATEGORY_VALUE_IN_PRODUCT_PAGE).getText();
-
-                Assert.assertEquals(actualCategoryValue, expectedCategoryValue);
-
-                getDriver().navigate().back();
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        TestUtils.isFilteredByCategoryInTheCatalogCorrect(expectedCategoryValue, getDriver(), getWait10());
     }
 }
 
