@@ -36,6 +36,9 @@ public class TestUtils {
     public static final By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
             "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
+    public static final By PRICES_LIST = By.xpath("//a[contains(@href, '/online-store-front-pulse') ]" +
+            "//span[contains (text(), ' грн') and not(ancestor::div[contains(@class, 'swiper-slide')])]");
+
     public static final By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
 
     public static final By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
@@ -361,5 +364,27 @@ public class TestUtils {
             TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+    }
+
+    public static List<Integer> getAllPricesInCatalogList(WebDriver driver, WebDriverWait wait) {
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        List<Integer> actualPricesList = new ArrayList<>();
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRICES_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                int currentItemPrice = Integer.parseInt(driver.findElements(PRICES_LIST).get(j).getText().
+                        replaceAll(" грн", ""));
+                actualPricesList.add(currentItemPrice);
+
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+        return actualPricesList;
     }
 }
