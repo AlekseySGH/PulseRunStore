@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WomenCatalogTest extends BaseTest {
@@ -202,5 +204,20 @@ public class WomenCatalogTest extends BaseTest {
         TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
 
         TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
+    }
+
+    @Test
+    public void productsListInDescOderTest() {
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
+        getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
+        getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
+
+        List<Integer> actualPricesList = TestUtils.getAllPricesInCatalogList(getDriver(), getWait10());
+
+        List<Integer> expectedPricesList = new ArrayList<>(actualPricesList);
+        expectedPricesList.sort(Collections.reverseOrder());
+
+        Assert.assertEquals(actualPricesList, expectedPricesList);
     }
 }
