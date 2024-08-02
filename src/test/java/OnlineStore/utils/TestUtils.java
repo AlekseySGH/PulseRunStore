@@ -167,11 +167,11 @@ public class TestUtils {
                 default -> List.of();
             };
             case NEW_PRODUCTS -> switch (brandName) {
-                case "Adidas" -> List.of("37", "37,5", "38", "38,5", "39", "40");
-                case "New Balance" -> List.of("37", "38", "40", "42,5", "44");
-                case "Nike" -> List.of("36", "37", "38", "39", "40", "41", "42", "42,5", "43", "43,5", "44");
+                case "Adidas" -> List.of("37", "37.5", "38", "38.5", "39", "40");
+                case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
+                case "Nike" -> List.of("36", "37", "38", "39", "40", "41", "42", "42.5", "43", "43.5", "44");
                 case "Reebok" -> List.of("42", "43", "44", "45");
-                case "Salomon" -> List.of("36,5", "37", "38", "39", "40", "42", "44");
+                case "Salomon" -> List.of("36.5", "37", "38", "39", "40", "42", "44");
 
                 default -> List.of();
             };
