@@ -49,6 +49,11 @@ public class TestUtils {
 
     private final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
 
+    public enum Category {
+        MEN,
+        WOMEN
+    }
+
     public static void loadBaseUrlPage(WebDriver driver, WebDriverWait wait) {
         driver.get(BaseTest.getBaseUrl());
         waitForPageLoaded(driver);
@@ -144,17 +149,17 @@ public class TestUtils {
         return randomBrandNamesList;
     }
 
-    private static List<String> getSizeLisByBrand(String category, String brandName) {
+    private static List<String> getSizeLisByBrand(Category category, String brandName) {
 
         List<String> getSizeByBrandList = switch (category) {
-            case "Men" -> switch (brandName) {
+            case MEN -> switch (brandName) {
                 case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
                 case "Nike" -> List.of("37", "38", "40", "41", "42", "42.5", "43", "43.5", "44");
                 case "Reebok" -> List.of("42", "43", "44", "45");
                 case "Salomon" -> List.of("42", "44");
                 default -> List.of();
             };
-            case "Women" -> switch (brandName) {
+            case WOMEN -> switch (brandName) {
                 case "Adidas" -> List.of("36", "37", "37.5", "38", "38.5", "39", "40");
                 case "New Balance" -> List.of("37.5", "38", "39", "40", "42");
                 case "Nike" -> List.of("36", "36.5", "37", "38", "39", "40");
@@ -167,10 +172,10 @@ public class TestUtils {
         return getSizeByBrandList;
     }
 
-    private static List<String> getSizeLisByModel(String category, String modelName) {
+    private static List<String> getSizeLisByModel(Category category, String modelName) {
 
         List<String> getSizeByModelList = switch (category) {
-            case "Men" -> switch (modelName) {
+            case MEN -> switch (modelName) {
                 case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
                         List.of("37", "38", "40", "42.5", "44");
                 case "Reebok Zig Kinetica 2.5 Edge Grey" -> List.of("42", "43", "44", "45");
@@ -179,7 +184,7 @@ public class TestUtils {
                 case "Nike Air Max 1 PRM Escape Treeline" -> List.of("42", "42.5", "43", "43.5", "44");
                 default -> List.of();
             };
-            case "Women" -> switch (modelName) {
+            case WOMEN -> switch (modelName) {
                 case "Adidas ADI2000 X Blue Dawn", "Nike Blazer Low Platform pink" -> List.of("36", "37", "38", "39");
                 case "Adidas Campus 00s Scarlet Gum" -> List.of("37", "37.5", "38", "38.5");
                 case "Adidas Response W Cloud White Grey Five" -> List.of("37", "38", "39", "40");
@@ -193,7 +198,7 @@ public class TestUtils {
         return getSizeByModelList;
     }
 
-    public static List<String> chooseRandomSizesInFilter(String category, List<String> brandNamesList,
+    public static List<String> chooseRandomSizesInFilter(Category category, List<String> brandNamesList,
                                                          int sizeQttInCheckbox, WebDriver driver) {
         HashSet<String> sizeSetByBrand = new HashSet<>();
 
@@ -302,7 +307,7 @@ public class TestUtils {
         }
     }
 
-    public static void isTheSizeListOnTheProductPageCorrect(String category, WebDriver driver, WebDriverWait wait) {
+    public static void isTheSizeListOnTheProductPageCorrect(Category category, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 

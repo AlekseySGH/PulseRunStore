@@ -170,7 +170,7 @@ public class MenCatalogTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
-        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter("Men", randomBandsList, qttSizesInCheckbox, getDriver());
+        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(TestUtils.Category.MEN, randomBandsList, qttSizesInCheckbox, getDriver());
 
         TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
     }
@@ -182,7 +182,7 @@ public class MenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        TestUtils.isTheSizeListOnTheProductPageCorrect("Men", getDriver(), getWait10());
+        TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.MEN, getDriver(), getWait10());
     }
 
     @Test(dataProvider = "availableSizesProvider")
