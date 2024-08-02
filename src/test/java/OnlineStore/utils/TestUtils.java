@@ -392,7 +392,7 @@ public class TestUtils {
         return actualPricesList;
     }
 
-    public static List<String> getAllProductsIdInTheCatalogList(WebDriver driver, WebDriverWait wait) {
+    public static List<String> getAllProductsIdInTheCatalog(WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 
