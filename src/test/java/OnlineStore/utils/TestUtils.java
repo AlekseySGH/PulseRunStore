@@ -20,11 +20,11 @@ public class TestUtils {
 
     public static final By SHOW_ALL_COLOR_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[3]");
 
-    public static final By FILTER_BY_BRANDS_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[1]//label");
+    public static final By FILTER_BY_BRANDS_ITEMS = By.xpath("//h3[text() = 'Брeнд']/following-sibling::div[1]/div/label");
 
-    public static final By FILTER_BY_SIZE_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[3]//label");
+    public static final By FILTER_BY_SIZE_ITEMS = By.xpath("//h3[text() = 'Розмір']/following-sibling::div[1]/div/label");
 
-    public static final By FILTER_BY_COLOR_ITEMS = By.xpath("(//div[@class='sc-fzuLxF iSOZAC'])[4]//label");
+    public static final By FILTER_BY_COLOR_ITEMS = By.xpath("//h3[text() = 'Колір']/following-sibling::div[1]/div/label");
 
     public static final By NOTHING_FOUND_MESSAGE = By.xpath("//div[@class='sc-juusvx jmhMGH']");
 
@@ -51,7 +51,8 @@ public class TestUtils {
 
     public enum Category {
         MEN,
-        WOMEN
+        WOMEN,
+        NEW_PRODUCTS
     }
 
     public static void loadBaseUrlPage(WebDriver driver, WebDriverWait wait) {
@@ -105,7 +106,7 @@ public class TestUtils {
 
     public static int getCatalogPageQtt(WebDriver driver) {
 //        int pageCounter;
-
+//
 //        if ((driver.findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
 //            pageCounter = driver.findElements(PAGE_BUTTON_LIST).size() - 2;
 //        } else {
@@ -113,9 +114,8 @@ public class TestUtils {
 //        }
 
         List<String> pageList = getTexts(PAGE_BUTTON_LIST, driver);
-        int pageCounter = Integer.parseInt(pageList.get(pageList.size() - 2));
 
-        return pageCounter;
+        return Integer.parseInt(pageList.get(pageList.size() - 2));
     }
 
     public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriver driver) {
@@ -151,7 +151,7 @@ public class TestUtils {
 
     private static List<String> getSizeLisByBrand(Category category, String brandName) {
 
-        List<String> getSizeByBrandList = switch (category) {
+        return switch (category) {
             case MEN -> switch (brandName) {
                 case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
                 case "Nike" -> List.of("37", "38", "40", "41", "42", "42.5", "43", "43.5", "44");
@@ -166,15 +166,21 @@ public class TestUtils {
                 case "Salomon" -> List.of("36.5", "37", "38", "39", "40", "42", "43");
                 default -> List.of();
             };
-            default -> List.of();
-        };
+            case NEW_PRODUCTS -> switch (brandName) {
+                case "Adidas" -> List.of("37", "37.5", "38", "38.5", "39", "40");
+                case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
+                case "Nike" -> List.of("36", "37", "38", "39", "40", "41", "42", "42.5", "43", "43.5", "44");
+                case "Reebok" -> List.of("42", "43", "44", "45");
+                case "Salomon" -> List.of("36.5", "37", "38", "39", "40", "42", "44");
 
-        return getSizeByBrandList;
+                default -> List.of();
+            };
+        };
     }
 
     private static List<String> getSizeLisByModel(Category category, String modelName) {
 
-        List<String> getSizeByModelList = switch (category) {
+        return switch (category) {
             case MEN -> switch (modelName) {
                 case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
                         List.of("37", "38", "40", "42.5", "44");
@@ -193,13 +199,23 @@ public class TestUtils {
                 case "Salomon XT-6 Gore-Tex Desert Sage" -> List.of("42", "43");
                 default -> List.of();
             };
-            default -> List.of();
+            case NEW_PRODUCTS -> switch (modelName) {
+                case "Adidas Campus 00s Scarlet Gum" -> List.of("37", "37.5", "38", "38.5");
+                case "Adidas Response W Cloud White Grey Five" -> List.of("37", "38", "39", "40");
+                case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" -> List.of("37", "38", "40", "42.5", "44");
+                case "Nike Air Max 1 PRM Escape Treeline" -> List.of("42", "42.5", "43", "43.5", "44");
+                case "Nike Air Max Plus Blue Gradien" -> List.of("41", "42", "43", "44");
+                case "Nike Blazer Low Platform pink" -> List.of("36", "37", "38", "39");
+                case "Reebok Zig Kinetica 2.5 Edge Grey" -> List.of("42", "43", "44", "45");
+                case "Salomon ACS+ CSWP Cement" -> List.of("42", "44");
+                case "Salomon XT-6 Ghost Grey" -> List.of("36.5", "37", "38", "39", "40");
+                default -> List.of();
+            };
         };
-        return getSizeByModelList;
     }
 
-    public static List<String> chooseRandomSizesInFilter(Category category, List<String> brandNamesList,
-                                                         int sizeQttInCheckbox, WebDriver driver) {
+    public static List<String> chooseRandomSizesInFilter(
+            Category category, List<String> brandNamesList, int sizeQttInCheckbox, WebDriver driver) {
         HashSet<String> sizeSetByBrand = new HashSet<>();
 
         for (String brandName : brandNamesList) {
