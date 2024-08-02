@@ -154,7 +154,7 @@ public class NewItemsCatalogTest extends BaseTest {
     public void itemListBySeveralBrandsInFilterTest() {
 
         int qttBandsInCheckbox = 2;
-        List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Salomon");
+        List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Reebok", "Salomon");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -168,7 +168,7 @@ public class NewItemsCatalogTest extends BaseTest {
 
         int qttBandsInCheckbox = 2;
         int qttSizesInCheckbox = 4;
-        List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Salomon");
+        List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Reebok", "Salomon");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();

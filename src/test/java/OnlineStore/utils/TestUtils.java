@@ -106,7 +106,7 @@ public class TestUtils {
 
     public static int getCatalogPageQtt(WebDriver driver) {
 //        int pageCounter;
-
+//
 //        if ((driver.findElements(PAGE_BUTTON_LIST).size() - 2) > 0) {
 //            pageCounter = driver.findElements(PAGE_BUTTON_LIST).size() - 2;
 //        } else {
@@ -114,9 +114,8 @@ public class TestUtils {
 //        }
 
         List<String> pageList = getTexts(PAGE_BUTTON_LIST, driver);
-        int pageCounter = Integer.parseInt(pageList.get(pageList.size() - 2));
 
-        return pageCounter;
+        return Integer.parseInt(pageList.get(pageList.size() - 2));
     }
 
     public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriver driver) {
@@ -152,7 +151,7 @@ public class TestUtils {
 
     private static List<String> getSizeLisByBrand(Category category, String brandName) {
 
-        List<String> getSizeByBrandList = switch (category) {
+        return switch (category) {
             case MEN -> switch (brandName) {
                 case "New Balance" -> List.of("37", "38", "40", "42.5", "44");
                 case "Nike" -> List.of("37", "38", "40", "41", "42", "42.5", "43", "43.5", "44");
@@ -177,13 +176,11 @@ public class TestUtils {
                 default -> List.of();
             };
         };
-
-        return getSizeByBrandList;
     }
 
     private static List<String> getSizeLisByModel(Category category, String modelName) {
 
-        List<String> getSizeByModelList = switch (category) {
+        return switch (category) {
             case MEN -> switch (modelName) {
                 case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
                         List.of("37", "38", "40", "42.5", "44");
@@ -215,7 +212,6 @@ public class TestUtils {
                 default -> List.of();
             };
         };
-        return getSizeByModelList;
     }
 
     public static List<String> chooseRandomSizesInFilter(
