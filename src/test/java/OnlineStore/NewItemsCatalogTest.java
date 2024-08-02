@@ -8,50 +8,54 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.List;
 
+public class NewItemsCatalogTest extends BaseTest {
 
-public class MenCatalogTest extends BaseTest {
+    final static By NEW_ITEMS_CATALOG_BUTTON = By.xpath("//li/a[text()='Новинки']");
 
-    final static By MEN_CATALOG_BUTTON = By.xpath("//li/a[text()='Чоловікам']");
+    final static By NEW_ITEM_BADGE = By.xpath(
+            "//li[contains(@style, 'list-style')]/a//span[@color][not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
     @DataProvider(name = "notAddedBrandProvider")
     public Object[][] notAddedBrandProvider() {
         return new Object[][]{
-                {"Adidas"},
                 {"Asics"},
+                {"Converse"},
+                {"Dr.Martens"},
                 {"Hoka"},
                 {"Jordan"},
                 {"Native"},
-                {"Vans"},
-                {"Dr.Martens"},
-                {"Converse"},
                 {"Puma"},
+                {"Vans"},
         };
     }
 
     @DataProvider(name = "addedBrandProvider")
     public Object[][] addedBrandProvider() {
         return new Object[][]{
+                {"Adidas"},
                 {"New Balance"},
                 {"Nike"},
                 {"Reebok"},
                 {"Salomon"},
+
         };
     }
 
     @DataProvider(name = "availableSizesProvider")
     public Object[][] availableSizesProvider() {
         return new Object[][]{
+                {"36"},
+                {"36.5"},
                 {"37"},
+                {"37.5"},
                 {"38"},
+                {"38.5"},
+                {"39"},
                 {"40"},
-                {"41"},
                 {"42"},
                 {"43"},
-                {"44"},
-                {"42.5"},
-                {"43.5"},
         };
     }
 
@@ -59,7 +63,6 @@ public class MenCatalogTest extends BaseTest {
     public Object[][] availableSeasonValuesProvider() {
         return new Object[][]{
                 {"Весна/Осінь"},
-                {"Зима"},
                 {"Літо"},
         };
     }
@@ -70,7 +73,7 @@ public class MenCatalogTest extends BaseTest {
                 "Jordan", "Native", "New Balance", "Nike", "Puma", "Reebok", "Salomon", "Vans");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(TestUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
 
         List<String> filterByBrandItemList = TestUtils.getTexts(TestUtils.FILTER_BY_BRANDS_ITEMS, getDriver());
@@ -90,7 +93,7 @@ public class MenCatalogTest extends BaseTest {
                 "45", "36.5", "37.5", "38.5", "39.5", "40.5", "41.5", "42.5", "43.5", "44.5", "45.5", "46.5", "47.5");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(TestUtils.SHOW_ALL_SIZES_IN_FILTER).click();
 
         List<String> filterBySizeItemList = TestUtils.getTexts(TestUtils.FILTER_BY_SIZE_ITEMS, getDriver());
@@ -110,7 +113,7 @@ public class MenCatalogTest extends BaseTest {
                 "Сірий", "Срібний", "Фіолетовий", "Червоний", "Чорний");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(TestUtils.SHOW_ALL_COLOR_IN_FILTER).click();
 
         List<String> filterByColorItemList = TestUtils.getTexts(TestUtils.FILTER_BY_COLOR_ITEMS, getDriver());
@@ -128,7 +131,7 @@ public class MenCatalogTest extends BaseTest {
     public void filterByNotAddedBrandsTest(String brandNames) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
         String actualResult = getDriver().findElement(TestUtils.NOTHING_FOUND_MESSAGE).getText();
@@ -141,7 +144,7 @@ public class MenCatalogTest extends BaseTest {
     public void filterByBrandTest(String brandNames) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
         TestUtils.isFilteredByBrandInTheCatalogCorrect(brandNames, getDriver(), getWait10());
@@ -151,10 +154,10 @@ public class MenCatalogTest extends BaseTest {
     public void itemListBySeveralBrandsInFilterTest() {
 
         int qttBandsInCheckbox = 2;
-        List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
+        List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Salomon");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         List<String> randomBrandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
 
         TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
@@ -165,12 +168,12 @@ public class MenCatalogTest extends BaseTest {
 
         int qttBandsInCheckbox = 2;
         int qttSizesInCheckbox = 4;
-        List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
+        List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Salomon");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
-        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(TestUtils.Category.MEN, randomBandsList, qttSizesInCheckbox, getDriver());
+        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(TestUtils.Category.NEW_PRODUCTS, randomBandsList, qttSizesInCheckbox, getDriver());
 
         TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
     }
@@ -179,17 +182,17 @@ public class MenCatalogTest extends BaseTest {
     public void sizeListByBrandsTest(String brandNames) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.NEW_PRODUCTS, getDriver(), getWait10());
     }
 
     @Test(dataProvider = "availableSizesProvider")
     public void filterBySizeTest(String sizeValue) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
 
         TestUtils.isFilteredBySizeInTheCatalogCorrect(sizeValue, getDriver(), getWait10());
@@ -199,7 +202,7 @@ public class MenCatalogTest extends BaseTest {
     public void filterBySeasonTest(String seasonValue) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
 
         TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
@@ -208,7 +211,7 @@ public class MenCatalogTest extends BaseTest {
     @Test
     public void productsListInAscendingOderTest() {
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
 
@@ -222,7 +225,7 @@ public class MenCatalogTest extends BaseTest {
     @Test
     public void productsListInDescOderTest() {
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
 
@@ -234,51 +237,18 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void productListSortedByNewestTest() {
-
-        List<String> expectedProductList = List.of(
-                "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
-                "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b60fd", "65e9fc153113032e940ae831",
-                "66152d0f2295ced5df7b611a", "66152d0f2295ced5df7b6109", "66152cd72295ced5df7b60fa",
-                "66152d0f2295ced5df7b6114", "65f8a706c11d83d79ea7e8a2", "66152cd72295ced5df7b60ed",
-                "66152cd72295ced5df7b60ef", "65de2a7dae9bb15396c0fb86", "66152d0f2295ced5df7b611b",
-                "66152d0f2295ced5df7b6108", "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b6101",
-                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b6102", "66152d0f2295ced5df7b6110",
-                "65de32105e90b6233fe92633", "65ef2292e9f197360880b0f6", "66152cd72295ced5df7b60fc",
-                "66152cd72295ced5df7b60f0", "65f8a6e7c11d83d79ea7e8a1", "66152cd72295ced5df7b6103",
-                "66152d0f2295ced5df7b6107", "66152cd72295ced5df7b60f7", "65f8a66ac11d83d79ea7e89c",
-                "66152d0f2295ced5df7b611c", "66152d0f2295ced5df7b6113", "65f8a6d0c11d83d79ea7e8a0",
-                "66152cd72295ced5df7b60ee", "66152d0f2295ced5df7b6115", "66152d0f2295ced5df7b6106");
-
-        openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
-        getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
-        getDriver().findElement(By.xpath("//li[text()='Новинки']")).click();
-
-        List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalog(getDriver(), getWait10());
-
-        Assert.assertEquals(actualProductIdList, expectedProductList);
-    }
-
-    @Test
     public void presenceOfAllItemsInCatalog() {
 
         List<String> expectedProductIdList = List.of(
-                "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
-                "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b60fd", "65e9fc153113032e940ae831",
-                "66152d0f2295ced5df7b611a", "66152d0f2295ced5df7b6109", "66152cd72295ced5df7b60fa",
-                "65f8a706c11d83d79ea7e8a2", "66152d0f2295ced5df7b6114", "66152cd72295ced5df7b60ed",
-                "66152cd72295ced5df7b60ef", "66152d0f2295ced5df7b611b", "66152d0f2295ced5df7b6108",
-                "65de2a7dae9bb15396c0fb86", "66152d0f2295ced5df7b6116", "66152cd72295ced5df7b6101",
-                "66152cd72295ced5df7b60fb", "66152cd72295ced5df7b6102", "66152d0f2295ced5df7b6110",
-                "65de32105e90b6233fe92633", "65ef2292e9f197360880b0f6", "66152cd72295ced5df7b60fc",
-                "66152cd72295ced5df7b60f0", "65f8a6e7c11d83d79ea7e8a1", "66152cd72295ced5df7b6103",
-                "66152d0f2295ced5df7b6107", "66152cd72295ced5df7b60f7", "65f8a66ac11d83d79ea7e89c",
-                "66152d0f2295ced5df7b611c", "66152d0f2295ced5df7b6113", "65f8a6d0c11d83d79ea7e8a0",
-                "66152cd72295ced5df7b60ee", "66152d0f2295ced5df7b6115", "66152d0f2295ced5df7b6106");
+                "65df7b2495aaba554cab83b2", "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b6105",
+                "66152d0f2295ced5df7b611a", "66152d0f2295ced5df7b6111", "65df894fa018734b655645cc",
+                "66152d0f2295ced5df7b6114", "66152cd72295ced5df7b60ed", "65e5bb20cc4afedcaaa6fab1",
+                "66152cd72295ced5df7b60fe", "66152cd72295ced5df7b6101", "66152cd72295ced5df7b60fb",
+                "66152d0f2295ced5df7b6110", "65f8a6e7c11d83d79ea7e8a1", "66152cd72295ced5df7b6103",
+                "66152cd72295ced5df7b60ee");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
 
         List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalog(getDriver(), getWait10());
 
@@ -288,16 +258,29 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void onlyMenItemsAreShownTest() {
+    public void onlyNewItemsAreShownTest() {
 
-        String expectedCategoryValue = "Чоловіче взуття";
+        String expectedBadgeValue = "NEW";
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
 
-        TestUtils.isFilteredByCategoryInTheCatalogCorrect(expectedCategoryValue, getDriver(), getWait10());
+        int currentPage = 1;
+        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+
+            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(NEW_ITEM_BADGE)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+
+                String actualBadgeValue = getWait10().until(
+                        ExpectedConditions.visibilityOfAllElementsLocatedBy(NEW_ITEM_BADGE)).get(j).getText();
+
+                Assert.assertEquals(actualBadgeValue, expectedBadgeValue);
+
+            }
+            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
+            currentPage += currentPage;
+        }
     }
 }
-
-
-
