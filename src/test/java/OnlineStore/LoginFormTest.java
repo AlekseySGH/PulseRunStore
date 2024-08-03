@@ -133,4 +133,36 @@ public class LoginFormTest extends BaseTest {
         String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не принято системой");
         Assert.assertTrue(noValidationMassage, notAcceptedMailMassage);
     }
+
+    @Ignore
+    @Test
+    public void passwordFieldWithInvalidDataTest() {
+
+        List<String> invalidPasswordsList = List.of("Йцукен123", "ЙЦУКЕН123", "qwerty123", "Qwerty1", "QwertyQwerty014567890",
+                "Qwerty 123", "  Qwerty123  ", "          ");
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+        getDriver().findElement(SHOW_PASSWORD_ICON).click();
+
+        List<String> notAcceptedValuesList = new ArrayList<>();
+        boolean validationMassage = true;
+
+        for (int i = 0; i < invalidPasswordsList.size(); i++) {
+            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(invalidPasswordsList.get(i));
+            getDriver().findElement(PASSWORD_INPUT_FIELD).submit();
+
+            try {
+                getDriver().findElement(PASSWORD_FIELD_VALIDATION_MASSAGE).isDisplayed();
+            } catch (NoSuchElementException ignored) {
+                notAcceptedValuesList.add(invalidPasswordsList.get(i));
+                validationMassage = false;
+            }
+
+            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        }
+        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
+        Assert.assertTrue(validationMassage, notAcceptedMailMassage);
+    }
+
 }
