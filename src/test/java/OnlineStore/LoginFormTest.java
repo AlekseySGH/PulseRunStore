@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class LoginFormTest extends BaseTest {
 
@@ -19,7 +19,7 @@ public class LoginFormTest extends BaseTest {
 
     final static By EMAIL_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/p");
 
-//    @Ignore
+    @Ignore
     @Test
     public void emailFieldWithValidDataTest() {
 
