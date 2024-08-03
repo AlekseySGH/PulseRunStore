@@ -1,7 +1,9 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -11,19 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LoginFormTest extends BaseTest {
+public class ForgotPasswordFormTest extends BaseTest {
 
     final static By USER_PROFILE_ICON = By.xpath("//button[contains(@class, 'user__actions-profile')]");
 
-    final static By EMAIL_INPUT_FIELD = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/input[@name= 'email']");
+    final static By FORGOT_PASSWORD_LINK = By.xpath("//button[text() = 'Забули пароль?']");
 
-    final static By EMAIL_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/p");
+    final static By EMAIL_INPUT_FIELD = By.xpath("//label[text() = 'Email']/following-sibling::div[1]/input[@name= 'email']");
 
-    final static By PASSWORD_INPUT_FIELD = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]/input[@name= 'password']");
-
-    final static By SHOW_PASSWORD_ICON = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]//button");
-
-    final static By PASSWORD_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]/p");
+    final static By EMAIL_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Email']/following-sibling::div[1]/p");
 
     @Ignore
     @Test
@@ -40,6 +38,7 @@ public class LoginFormTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(FORGOT_PASSWORD_LINK)).click();
 
         List<String> notAcceptedValuesList = new ArrayList<>();
         boolean isValidationMassageNotShown = true;
@@ -77,6 +76,7 @@ public class LoginFormTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(FORGOT_PASSWORD_LINK)).click();
 
         List<String> notAcceptedValuesList = new ArrayList<>();
         boolean isValidationMassageShown = true;
@@ -93,73 +93,6 @@ public class LoginFormTest extends BaseTest {
             }
 
             getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
-        Assert.assertTrue(isValidationMassageShown, notAcceptedMailMassage);
-    }
-
-    @Test
-    public void passwordFieldWithValidDataTest() {
-
-        List<String> validPasswordsList = List.of("Qwerty12", "QwertQwerty12378", "Qwerty123", "Qwerty123!",
-                "Qwerty123@", "Qwerty123#", "Qwerty123$", "Qwerty123%", "Qwerty123^", "Qwerty123&", "Qwerty123-",
-                "Qwerty123_", "Qwerty123+", "Qwerty123=", "Qwerty123|", "Qwerty123`", "Qwerty123~", "Qwerty123{",
-                "Qwerty123}", "Qwerty123*", "Qwerty123(", "Qwerty123)", "Qwerty123;", "Qwerty123:", "Qwerty123,",
-                "Qwerty123/", "Qwerty123?", "Qwerty123\\", "Qwerty123[", "Qwerty123]", "Qwerty123.", "Qwerty123<",
-                "Qwerty123>", "Qwerty123\"", "Qwerty123\'");
-
-        openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
-        getDriver().findElement(SHOW_PASSWORD_ICON).click();
-
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageNotShown = true;
-
-        for (int i = 0; i < validPasswordsList.size(); i++) {
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(validPasswordsList.get(i));
-            getDriver().findElement(PASSWORD_INPUT_FIELD).submit();
-
-            try {
-                if (getDriver().findElement(PASSWORD_FIELD_VALIDATION_MASSAGE).isDisplayed()) {
-                    notAcceptedValuesList.add(validPasswordsList.get(i));
-                    isValidationMassageNotShown = false;
-                }
-            } catch (NoSuchElementException ignored) {
-
-            }
-
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не принято системой");
-        Assert.assertTrue(isValidationMassageNotShown, notAcceptedMailMassage);
-    }
-
-    @Ignore
-    @Test
-    public void passwordFieldWithInvalidDataTest() {
-
-        List<String> invalidPasswordsList = List.of("Йцукен123", "ЙЦУКЕН123", "qwerty123", "Qwerty1", "QwertyQwerty014567890",
-                "Qwerty 123", "  Qwerty123  ", "          ");
-
-        openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
-        getDriver().findElement(SHOW_PASSWORD_ICON).click();
-
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageShown = true;
-
-        for (int i = 0; i < invalidPasswordsList.size(); i++) {
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(invalidPasswordsList.get(i));
-            getDriver().findElement(PASSWORD_INPUT_FIELD).submit();
-
-            try {
-                getDriver().findElement(PASSWORD_FIELD_VALIDATION_MASSAGE).isDisplayed();
-            } catch (NoSuchElementException ignored) {
-                notAcceptedValuesList.add(invalidPasswordsList.get(i));
-                isValidationMassageShown = false;
-            }
-
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         }
         String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
         Assert.assertTrue(isValidationMassageShown, notAcceptedMailMassage);

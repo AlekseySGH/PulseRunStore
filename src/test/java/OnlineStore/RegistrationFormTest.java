@@ -1,7 +1,9 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -11,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LoginFormTest extends BaseTest {
+public class RegistrationFormTest extends BaseTest {
 
     final static By USER_PROFILE_ICON = By.xpath("//button[contains(@class, 'user__actions-profile')]");
+
+    final static By REGISTRATION_FORM_SECTION = By.xpath("//button[text() = 'Реєстрація']");
 
     final static By EMAIL_INPUT_FIELD = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/input[@name= 'email']");
 
@@ -40,6 +44,7 @@ public class LoginFormTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
         List<String> notAcceptedValuesList = new ArrayList<>();
         boolean isValidationMassageNotShown = true;
@@ -77,6 +82,7 @@ public class LoginFormTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
         List<String> notAcceptedValuesList = new ArrayList<>();
         boolean isValidationMassageShown = true;
@@ -110,6 +116,7 @@ public class LoginFormTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
         getDriver().findElement(SHOW_PASSWORD_ICON).click();
 
         List<String> notAcceptedValuesList = new ArrayList<>();
@@ -143,6 +150,7 @@ public class LoginFormTest extends BaseTest {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
         getDriver().findElement(SHOW_PASSWORD_ICON).click();
 
         List<String> notAcceptedValuesList = new ArrayList<>();
@@ -164,4 +172,5 @@ public class LoginFormTest extends BaseTest {
         String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
         Assert.assertTrue(isValidationMassageShown, notAcceptedMailMassage);
     }
+
 }
