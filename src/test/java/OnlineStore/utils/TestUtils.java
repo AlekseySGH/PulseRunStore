@@ -1,10 +1,8 @@
 package OnlineStore.utils;
 
 import OnlineStore.runner.BaseTest;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -471,4 +469,34 @@ public class TestUtils {
 
         return sortedInDescOderList;
     }
+
+//    public static boolean isValidationMassageShownInFieldWithValidData(List<String> validDataList, By field, By massage, WebDriver driver) {
+//        List<String> notAcceptedValuesList = new ArrayList<>();
+//        boolean isValidationMassageNotShown = true;
+//
+//        for (int i = 0; i < validDataList.size(); i++) {
+//            driver.findElement(field).sendKeys(validDataList.get(i));
+//            driver.findElement(field).submit();
+//
+//            try {
+//                if (driver.findElement(massage).isDisplayed()) {
+//                    notAcceptedValuesList.add(validDataList.get(i));
+//                    isValidationMassageNotShown = false;
+//                }
+//            } catch (NoSuchElementException ignored) {
+//
+//            }
+//
+//            driver.findElement(field).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+//        }
+//        getNotAcceptedMailMassage(notAcceptedValuesList);
+//
+//        return isValidationMassageNotShown;
+//        return String.join("\n", notAcceptedValuesList + " - Не принято системой");
+//    }
+//
+//    public static String getNotAcceptedMailMassage(List<String> notAcceptedValuesList) {
+//
+//        return String.join("\n", notAcceptedValuesList + " - Не принято системой");
+//    }
 }
