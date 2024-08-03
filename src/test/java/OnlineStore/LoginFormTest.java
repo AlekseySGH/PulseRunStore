@@ -164,4 +164,5 @@ public class LoginFormTest extends BaseTest {
         String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
         Assert.assertTrue(validationMassage, notAcceptedMailMassage);
     }
+
 }
