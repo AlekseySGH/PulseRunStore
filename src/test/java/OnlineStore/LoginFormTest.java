@@ -1,12 +1,15 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LoginFormTest extends BaseTest {
 
@@ -14,6 +17,9 @@ public class LoginFormTest extends BaseTest {
 
     final static By EMAIL_INPUT_FIELD = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/input[@name= 'email']");
 
+    final static By EMAIL_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/p");
+
+//    @Ignore
     @Test
     public void emailFieldWithValidDataTest() {
 
@@ -25,10 +31,25 @@ public class LoginFormTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
 
+        List<String> notAcceptedMailList = new ArrayList<>();
+        boolean noValidation = true;
+
         for (int i = 0; i < validEmailsList.size(); i++) {
             getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(validEmailsList.get(i));
             getDriver().findElement(EMAIL_INPUT_FIELD).submit();
+
+            try {
+                if (getDriver().findElement(EMAIL_FIELD_VALIDATION_MASSAGE).isDisplayed()) {
+                    notAcceptedMailList.add(validEmailsList.get(i));
+                    noValidation = false;
+                }
+            } catch (NoSuchElementException ignored) {
+
+            }
+
             getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         }
+        String notAcceptedMailMassage = String.join(" - Не принят системой\n", notAcceptedMailList);
+        Assert.assertTrue(noValidation, notAcceptedMailMassage);
     }
 }
