@@ -56,4 +56,39 @@ public class LoginFormTest extends BaseTest {
         String notAcceptedMailMassage = String.join("\n", notAcceptedMailList + " - Не принято системой");
         Assert.assertTrue(noValidationMassage, notAcceptedMailMassage);
     }
+
+    @Ignore
+    @Test
+    public void emailFieldWithInvalidDataTest() {
+
+        List<String> invalidEmailsList = List.of("test1@почта.уа", ".test1@auto1.com", "test1.@auto.com",
+                "test..1@auto.com", "test1@-test.com", "test1@auto.com-", "test1@auto..com", "test1@.auto.com",
+                "test1@auto.com.", "test1auto.com", "@auto.com", "  test@auto.com  ", "test1@", "test1@autocom",
+                "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjfh@jbhggffffffffkfgfffffffffffffgggggghjjbjnghfcgmhlhbjnjgyufygygyg.com",
+                "@test.com", "test1@", "test1@auto", "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjhgh@hgjgkg.com",
+                "acvb@b.c", "te(st)@auto.ua", "te[st]@auto.ua", "te<st>@auto.ua", "te;st@auto.ua", "te,st@auto.ua",
+                "te t@auto.ua", "test@@auto.ua", "te st@auto.ua", "test@auto.ru", "       ");
+
+        openBaseURL();
+        getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
+
+        List<String> notAcceptedMailList = new ArrayList<>();
+        boolean validationMassage = true;
+
+        for (int i = 0; i < invalidEmailsList.size(); i++) {
+            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(invalidEmailsList.get(i));
+            getDriver().findElement(EMAIL_INPUT_FIELD).submit();
+
+            try {
+                getDriver().findElement(EMAIL_FIELD_VALIDATION_MASSAGE).isDisplayed();
+            } catch (NoSuchElementException ignored) {
+                notAcceptedMailList.add(invalidEmailsList.get(i));
+                validationMassage = false;
+            }
+
+            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        }
+        String notAcceptedMailMassage = String.join("\n", notAcceptedMailList + " - Не принято системой");
+        Assert.assertTrue(validationMassage, notAcceptedMailMassage);
+    }
 }
