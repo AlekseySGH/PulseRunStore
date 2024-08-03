@@ -19,7 +19,7 @@ public class LoginFormTest extends BaseTest {
 
     final static By EMAIL_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/p");
 
-    @Ignore
+//    @Ignore
     @Test
     public void emailFieldWithValidDataTest() {
 
@@ -49,7 +49,7 @@ public class LoginFormTest extends BaseTest {
 
             getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         }
-        String notAcceptedMailMassage = String.join(" - Не принят системой\n", notAcceptedMailList);
+        String notAcceptedMailMassage = String.join("\n", notAcceptedMailList + " - Не принято системой");
         Assert.assertTrue(noValidation, notAcceptedMailMassage);
     }
 }
