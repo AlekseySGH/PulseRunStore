@@ -484,7 +484,7 @@ public class TestUtils {
 
             try {
                 if (driver.findElement(massageLocator).isDisplayed()) {
-                    notAcceptedValuesList.add(validDataList.get(i));
+                    notAcceptedValuesList.add("\"" + validDataList.get(i) + "\"");
                     isValidationMassageNotShown = false;
                 }
             } catch (NoSuchElementException ignored) {
@@ -515,7 +515,7 @@ public class TestUtils {
             try {
                 driver.findElement(massageLocator).isDisplayed();
             } catch (NoSuchElementException ignored) {
-                notAcceptedValuesList.add(invalidDataList.get(i));
+                notAcceptedValuesList.add("\"" + invalidDataList.get(i) + "\"");
                 isValidationMassageShown = false;
             }
 
