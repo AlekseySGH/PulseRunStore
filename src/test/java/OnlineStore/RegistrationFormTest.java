@@ -107,8 +107,8 @@ public class RegistrationFormTest extends BaseTest {
     @Test
     public void passwordFieldWithInvalidDataTest() {
 
-        List<String> invalidPasswordsList = List.of("Йцукен123", "ЙЦУКЕН123", "qwerty123", "Qwerty1", "QwertyQwerty014567890",
-                "Qwerty 123", "  Qwerty123  ", "          ");
+        List<String> invalidPasswordsList = List.of("Qwerty123йцукен123", "Йцукен123", "ЙЦУКЕН123", "qwerty123",
+                "Qwerty1", "QwertyQwerty014567890", "Qwerty 123", "  Qwerty123  ", "          ");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
