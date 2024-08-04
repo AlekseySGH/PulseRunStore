@@ -1,16 +1,15 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
+import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class ForgotPasswordFormTest extends BaseTest {
@@ -27,74 +26,37 @@ public class ForgotPasswordFormTest extends BaseTest {
     @Test
     public void emailFieldWithValidDataTest() {
 
-        List<String> validEmailsList = List.of("test1@auto.com", "test1@auto-1.com", "test_1@auto.com",
-                "test+1@auto.com", "test~1@auto.com", "test1@auto_1.com", "TEST1@AUTO.COM", "test-1@auto.com",
-                "test@auto1.com", "test.1@auto.com", "test1@auto.example.com",
-                "test1test1test1test1test1test1test1te@exampleexampleexamplee.com", "a@b.co", "test`@auto.com",
-                "test!#@auto.com", "test#$@auto.com", "test$%&@auto.com", "test%@auto.com", "test&@auto.com",
-                "test'@auto.com", "test*@auto.com", "test+@auto.com", "test-@auto.com", "test/@auto.com",
-                "test=@auto.com", "test?@auto.com", "test^@auto.com", "test_@auto.com", "test{@auto.com",
-                "test|@auto.com", "test}@auto.com", "test~@auto.com");
+        List<String> validEmailsList = TestUtils.VALID_EMAILS_LIST;
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(FORGOT_PASSWORD_LINK)).click();
 
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageNotShown = true;
+        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
+                validEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
 
-        for (int i = 0; i < validEmailsList.size(); i++) {
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(validEmailsList.get(i));
-            getDriver().findElement(EMAIL_INPUT_FIELD).submit();
+        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
 
-            try {
-                if (getDriver().findElement(EMAIL_FIELD_VALIDATION_MASSAGE).isDisplayed()) {
-                    notAcceptedValuesList.add(validEmailsList.get(i));
-                    isValidationMassageNotShown = false;
-                }
-            } catch (NoSuchElementException ignored) {
-
-            }
-
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не принято системой");
-        Assert.assertTrue(isValidationMassageNotShown, notAcceptedMailMassage);
+        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
     @Ignore
     @Test
     public void emailFieldWithInvalidDataTest() {
 
-        List<String> invalidEmailsList = List.of("test1@почта.уа", ".test1@auto1.com", "test1.@auto.com",
-                "test..1@auto.com", "test1@-test.com", "test1@auto.com-", "test1@auto..com", "test1@.auto.com",
-                "test1@auto.com.", "test1auto.com", "@auto.com", "  test@auto.com  ", "test1@", "test1@autocom",
-                "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjfh@jbhggffffffffkfgfffffffffffffgggggghjjbjnghfcgmhlhbjnjgyufygygyg.com",
-                "@test.com", "test1@", "test1@auto", "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjhgh@hgjgkg.com",
-                "acvb@b.c", "te(st)@auto.ua", "te[st]@auto.ua", "te<st>@auto.ua", "te;st@auto.ua", "te,st@auto.ua",
-                "te t@auto.ua", "test@@auto.ua", "te st@auto.ua", "test@auto.ru", "       ");
+        List<String> invalidEmailsList = TestUtils.INVALID_EMAILS_LIST;
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(FORGOT_PASSWORD_LINK)).click();
 
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageShown = true;
+        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
 
-        for (int i = 0; i < invalidEmailsList.size(); i++) {
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(invalidEmailsList.get(i));
-            getDriver().findElement(EMAIL_INPUT_FIELD).submit();
+        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageShownMap.get("massage");
 
-            try {
-                getDriver().findElement(EMAIL_FIELD_VALIDATION_MASSAGE).isDisplayed();
-            } catch (NoSuchElementException ignored) {
-                notAcceptedValuesList.add(invalidEmailsList.get(i));
-                isValidationMassageShown = false;
-            }
-
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
-        Assert.assertTrue(isValidationMassageShown, notAcceptedMailMassage);
+        Assert.assertTrue(isValidationMassageShown, resultMassage);
     }
 }
