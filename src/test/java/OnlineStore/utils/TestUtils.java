@@ -47,6 +47,33 @@ public class TestUtils {
 
     private final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
 
+    public static final List<String> VALID_EMAILS_LIST = List.of("test1@auto.com", "test1@auto-1.com", "test_1@auto.com",
+            "test+1@auto.com", "test~1@auto.com", "test1@auto_1.com", "TEST1@AUTO.COM", "test-1@auto.com",
+            "test@auto1.com", "test.1@auto.com", "test1@auto.example.com",
+            "test1test1test1test1test1test1test1te@exampleexampleexamplee.com", "a@b.co", "test`@auto.com",
+            "test!#@auto.com", "test#$@auto.com", "test$%&@auto.com", "test%@auto.com", "test&@auto.com",
+            "test'@auto.com", "test*@auto.com", "test+@auto.com", "test-@auto.com", "test/@auto.com",
+            "test=@auto.com", "test?@auto.com", "test^@auto.com", "test_@auto.com", "test{@auto.com",
+            "test|@auto.com", "test}@auto.com", "test~@auto.com");
+
+    public static final List<String> INVALID_EMAILS_LIST = List.of("test1@почта.уа", ".test1@auto1.com", "test1.@auto.com",
+            "test..1@auto.com", "test1@-test.com", "test1@auto.com-", "test1@auto..com", "test1@.auto.com",
+            "test1@auto.com.", "test1auto.com", "@auto.com", "  test@auto.com  ", "test1@", "test1@autocom",
+            "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjfh@jbhggffffffffkfgfffffffffffffgggggghjjbjnghfcgmhlhbjnjgyufygygyg.com",
+            "@test.com", "test1@", "test1@auto", "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjhgh@hgjgkg.com",
+            "acvb@b.c", "te(st)@auto.ua", "te[st]@auto.ua", "te<st>@auto.ua", "te;st@auto.ua", "te,st@auto.ua",
+            "te t@auto.ua", "test@@auto.ua", "te st@auto.ua", "test@auto.ru", "       ");
+
+    public static final List<String> VALID_PASSWORDS_LIST = List.of("Qwerty12", "QwertQwerty12378", "Qwerty123", "Qwerty123!",
+            "Qwerty123@", "Qwerty123#", "Qwerty123$", "Qwerty123%", "Qwerty123^", "Qwerty123&", "Qwerty123-",
+            "Qwerty123_", "Qwerty123+", "Qwerty123=", "Qwerty123|", "Qwerty123`", "Qwerty123~", "Qwerty123{",
+            "Qwerty123}", "Qwerty123*", "Qwerty123(", "Qwerty123)", "Qwerty123;", "Qwerty123:", "Qwerty123,",
+            "Qwerty123/", "Qwerty123?", "Qwerty123\\", "Qwerty123[", "Qwerty123]", "Qwerty123.", "Qwerty123<",
+            "Qwerty123>", "Qwerty123\"", "Qwerty123\'");
+
+    public static final List<String> INVALID_PASSWORDS_LIST = List.of("Qwerty123йцукен123", "Йцукен123", "ЙЦУКЕН123", "qwerty123",
+            "Qwerty1", "QwertyQwerty014567890", "Qwerty 123", "  Qwerty123  ", "          ");
+
     public enum Category {
         MEN,
         WOMEN,

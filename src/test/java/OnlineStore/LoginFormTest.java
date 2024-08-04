@@ -30,14 +30,7 @@ public class LoginFormTest extends BaseTest {
     @Test
     public void emailFieldWithValidDataTest() {
 
-        List<String> validEmailsList = List.of("test1@auto.com", "test1@auto-1.com", "test_1@auto.com",
-                "test+1@auto.com", "test~1@auto.com", "test1@auto_1.com", "TEST1@AUTO.COM", "test-1@auto.com",
-                "test@auto1.com", "test.1@auto.com", "test1@auto.example.com",
-                "test1test1test1test1test1test1test1te@exampleexampleexamplee.com", "a@b.co", "test`@auto.com",
-                "test!#@auto.com", "test#$@auto.com", "test$%&@auto.com", "test%@auto.com", "test&@auto.com",
-                "test'@auto.com", "test*@auto.com", "test+@auto.com", "test-@auto.com", "test/@auto.com",
-                "test=@auto.com", "test?@auto.com", "test^@auto.com", "test_@auto.com", "test{@auto.com",
-                "test|@auto.com", "test}@auto.com", "test~@auto.com");
+        List<String> validEmailsList = TestUtils.VALID_EMAILS_LIST;
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
@@ -55,13 +48,7 @@ public class LoginFormTest extends BaseTest {
     @Test
     public void emailFieldWithInvalidDataTest() {
 
-        List<String> invalidEmailsList = List.of("test1@почта.уа", ".test1@auto1.com", "test1.@auto.com",
-                "test..1@auto.com", "test1@-test.com", "test1@auto.com-", "test1@auto..com", "test1@.auto.com",
-                "test1@auto.com.", "test1auto.com", "@auto.com", "  test@auto.com  ", "test1@", "test1@autocom",
-                "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjfh@jbhggffffffffkfgfffffffffffffgggggghjjbjnghfcgmhlhbjnjgyufygygyg.com",
-                "@test.com", "test1@", "test1@auto", "fyghyjghjhijijkijodfhddfhkjkookkdhddhddtloklkfhfhhkljkgtfjfjfjhgh@hgjgkg.com",
-                "acvb@b.c", "te(st)@auto.ua", "te[st]@auto.ua", "te<st>@auto.ua", "te;st@auto.ua", "te,st@auto.ua",
-                "te t@auto.ua", "test@@auto.ua", "te st@auto.ua", "test@auto.ru", "       ");
+        List<String> invalidEmailsList = TestUtils.INVALID_EMAILS_LIST;
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
@@ -78,12 +65,7 @@ public class LoginFormTest extends BaseTest {
     @Test
     public void passwordFieldWithValidDataTest() {
 
-        List<String> validPasswordsList = List.of("Qwerty12", "QwertQwerty12378", "Qwerty123", "Qwerty123!",
-                "Qwerty123@", "Qwerty123#", "Qwerty123$", "Qwerty123%", "Qwerty123^", "Qwerty123&", "Qwerty123-",
-                "Qwerty123_", "Qwerty123+", "Qwerty123=", "Qwerty123|", "Qwerty123`", "Qwerty123~", "Qwerty123{",
-                "Qwerty123}", "Qwerty123*", "Qwerty123(", "Qwerty123)", "Qwerty123;", "Qwerty123:", "Qwerty123,",
-                "Qwerty123/", "Qwerty123?", "Qwerty123\\", "Qwerty123[", "Qwerty123]", "Qwerty123.", "Qwerty123<",
-                "Qwerty123>", "Qwerty123\"", "Qwerty123\'");
+        List<String> validPasswordsList = TestUtils.VALID_PASSWORDS_LIST;
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
@@ -102,8 +84,7 @@ public class LoginFormTest extends BaseTest {
     @Test
     public void passwordFieldWithInvalidDataTest() {
 
-        List<String> invalidPasswordsList = List.of("Qwerty123йцукен123", "Йцукен123", "ЙЦУКЕН123", "qwerty123",
-                "Qwerty1", "QwertyQwerty014567890", "Qwerty 123", "  Qwerty123  ", "          ");
+        List<String> invalidPasswordsList = TestUtils.INVALID_PASSWORDS_LIST;
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
