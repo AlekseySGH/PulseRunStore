@@ -24,9 +24,9 @@ public class TestUtils {
 
     public static final By FILTER_BY_COLOR_ITEMS = By.xpath("//h3[text() = 'Колір']/following-sibling::div[1]/div/label");
 
-    public static final By NOTHING_FOUND_MESSAGE = By.xpath("//div[@class='sc-juusvx jmhMGH']");
+    public static final By NOTHING_FOUND_MESSAGE = By.xpath("//div[contains(text(), 'не знайдено')]");
 
-    public static final By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[@class='sc-dlDPRo exRHWo']");
+    public static final By CANCEL_FILTER_BY_BRANDS = By.xpath("//button[text() = ' Брeнд: ']");
 
     private final static By PRODUCTS_LIST = By.xpath("//p[contains(@class, 'shoes-title') " +
             "and not(ancestor::div[contains(@class, 'swiper-slide')])]");
