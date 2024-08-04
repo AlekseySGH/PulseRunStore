@@ -200,7 +200,8 @@ public class TestUtils {
             case NEW_PRODUCTS -> switch (modelName) {
                 case "Adidas Campus 00s Scarlet Gum" -> List.of("37", "37.5", "38", "38.5");
                 case "Adidas Response W Cloud White Grey Five" -> List.of("37", "38", "39", "40");
-                case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" -> List.of("37", "38", "40", "42.5", "44");
+                case "New Balance 530 White Silver Navy", "Nike Dunk Low Championship Purple" ->
+                        List.of("37", "38", "40", "42.5", "44");
                 case "Nike Air Max 1 PRM Escape Treeline" -> List.of("42", "42.5", "43", "43.5", "44");
                 case "Nike Air Max Plus Blue Gradien" -> List.of("41", "42", "43", "44");
                 case "Nike Blazer Low Platform pink" -> List.of("36", "37", "38", "39");
@@ -470,33 +471,61 @@ public class TestUtils {
         return sortedInDescOderList;
     }
 
-//    public static boolean isValidationMassageShownInFieldWithValidData(List<String> validDataList, By field, By massage, WebDriver driver) {
-//        List<String> notAcceptedValuesList = new ArrayList<>();
-//        boolean isValidationMassageNotShown = true;
-//
-//        for (int i = 0; i < validDataList.size(); i++) {
-//            driver.findElement(field).sendKeys(validDataList.get(i));
-//            driver.findElement(field).submit();
-//
-//            try {
-//                if (driver.findElement(massage).isDisplayed()) {
-//                    notAcceptedValuesList.add(validDataList.get(i));
-//                    isValidationMassageNotShown = false;
-//                }
-//            } catch (NoSuchElementException ignored) {
-//
-//            }
-//
-//            driver.findElement(field).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-//        }
-//        getNotAcceptedMailMassage(notAcceptedValuesList);
-//
-//        return isValidationMassageNotShown;
-//        return String.join("\n", notAcceptedValuesList + " - Не принято системой");
-//    }
-//
-//    public static String getNotAcceptedMailMassage(List<String> notAcceptedValuesList) {
-//
-//        return String.join("\n", notAcceptedValuesList + " - Не принято системой");
-//    }
+    public static Map<String, Object> checkFieldWithValidData(
+            List<String> validDataList, By fieldLocator, By massageLocator, WebDriver driver) {
+
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> notAcceptedValuesList = new ArrayList<>();
+        boolean isValidationMassageNotShown = true;
+
+        for (int i = 0; i < validDataList.size(); i++) {
+            driver.findElement(fieldLocator).sendKeys(validDataList.get(i));
+            driver.findElement(fieldLocator).submit();
+
+            try {
+                if (driver.findElement(massageLocator).isDisplayed()) {
+                    notAcceptedValuesList.add(validDataList.get(i));
+                    isValidationMassageNotShown = false;
+                }
+            } catch (NoSuchElementException ignored) {
+
+            }
+
+            driver.findElement(fieldLocator).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        }
+
+        String notAcceptedValues = String.join("\n", notAcceptedValuesList + " - Не принято системой");
+        resultMap.put("actualResult", isValidationMassageNotShown);
+        resultMap.put("massage", notAcceptedValues);
+
+        return resultMap;
+    }
+
+    public static Map<String, Object> checkFieldWithInvalidData(
+            List<String> invalidDataList, By fieldLocator, By massageLocator, WebDriver driver) {
+
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> notAcceptedValuesList = new ArrayList<>();
+        boolean isValidationMassageShown = true;
+
+        for (int i = 0; i < invalidDataList.size(); i++) {
+            driver.findElement(fieldLocator).sendKeys(invalidDataList.get(i));
+            driver.findElement(fieldLocator).submit();
+
+            try {
+                driver.findElement(massageLocator).isDisplayed();
+            } catch (NoSuchElementException ignored) {
+                notAcceptedValuesList.add(invalidDataList.get(i));
+                isValidationMassageShown = false;
+            }
+
+            driver.findElement(fieldLocator).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        }
+        String notAcceptedValues = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
+
+        resultMap.put("actualResult", isValidationMassageShown);
+        resultMap.put("massage", notAcceptedValues);
+
+        return resultMap;
+    }
 }

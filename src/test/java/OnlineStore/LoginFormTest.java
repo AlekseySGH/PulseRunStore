@@ -1,14 +1,15 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
+import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class LoginFormTest extends BaseTest {
@@ -25,7 +26,7 @@ public class LoginFormTest extends BaseTest {
 
     final static By PASSWORD_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]/p");
 
-    @Ignore
+//    @Ignore
     @Test
     public void emailFieldWithValidDataTest() {
 
@@ -41,26 +42,13 @@ public class LoginFormTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
 
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageNotShown = true;
+        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
+                validEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
 
-        for (int i = 0; i < validEmailsList.size(); i++) {
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(validEmailsList.get(i));
-            getDriver().findElement(EMAIL_INPUT_FIELD).submit();
+        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
 
-            try {
-                if (getDriver().findElement(EMAIL_FIELD_VALIDATION_MASSAGE).isDisplayed()) {
-                    notAcceptedValuesList.add(validEmailsList.get(i));
-                    isValidationMassageNotShown = false;
-                }
-            } catch (NoSuchElementException ignored) {
-
-            }
-
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не принято системой");
-        Assert.assertTrue(isValidationMassageNotShown, notAcceptedMailMassage);
+        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
     @Ignore
@@ -78,24 +66,13 @@ public class LoginFormTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
 
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageShown = true;
+        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
 
-        for (int i = 0; i < invalidEmailsList.size(); i++) {
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(invalidEmailsList.get(i));
-            getDriver().findElement(EMAIL_INPUT_FIELD).submit();
+        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageShownMap.get("massage");
 
-            try {
-                getDriver().findElement(EMAIL_FIELD_VALIDATION_MASSAGE).isDisplayed();
-            } catch (NoSuchElementException ignored) {
-                notAcceptedValuesList.add(invalidEmailsList.get(i));
-                isValidationMassageShown = false;
-            }
-
-            getDriver().findElement(EMAIL_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
-        Assert.assertTrue(isValidationMassageShown, notAcceptedMailMassage);
+        Assert.assertTrue(isValidationMassageShown, resultMassage);
     }
 
     @Test
@@ -112,26 +89,13 @@ public class LoginFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getDriver().findElement(SHOW_PASSWORD_ICON).click();
 
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageNotShown = true;
+        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
+                validPasswordsList, PASSWORD_INPUT_FIELD, PASSWORD_FIELD_VALIDATION_MASSAGE, getDriver());
 
-        for (int i = 0; i < validPasswordsList.size(); i++) {
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(validPasswordsList.get(i));
-            getDriver().findElement(PASSWORD_INPUT_FIELD).submit();
+        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
 
-            try {
-                if (getDriver().findElement(PASSWORD_FIELD_VALIDATION_MASSAGE).isDisplayed()) {
-                    notAcceptedValuesList.add(validPasswordsList.get(i));
-                    isValidationMassageNotShown = false;
-                }
-            } catch (NoSuchElementException ignored) {
-
-            }
-
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не принято системой");
-        Assert.assertTrue(isValidationMassageNotShown, notAcceptedMailMassage);
+        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
     @Ignore
@@ -145,23 +109,12 @@ public class LoginFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getDriver().findElement(SHOW_PASSWORD_ICON).click();
 
-        List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageShown = true;
+        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidPasswordsList, PASSWORD_INPUT_FIELD, PASSWORD_FIELD_VALIDATION_MASSAGE, getDriver());
 
-        for (int i = 0; i < invalidPasswordsList.size(); i++) {
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(invalidPasswordsList.get(i));
-            getDriver().findElement(PASSWORD_INPUT_FIELD).submit();
+        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageShownMap.get("massage");
 
-            try {
-                getDriver().findElement(PASSWORD_FIELD_VALIDATION_MASSAGE).isDisplayed();
-            } catch (NoSuchElementException ignored) {
-                notAcceptedValuesList.add(invalidPasswordsList.get(i));
-                isValidationMassageShown = false;
-            }
-
-            getDriver().findElement(PASSWORD_INPUT_FIELD).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
-        }
-        String notAcceptedMailMassage = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
-        Assert.assertTrue(isValidationMassageShown, notAcceptedMailMassage);
+        Assert.assertTrue(isValidationMassageShown, resultMassage);
     }
 }
