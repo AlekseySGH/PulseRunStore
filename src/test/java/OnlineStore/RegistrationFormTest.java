@@ -143,7 +143,6 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
-
         Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
                 invalidNameList, FIRST_NAME_INPUT_FIELD, FIRST_NAME_VALIDATION_MASSAGE, getDriver());
 
@@ -181,7 +180,6 @@ public class RegistrationFormTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
-
 
         Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
                 invalidNameList, LAST_NAME_INPUT_FIELD, LAST_NAME_VALIDATION_MASSAGE, getDriver());
