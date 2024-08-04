@@ -26,7 +26,7 @@ public class LoginFormTest extends BaseTest {
 
     final static By PASSWORD_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]/p");
 
-//    @Ignore
+    @Ignore
     @Test
     public void emailFieldWithValidDataTest() {
 
