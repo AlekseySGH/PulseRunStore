@@ -12,11 +12,14 @@ import java.util.*;
 
 public class TestUtils {
 
-    public static final By SHOW_ALL_BRANDS_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[1]");
+    public static final By SHOW_ALL_BRANDS_IN_FILTER = By.xpath(
+            "//h3[text() = 'Брeнд']/following-sibling::div[1]//span[text() = 'Показати все']");
 
-    public static final By SHOW_ALL_SIZES_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[2]");
+    public static final By SHOW_ALL_SIZES_IN_FILTER = By.xpath(
+            "//h3[text() = 'Розмір']/following-sibling::div[1]//span[text() = 'Показати все']");
 
-    public static final By SHOW_ALL_COLOR_IN_FILTER = By.xpath("(//span[text() = 'Показати все'])[3]");
+    public static final By SHOW_ALL_COLOR_IN_FILTER = By.xpath(
+            "//h3[text() = 'Колір']/following-sibling::div[1]//span[text() = 'Показати все']");
 
     public static final By FILTER_BY_BRANDS_ITEMS = By.xpath("//h3[text() = 'Брeнд']/following-sibling::div[1]/div/label");
 
@@ -277,7 +280,7 @@ public class TestUtils {
             sizeQttInCheckbox = sizeListByBrand.size();
         }
 
-        driver.findElement(SHOW_ALL_BRANDS_IN_FILTER).click();
+        driver.findElement(SHOW_ALL_SIZES_IN_FILTER).click();
 
         int i = r.nextInt(sizeListByBrand.size());
 
