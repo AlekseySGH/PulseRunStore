@@ -37,7 +37,7 @@ public class TestUtils {
     private final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
             "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    public final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-ckLgFS cZnLkP']/label");
+    public final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//button[text() = 'Розмірна сітка']/following-sibling::ul[1]//li");
 
     private final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
 
