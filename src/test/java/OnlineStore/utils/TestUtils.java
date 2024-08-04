@@ -37,7 +37,7 @@ public class TestUtils {
     private final static By PRODUCTS_ID_LIST = By.xpath("//li[contains(@style, 'list-style')]/a" +
             "[not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
-    private final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-kIgPtV jRYxGW']/label");
+    public final static By SIZES_LIST_IN_PRODUCT_PAGE = By.xpath("//li[@class='sc-ckLgFS cZnLkP']/label");
 
     private final static By SEASON_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Сезон:']/following-sibling::span[1]");
 
@@ -73,6 +73,15 @@ public class TestUtils {
 
     public static final List<String> INVALID_PASSWORDS_LIST = List.of("Qwerty123йцукен123", "Йцукен123", "ЙЦУКЕН123", "qwerty123",
             "Qwerty1", "QwertyQwerty014567890", "Qwerty 123", "  Qwerty123  ", "          ");
+
+    public static final List<String> VALID_NAMES_LIST = List.of("ARRON", "Jimmy", "Андрейкузьменкоскрябинандрейку",
+            "Андрій Кузьма", "Андрій'Кузьма", "Андрій-Кузьма", "Кузьма", "КУЗЬМА", "ПавлоҐудімов", "Ян");
+
+    public static final List<String> INVALID_NAMES_LIST = List.of("    ", " Кузьма ", "ARRON15", "K", "Кузь2ма",
+            "Кузь№;ма", "Кузьма!", "Кузьма#", "Кузьма$", "Кузьма$$", "Кузьма%", "Кузьма&", "Кузьма(", "Кузьма)", "Кузьма*",
+            "Кузьма/", "Кузьма:", "Кузьма;", "Кузьма@", "Кузьма\\", "Кузьма^", "Кузьма|", "Кузьма+", "Кузьма<", "Кузьма=",
+            "Кузьма>", "Кузьмаукраїнськийспівакпісніокі", "");
+
 
     public enum Category {
         MEN,
@@ -197,7 +206,6 @@ public class TestUtils {
                 case "Nike" -> List.of("36", "37", "38", "39", "40", "41", "42", "42.5", "43", "43.5", "44");
                 case "Reebok" -> List.of("42", "43", "44", "45");
                 case "Salomon" -> List.of("36.5", "37", "38", "39", "40", "42", "44");
-
                 default -> List.of();
             };
         };
@@ -237,6 +245,15 @@ public class TestUtils {
                 case "Salomon XT-6 Ghost Grey" -> List.of("36.5", "37", "38", "39", "40");
                 default -> List.of();
             };
+        };
+    }
+
+    private static By chooseCatalog(Category category) {
+
+        return switch (category) {
+            case MEN -> By.xpath("//li/a[text()='Чоловікам']");
+            case WOMEN -> SHOW_ALL_SIZES_IN_FILTER;
+            case NEW_PRODUCTS -> SHOW_ALL_COLOR_IN_FILTER;
         };
     }
 
@@ -554,5 +571,29 @@ public class TestUtils {
         resultMap.put("massage", notAcceptedValues);
 
         return resultMap;
+    }
+
+    public static void chooseRandomProductItemInTheCatalog(Category category, WebDriver driver, WebDriverWait wait) {
+
+        wait.until(ExpectedConditions.elementToBeClickable(chooseCatalog(category))).click();
+
+        List<String> productLinkList = new ArrayList<>();
+
+        int currentPage = 1;
+        int pageQttInCatalog = getCatalogPageQtt(driver);
+
+        for (int i = 0; i < pageQttInCatalog; i++) {
+            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_ID_LIST)).size();
+            for (int j = 0; j < itemQttOnPage; j++) {
+                productLinkList.add(driver.findElements(PRODUCTS_ID_LIST).get(j).getAttribute("href"));
+            }
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            currentPage += currentPage;
+        }
+
+        Random r = new Random();
+        int i = r.nextInt(productLinkList.size());
+
+        driver.get(productLinkList.get(i));
     }
 }
