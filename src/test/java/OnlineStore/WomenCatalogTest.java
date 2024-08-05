@@ -143,7 +143,9 @@ public class WomenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        TestUtils.isFilteredByBrandInTheCatalogCorrect(brandNames, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredByBrandInTheCatalogCorrect(brandNames, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test
@@ -156,7 +158,9 @@ public class WomenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         List<String> randomBrandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
 
-        TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test
@@ -171,7 +175,9 @@ public class WomenCatalogTest extends BaseTest {
         List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
         List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(TestUtils.Category.WOMEN, randomBandsList, qttSizesInCheckbox, getDriver());
 
-        TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test(dataProvider = "addedBrandProvider")
@@ -181,7 +187,9 @@ public class WomenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.WOMEN, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.WOMEN, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test(dataProvider = "availableSizesProvider")

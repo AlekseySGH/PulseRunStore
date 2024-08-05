@@ -144,7 +144,9 @@ public class MenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        TestUtils.isFilteredByBrandInTheCatalogCorrect(brandNames, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredByBrandInTheCatalogCorrect(brandNames, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test
@@ -157,7 +159,9 @@ public class MenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         List<String> randomBrandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
 
-        TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test
@@ -172,7 +176,9 @@ public class MenCatalogTest extends BaseTest {
         List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
         List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(TestUtils.Category.MEN, randomBandsList, qttSizesInCheckbox, getDriver());
 
-        TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test(dataProvider = "addedBrandProvider")
@@ -182,7 +188,9 @@ public class MenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.MEN, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.WOMEN, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test(dataProvider = "availableSizesProvider")
@@ -213,7 +221,6 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
 
         List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
-
         List<Integer> expectedPricesList = TestUtils.sortInAscendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
@@ -227,7 +234,6 @@ public class MenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
 
         List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
-
         List<Integer> expectedPricesList = TestUtils.sortInDescendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
