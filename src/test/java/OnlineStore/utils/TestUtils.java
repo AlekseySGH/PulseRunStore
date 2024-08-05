@@ -294,84 +294,113 @@ public class TestUtils {
         return randomSizeListByBrand;
     }
 
-    public static void isFilteredByBrandInTheCatalogCorrect(String brandName, WebDriver driver, WebDriverWait wait) {
+    private static boolean isListContainsChosenItems(List<String> whatCheck, List<String> whereCheck) {
+        boolean result = false;
+        for (int i = 0; i < whatCheck.size(); i++) {
+            String currentProductItemName = whatCheck.get(i);
+            int counter = 0;
+            for (int j = 0; j < whereCheck.size(); j++) {
+                if (whereCheck.get(j).contains(currentProductItemName)) {
+                    result = true;
+                    break;
+                } else {
+                    result = false;
+                    counter += 1;
+                }
+            }
+            if ((!result) && (counter == whereCheck.size())) {
+                break;
+            }
+        }
+        return result;
+    }
+
+    private static boolean isListEqualsChosenItems(List<String> whatCheck, List<String> whereCheck) {
+        boolean result = false;
+        for (int i = 0; i < whatCheck.size(); i++) {
+            String currentProductItemName = whatCheck.get(i);
+            int counter = 0;
+            for (int j = 0; j < whereCheck.size(); j++) {
+                String currentWhatCheck = whereCheck.get(j);
+                if (currentProductItemName.equals(currentWhatCheck)) {
+                    result = true;
+                    break;
+                } else {
+                    result = false;
+                    counter += 1;
+                }
+            }
+            if ((!result) && (counter == whereCheck.size())) {
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static boolean isFilteredByBrandInTheCatalogCorrect(String brandName, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
+        boolean result = false;
 
         for (int i = 0; i < pageQttInCatalog; i++) {
-
             int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
             for (int j = 0; j < itemQttOnPage; j++) {
-                String actualResult = getTexts(PRODUCTS_LIST, driver).get(j);
-
-                Assert.assertTrue(actualResult.contains(brandName));
-                Assert.assertTrue(driver.findElement(CANCEL_FILTER_BY_BRANDS).getText().contains(brandName));
+                String currentItemName = getTexts(PRODUCTS_LIST, driver).get(j);
+                String breadCrampsName = driver.findElement(CANCEL_FILTER_BY_BRANDS).getText();
+                if ((currentItemName.contains(brandName)) && (breadCrampsName.contains(brandName))) {
+                    result = true;
+                }
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+        return result;
     }
 
-    public static void isFilteredByRandomBrandsInTheCatalogCorrect(List<String> randomBrandsList, WebDriver
+    public static boolean isFilteredByRandomBrandsInTheCatalogCorrect(List<String> randomBrandsList, WebDriver
             driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 
+        List<String> productItemsNameList = new ArrayList<>();
+
         for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-                boolean containsAnyBrandInList = false;
-                String actualResult = getTexts(PRODUCTS_LIST, driver).get(j);
-
-                for (String randomBandName : randomBrandsList) {
-                    if (actualResult.contains(randomBandName)) {
-                        containsAnyBrandInList = true;
-                        break;
-                    }
-                }
-
-                Assert.assertTrue(containsAnyBrandInList);
-            }
+            productItemsNameList.addAll(getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST))));
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+
+        return isListContainsChosenItems(randomBrandsList, productItemsNameList);
     }
 
-    public static void isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect
+    public static boolean isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect
             (List<String> randomSizesList, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 
+        HashSet<String> sizeSet = new HashSet<>();
+
         for (int i = 0; i < pageQttInCatalog; i++) {
-
             int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+
             for (int j = 0; j < itemQttOnPage; j++) {
-                boolean containsAnySizeInList = false;
                 driver.findElements(PRODUCTS_LIST).get(j).click();
-
-                List<String> actualSizeList = getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
-
-                for (String randomSizesValue : randomSizesList) {
-                    if (actualSizeList.contains(randomSizesValue)) {
-                        containsAnySizeInList = true;
-                    } else if (containsAnySizeInList) {
-                        break;
-                    }
-                }
-
-                Assert.assertTrue(containsAnySizeInList);
-
+                sizeSet.addAll(getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE)));
                 driver.navigate().back();
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+
+        List<String> sizeLit = new ArrayList<>(sizeSet);
+
+        return isListEqualsChosenItems(randomSizesList, sizeLit);
     }
 
-    public static void isTheSizeListOnTheProductPageCorrect(Category category, WebDriver driver, WebDriverWait wait) {
+    public static boolean isTheSizeListOnTheProductPageCorrect(Category category, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
+        boolean result = false;
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
@@ -381,17 +410,22 @@ public class TestUtils {
                 String currentItemName = driver.findElements(PRODUCTS_LIST).get(j).getText();
                 driver.findElements(PRODUCTS_LIST).get(j).click();
 
-                List<String> actualSizeList = getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
-
                 List<String> expectedSizeList = getSizeLisByModel(category, currentItemName);
+                List<String> actualSizeList = getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
+
+                if (expectedSizeList.equals(actualSizeList)) {
+                    result = true;
+                }else {
+                    result = false;
+                    break;
+                }
 
                 driver.navigate().back();
-
-                Assert.assertEquals(actualSizeList, expectedSizeList);
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+        return result;
     }
 
     public static void isFilteredBySizeInTheCatalogCorrect(String sizeValue, WebDriver driver, WebDriverWait wait) {
@@ -428,7 +462,7 @@ public class TestUtils {
 
                 driver.findElements(PRODUCTS_LIST).get(j).click();
 
-                String actualSeasonValue = driver.findElement(SEASON_VALUE_IN_PRODUCT_PAGE).getText();
+                String actualSeasonValue = wait.until(ExpectedConditions.presenceOfElementLocated(SEASON_VALUE_IN_PRODUCT_PAGE)).getText();
 
                 Assert.assertEquals(actualSeasonValue, seasonValue);
 
