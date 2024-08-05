@@ -462,7 +462,7 @@ public class TestUtils {
 
                 driver.findElements(PRODUCTS_LIST).get(j).click();
 
-                String actualSeasonValue = driver.findElement(SEASON_VALUE_IN_PRODUCT_PAGE).getText();
+                String actualSeasonValue = wait.until(ExpectedConditions.presenceOfElementLocated(SEASON_VALUE_IN_PRODUCT_PAGE)).getText();
 
                 Assert.assertEquals(actualSeasonValue, seasonValue);
 
