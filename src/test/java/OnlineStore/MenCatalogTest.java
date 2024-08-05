@@ -200,7 +200,9 @@ public class MenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
 
-        TestUtils.isFilteredBySizeInTheCatalogCorrect(sizeValue, getDriver(), getWait10());
+        List<String> sizeList = TestUtils.collectSizesFromCatalog(getDriver(), getWait10());
+
+        Assert.assertTrue(sizeList.contains(sizeValue), "Item is not found");
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
@@ -210,7 +212,9 @@ public class MenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
         TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
 
-        TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test
@@ -301,7 +305,9 @@ public class MenCatalogTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(MEN_CATALOG_BUTTON)).click();
 
-        TestUtils.isFilteredByCategoryInTheCatalogCorrect(expectedCategoryValue, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredByCategoryInTheCatalogCorrect(expectedCategoryValue, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 }
 

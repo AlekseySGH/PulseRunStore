@@ -199,7 +199,9 @@ public class WomenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
 
-        TestUtils.isFilteredBySizeInTheCatalogCorrect(sizeValue, getDriver(), getWait10());
+        List<String> sizeList = TestUtils.collectSizesFromCatalog(getDriver(), getWait10());
+
+        Assert.assertTrue(sizeList.contains(sizeValue), "Item is not found");
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
@@ -209,7 +211,9 @@ public class WomenCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
         TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
 
-        TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 
     @Test
@@ -220,7 +224,6 @@ public class WomenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
 
         List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
-
         List<Integer> expectedPricesList = TestUtils.sortInAscendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
@@ -234,7 +237,6 @@ public class WomenCatalogTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
 
         List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
-
         List<Integer> expectedPricesList = TestUtils.sortInDescendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
@@ -304,6 +306,8 @@ public class WomenCatalogTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(WOMEN_CATALOG_BUTTON)).click();
 
-        TestUtils.isFilteredByCategoryInTheCatalogCorrect(expectedCategoryValue, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isFilteredByCategoryInTheCatalogCorrect(expectedCategoryValue, getDriver(), getWait10());
+
+        Assert.assertTrue(isFilteredCorrect);
     }
 }
