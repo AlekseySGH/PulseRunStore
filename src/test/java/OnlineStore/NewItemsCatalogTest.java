@@ -191,7 +191,7 @@ public class NewItemsCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.WOMEN, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.NEW_PRODUCTS, getDriver(), getWait10());
 
         Assert.assertTrue(isFilteredCorrect);
     }
