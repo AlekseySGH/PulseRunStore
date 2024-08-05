@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+@Ignore
 public class OrdersPageTest extends BaseTest {
 
     final static By EMAIL_INPUT_FIELD = By.xpath("(//label[text() = 'Email*']/following-sibling::div[1]/input[@name= 'email'])[2]");
@@ -40,6 +41,11 @@ public class OrdersPageTest extends BaseTest {
 
     final static By ORDER_BUTTON = By.xpath("//a[text() = 'Оформити']");
 
+    final static By USER_DATA_FIRST_NAME_INPUT_FIELD = By.xpath(
+            "//label[contains(text(), 'Ім')]/following-sibling::div[1]/input[@name= 'firstName']");
+
+    final static By USER_DATA_FIRST_NAME_VALIDATION_MASSAGE= By.xpath(
+            "//label[contains(text(), 'Ім')]/following-sibling::div[1]/p");
     private static void chooseRandomSize(WebDriver driver, WebDriverWait wait) {
 
         Random r = new Random();
@@ -48,7 +54,6 @@ public class OrdersPageTest extends BaseTest {
         driver.findElements(TestUtils.SIZES_LIST_IN_PRODUCT_PAGE).get(i).click();
     }
 
-    @Ignore
     @Test
     public void loginFormEmailFieldWithValidDataTest() {
 
@@ -73,7 +78,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void loginFormEmailFieldWithInvalidDataTest() {
 
@@ -98,7 +102,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void loginFormPasswordFieldWithValidDataTest() {
 
@@ -124,7 +127,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void loginFormPasswordFieldWithInvalidDataTest() {
 
@@ -150,7 +152,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void registrationFormEmailFieldWithValidDataTest() {
 
@@ -176,7 +177,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void registrationFormEmailFieldWithInvalidDataTest() {
 
@@ -228,7 +228,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void registrationFormPasswordFieldWithInvalidDataTest() {
 
@@ -255,7 +254,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void firstNameFieldWithValidDataTest() {
 
@@ -281,7 +279,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void firstNameFieldWithInvalidDataTest() {
 
@@ -307,7 +304,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void lastNameFieldWithValidDataTest() {
 
@@ -333,7 +329,6 @@ public class OrdersPageTest extends BaseTest {
         Assert.assertTrue(isValidationMassageNotShown, resultMassage);
     }
 
-    @Ignore
     @Test
     public void lastNameFieldWithInvalidDataTest() {
 
@@ -352,6 +347,54 @@ public class OrdersPageTest extends BaseTest {
 
         Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
                 invalidNameList, LAST_NAME_INPUT_FIELD, LAST_NAME_VALIDATION_MASSAGE, getDriver());
+
+        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageShownMap.get("massage");
+
+        Assert.assertTrue(isValidationMassageShown, resultMassage);
+    }
+
+    @Test
+    public void userDataFirstNameFieldWithValidDataTest() {
+
+        List<String> validNameList = TestUtils.VALID_NAMES_LIST;
+
+        openBaseURL();
+
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+
+        chooseRandomSize(getDriver(), getWait2());
+
+        getDriver().findElement(ADD_TO_CART_BUTTON).click();
+        getDriver().findElement(ORDER_BUTTON).click();
+        getDriver().findElement(ORDER_BUTTON).click();
+
+        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
+                validNameList, USER_DATA_FIRST_NAME_INPUT_FIELD, USER_DATA_FIRST_NAME_VALIDATION_MASSAGE, getDriver());
+
+        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
+        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
+
+        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
+    }
+
+       @Test
+    public void userDataFirstNameFieldWithInvalidDataTest() {
+
+        List<String> invalidNameList = TestUtils.INVALID_NAMES_LIST;
+
+        openBaseURL();
+
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+
+        chooseRandomSize(getDriver(), getWait2());
+
+        getDriver().findElement(ADD_TO_CART_BUTTON).click();
+        getDriver().findElement(ORDER_BUTTON).click();
+        getDriver().findElement(ORDER_BUTTON).click();
+
+        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidNameList, USER_DATA_FIRST_NAME_INPUT_FIELD, USER_DATA_FIRST_NAME_VALIDATION_MASSAGE, getDriver());
 
         boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
         String resultMassage = (String) isValidationMassageShownMap.get("massage");

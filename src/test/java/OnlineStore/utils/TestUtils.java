@@ -432,29 +432,6 @@ public class TestUtils {
         return result;
     }
 
-//    public static void isFilteredBySizeInTheCatalogCorrect(String sizeValue, WebDriver driver, WebDriverWait wait) {
-//        int currentPage = 1;
-//        int pageQttInCatalog = getCatalogPageQtt(driver);
-//
-//        for (int i = 0; i < pageQttInCatalog; i++) {
-//
-//            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
-//            for (int j = 0; j < itemQttOnPage; j++) {
-//
-//                driver.findElements(PRODUCTS_LIST).get(j).click();
-//
-//                List<String> actualSizeList = getTexts(wait
-//                        .until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
-//
-//                Assert.assertTrue(actualSizeList.contains(sizeValue));
-//
-//                driver.navigate().back();
-//            }
-//            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
-//            currentPage += currentPage;
-//        }
-//    }
-
     public static boolean isFilteredBySeasonInTheCatalogCorrect(String seasonValue, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
@@ -577,6 +554,7 @@ public class TestUtils {
         boolean isValidationMassageNotShown = true;
 
         for (int i = 0; i < validDataList.size(); i++) {
+            driver.findElement(fieldLocator).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
             driver.findElement(fieldLocator).sendKeys(validDataList.get(i));
             driver.findElement(fieldLocator).submit();
 
@@ -588,8 +566,6 @@ public class TestUtils {
             } catch (NoSuchElementException ignored) {
 
             }
-
-            driver.findElement(fieldLocator).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         }
 
         String notAcceptedValues = String.join("\n", notAcceptedValuesList + " - Не принято системой");
