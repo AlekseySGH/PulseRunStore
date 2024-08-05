@@ -5,7 +5,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.*;
@@ -373,8 +372,7 @@ public class TestUtils {
         return isListContainsChosenItems(randomBrandsList, productItemsNameList);
     }
 
-    public static boolean isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect
-            (List<String> randomSizesList, WebDriver driver, WebDriverWait wait) {
+    public static List<String> collectSizesFromCatalog(WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 
@@ -392,7 +390,13 @@ public class TestUtils {
             currentPage += currentPage;
         }
 
-        List<String> sizeLit = new ArrayList<>(sizeSet);
+        return new ArrayList<>(sizeSet);
+    }
+
+    public static boolean isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect
+            (List<String> randomSizesList, WebDriver driver, WebDriverWait wait) {
+
+        List<String> sizeLit = collectSizesFromCatalog(driver, wait);
 
         return isListEqualsChosenItems(randomSizesList, sizeLit);
     }
@@ -415,7 +419,7 @@ public class TestUtils {
 
                 if (expectedSizeList.equals(actualSizeList)) {
                     result = true;
-                }else {
+                } else {
                     result = false;
                     break;
                 }
@@ -428,32 +432,33 @@ public class TestUtils {
         return result;
     }
 
-    public static void isFilteredBySizeInTheCatalogCorrect(String sizeValue, WebDriver driver, WebDriverWait wait) {
+//    public static void isFilteredBySizeInTheCatalogCorrect(String sizeValue, WebDriver driver, WebDriverWait wait) {
+//        int currentPage = 1;
+//        int pageQttInCatalog = getCatalogPageQtt(driver);
+//
+//        for (int i = 0; i < pageQttInCatalog; i++) {
+//
+//            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
+//            for (int j = 0; j < itemQttOnPage; j++) {
+//
+//                driver.findElements(PRODUCTS_LIST).get(j).click();
+//
+//                List<String> actualSizeList = getTexts(wait
+//                        .until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
+//
+//                Assert.assertTrue(actualSizeList.contains(sizeValue));
+//
+//                driver.navigate().back();
+//            }
+//            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+//            currentPage += currentPage;
+//        }
+//    }
+
+    public static boolean isFilteredBySeasonInTheCatalogCorrect(String seasonValue, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
-
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_LIST)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                driver.findElements(PRODUCTS_LIST).get(j).click();
-
-                List<String> actualSizeList = getTexts(wait
-                        .until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
-
-                Assert.assertTrue(actualSizeList.contains(sizeValue));
-
-                driver.navigate().back();
-            }
-            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
-            currentPage += currentPage;
-        }
-    }
-
-    public static void isFilteredBySeasonInTheCatalogCorrect(String seasonValue, WebDriver driver, WebDriverWait wait) {
-        int currentPage = 1;
-        int pageQttInCatalog = getCatalogPageQtt(driver);
+        boolean result = false;
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
@@ -464,18 +469,25 @@ public class TestUtils {
 
                 String actualSeasonValue = wait.until(ExpectedConditions.presenceOfElementLocated(SEASON_VALUE_IN_PRODUCT_PAGE)).getText();
 
-                Assert.assertEquals(actualSeasonValue, seasonValue);
+                if (seasonValue.equals(actualSeasonValue)) {
+                    result = true;
+                } else {
+                    result = false;
+                    break;
+                }
 
                 driver.navigate().back();
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
+        return result;
     }
 
-    public static void isFilteredByCategoryInTheCatalogCorrect(String expectedCategoryValue, WebDriver driver, WebDriverWait wait) {
+    public static boolean isFilteredByCategoryInTheCatalogCorrect(String categoryValue, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
+        boolean result = false;
 
         for (int i = 0; i < pageQttInCatalog; i++) {
 
@@ -486,14 +498,19 @@ public class TestUtils {
 
                 String actualCategoryValue = driver.findElement(CATEGORY_VALUE_IN_PRODUCT_PAGE).getText();
 
-                Assert.assertEquals(actualCategoryValue, expectedCategoryValue);
+                if (categoryValue.equals(actualCategoryValue)) {
+                    result = true;
+                } else {
+                    result = false;
+                    break;
+                }
 
                 driver.navigate().back();
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += currentPage;
         }
-
+        return result;
     }
 
     public static List<Integer> getAllPricesInTheCatalogList(WebDriver driver, WebDriverWait wait) {
