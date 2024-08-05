@@ -411,7 +411,7 @@ public class TestUtils {
                 driver.findElements(PRODUCTS_LIST).get(j).click();
 
                 List<String> expectedSizeList = getSizeLisByModel(category, currentItemName);
-                List<String> actualSizeList = getTexts(driver.findElements(SIZES_LIST_IN_PRODUCT_PAGE));
+                List<String> actualSizeList = getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(SIZES_LIST_IN_PRODUCT_PAGE)));
 
                 if (expectedSizeList.equals(actualSizeList)) {
                     result = true;
