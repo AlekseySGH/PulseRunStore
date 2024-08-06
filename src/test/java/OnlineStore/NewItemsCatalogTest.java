@@ -12,8 +12,6 @@ import java.util.List;
 
 public class NewItemsCatalogTest extends BaseTest {
 
-    final static By NEW_ITEMS_CATALOG_BUTTON = By.xpath("//li/a[text()='Новинки']");
-
     final static By NEW_ITEM_BADGE = By.xpath(
             "//li[contains(@style, 'list-style')]/a//span[@color][not(ancestor::div[contains(@class, 'swiper-slide')])]");
 
@@ -73,7 +71,7 @@ public class NewItemsCatalogTest extends BaseTest {
                 "Jordan", "Native", "New Balance", "Nike", "Puma", "Reebok", "Salomon", "Vans");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(TestUtils.SHOW_ALL_BRANDS_IN_FILTER).click();
 
         List<String> filterByBrandItemList = TestUtils.getTexts(TestUtils.FILTER_BY_BRANDS_ITEMS, getDriver());
@@ -93,7 +91,7 @@ public class NewItemsCatalogTest extends BaseTest {
                 "45", "36.5", "37.5", "38.5", "39.5", "40.5", "41.5", "42.5", "43.5", "44.5", "45.5", "46.5", "47.5");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(TestUtils.SHOW_ALL_SIZES_IN_FILTER).click();
 
         List<String> filterBySizeItemList = TestUtils.getTexts(TestUtils.FILTER_BY_SIZE_ITEMS, getDriver());
@@ -113,7 +111,7 @@ public class NewItemsCatalogTest extends BaseTest {
                 "Сірий", "Срібний", "Фіолетовий", "Червоний", "Чорний");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(TestUtils.SHOW_ALL_COLOR_IN_FILTER).click();
 
         List<String> filterByColorItemList = TestUtils.getTexts(TestUtils.FILTER_BY_COLOR_ITEMS, getDriver());
@@ -131,7 +129,7 @@ public class NewItemsCatalogTest extends BaseTest {
     public void filterByNotAddedBrandsTest(String brandNames) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
         String actualResult = getDriver().findElement(TestUtils.NOTHING_FOUND_MESSAGE).getText();
@@ -144,12 +142,12 @@ public class NewItemsCatalogTest extends BaseTest {
     public void filterByBrandTest(String brandNames) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseBandInCheckbox(brandNames, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isFilteredByBrandInTheCatalogCorrect(brandNames, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.checkFilteredBrands(brandNames, getDriver(), getWait10());
 
-        Assert.assertTrue(isFilteredCorrect);
+        Assert.assertTrue(isFilteredCorrect, "Item is not found");
     }
 
     @Test
@@ -159,12 +157,12 @@ public class NewItemsCatalogTest extends BaseTest {
         List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Reebok", "Salomon");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         List<String> randomBrandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isFilteredByRandomBrandsInTheCatalogCorrect(randomBrandsList, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.checkFilteredBrands(randomBrandsList, getDriver(), getWait10());
 
-        Assert.assertTrue(isFilteredCorrect);
+        Assert.assertTrue(isFilteredCorrect, "Item is not found");
     }
 
     @Test
@@ -175,59 +173,52 @@ public class NewItemsCatalogTest extends BaseTest {
         List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Reebok", "Salomon");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
-        List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(addedBrandNamesList, qttBandsInCheckbox, getDriver());
-        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(TestUtils.Category.NEW_PRODUCTS, randomBandsList, qttSizesInCheckbox, getDriver());
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
+        List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(
+                addedBrandNamesList, qttBandsInCheckbox, getDriver());
+        List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(
+                TestUtils.Catalog.NEW_PRODUCTS, randomBandsList, qttSizesInCheckbox, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isFilteredBySeveralBrandsAndSizesInTheCatalogCorrect(randomSizesList, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isDataExistOnProductPage(
+                randomSizesList, TestUtils.SIZES_LIST_IN_PRODUCT_PAGE, getDriver(), getWait30());
 
-        Assert.assertTrue(isFilteredCorrect);
-    }
-
-    @Test(dataProvider = "addedBrandProvider")
-    public void sizeListByBrandsTest(String brandNames) {
-
-        openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
-        TestUtils.chooseBandInCheckbox(brandNames, getDriver());
-
-        boolean isFilteredCorrect = TestUtils.isTheSizeListOnTheProductPageCorrect(TestUtils.Category.NEW_PRODUCTS, getDriver(), getWait10());
-
-        Assert.assertTrue(isFilteredCorrect);
+        Assert.assertTrue(isFilteredCorrect, "Item is not found");
     }
 
     @Test(dataProvider = "availableSizesProvider")
     public void filterBySizeTest(String sizeValue) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
 
-        List<String> sizeList = TestUtils.collectSizesFromCatalog(getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isDataExistOnProductPage(
+                sizeValue, TestUtils.SIZES_LIST_IN_PRODUCT_PAGE, getDriver(), getWait30());
 
-        Assert.assertTrue(sizeList.contains(sizeValue), "Item is not found");
+        Assert.assertTrue(isFilteredCorrect, "Item is not found");
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
     public void filterBySeasonTest(String seasonValue) {
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isFilteredBySeasonInTheCatalogCorrect(seasonValue, getDriver(), getWait10());
+        boolean isFilteredCorrect = TestUtils.isDataExistOnProductPage(
+                seasonValue, TestUtils.SEASON_VALUE_IN_PRODUCT_PAGE, getDriver(), getWait30());
 
-        Assert.assertTrue(isFilteredCorrect);
+        Assert.assertTrue(isFilteredCorrect, "Item is not found");
     }
 
     @Test
     public void productsListInAscendingOderTest() {
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дешевших']")).click();
 
-        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
+        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalog(getDriver(), getWait10());
         List<Integer> expectedPricesList = TestUtils.sortInAscendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
@@ -236,11 +227,11 @@ public class NewItemsCatalogTest extends BaseTest {
     @Test
     public void productsListInDescOderTest() {
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
         getDriver().findElement(By.xpath("//li[text()='Від дорожчих']")).click();
 
-        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalogList(getDriver(), getWait10());
+        List<Integer> actualPricesList = TestUtils.getAllPricesInTheCatalog(getDriver(), getWait10());
         List<Integer> expectedPricesList = TestUtils.sortInDescendingOder(actualPricesList);
 
         Assert.assertEquals(actualPricesList, expectedPricesList);
@@ -258,7 +249,7 @@ public class NewItemsCatalogTest extends BaseTest {
                 "66152cd72295ced5df7b60ee");
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
 
         List<String> actualProductIdList = TestUtils.getAllProductsIdInTheCatalog(getDriver(), getWait10());
 
@@ -273,7 +264,7 @@ public class NewItemsCatalogTest extends BaseTest {
         String expectedBadgeValue = "NEW";
 
         openBaseURL();
-        getWait10().until(ExpectedConditions.elementToBeClickable(NEW_ITEMS_CATALOG_BUTTON)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
 
         int currentPage = 1;
         int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
