@@ -237,11 +237,11 @@ public class WomenCatalogTest extends BaseTest {
     public void productListSortedByNewestTest() {
 
         List<String> expectedProductList = List.of(
-                "65f8a6aec11d83d79ea7e89e", "66152d0f2295ced5df7b611e", "66152cd72295ced5df7b60f3",
-                "66152cd72295ced5df7b60f1", "66152d0f2295ced5df7b610d", "66152d0f2295ced5df7b610f",
-                "66152cd72295ced5df7b6104", "66152cd72295ced5df7b6100", "65df7f7607e96ef8fa1719b4",
-                "66152cd72295ced5df7b6105", "66152d0f2295ced5df7b6111", "65df894fa018734b655645cc",
-                "66152d0f2295ced5df7b610a", "66152cd72295ced5df7b60f5", "66152d0f2295ced5df7b6112",
+                "65f8a6aec11d83d79ea7e89e", "66152cd72295ced5df7b60f3", "66152d0f2295ced5df7b611e",
+                "66152d0f2295ced5df7b610d", "66152cd72295ced5df7b60f1", "66152d0f2295ced5df7b610f",
+                "66152cd72295ced5df7b6100", "66152cd72295ced5df7b6104", "66152cd72295ced5df7b6105",
+                "65df7f7607e96ef8fa1719b4", "66152d0f2295ced5df7b6111", "65df894fa018734b655645cc",
+                "66152d0f2295ced5df7b610a", "66152d0f2295ced5df7b6112", "66152cd72295ced5df7b60f5",
                 "66152cd72295ced5df7b60f2", "65e5ff1bdaa755d5047b8610", "66152cd72295ced5df7b60f9",
                 "65f8a6c9c11d83d79ea7e89f", "65e5bb20cc4afedcaaa6fab1", "66152cd72295ced5df7b60fe",
                 "65e9fe8b3113032e940ae844", "66152d0f2295ced5df7b610e", "66152d0f2295ced5df7b611d",
