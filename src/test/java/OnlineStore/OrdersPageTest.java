@@ -61,7 +61,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -85,7 +85,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -109,7 +109,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -134,7 +134,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -159,7 +159,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -184,7 +184,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -209,7 +209,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -235,7 +235,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -261,7 +261,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -286,7 +286,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -311,7 +311,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -336,7 +336,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -361,7 +361,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
@@ -385,7 +385,7 @@ public class OrdersPageTest extends BaseTest {
 
         openBaseURL();
 
-        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.Category.MEN, getDriver(), getWait10());
+        TestUtils.chooseRandomProductItemInTheCatalog(TestUtils.MEN_CATALOG_BUTTON, getDriver(), getWait10());
 
         chooseRandomSize(getDriver(), getWait2());
 
