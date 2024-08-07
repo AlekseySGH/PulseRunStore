@@ -350,7 +350,7 @@ public class TestUtils {
         return isItemsInListContainsChosenItems(brandsList, productDataList);
     }
 
-    private static List<String> collectDataFromCatalog(By dataBy, WebDriver driver, WebDriverWait wait) {
+    public static List<String> collectDataFromCatalog(By dataBy, WebDriver driver, WebDriverWait wait) {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 

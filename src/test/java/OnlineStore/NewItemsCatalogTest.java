@@ -126,7 +126,8 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "notAddedBrandProvider")
-    public void filterByNotAddedBrandsTest(String brandNames) {
+    public void filteringByNotAddedBrandsTest
+(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -139,7 +140,8 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "addedBrandProvider")
-    public void filterByBrandTest(String brandNames) {
+    public void filteringByBrandTest
+(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -151,7 +153,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void itemListBySeveralBrandsInFilterTest() {
+    public void filteringBySeveralBrandsTest() {
 
         int qttBandsInCheckbox = 2;
         List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Reebok", "Salomon");
@@ -166,7 +168,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void itemListBySeveralBrandsAndSizesInFilterTest() {
+    public void filteringSeveralBrandsAndSizesTest() {
 
         int qttBandsInCheckbox = 2;
         int qttSizesInCheckbox = 4;
@@ -186,7 +188,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "availableSizesProvider")
-    public void filterBySizeTest(String sizeValue) {
+    public void filteringBySizeTest(String sizeValue) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -199,7 +201,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
-    public void filterBySeasonTest(String seasonValue) {
+    public void filteringBySeasonTest(String seasonValue) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -212,7 +214,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void productsListInAscendingOderTest() {
+    public void sortingInAscendingOderTest() {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
@@ -225,7 +227,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void productsListInDescOderTest() {
+    public void sortingInDescendingOderTest() {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
@@ -238,7 +240,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void presenceOfAllItemsInCatalog() {
+    public void presenceOfAllProductsTest() {
 
         List<String> expectedProductIdList = List.of(
                 "65df7b2495aaba554cab83b2", "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b6105",
@@ -266,22 +268,8 @@ public class NewItemsCatalogTest extends BaseTest {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
 
-        int currentPage = 1;
-        int pageQttInCatalog = TestUtils.getCatalogPageQtt(getDriver());
+        List<String> actualBadgeValueList = TestUtils.collectDataFromCatalog(NEW_ITEM_BADGE, getDriver(), getWait30());
 
-        for (int i = 0; i < pageQttInCatalog; i++) {
-
-            int itemQttOnPage = getWait10().until(ExpectedConditions.presenceOfAllElementsLocatedBy(NEW_ITEM_BADGE)).size();
-            for (int j = 0; j < itemQttOnPage; j++) {
-
-                String actualBadgeValue = getWait10().until(
-                        ExpectedConditions.visibilityOfAllElementsLocatedBy(NEW_ITEM_BADGE)).get(j).getText();
-
-                Assert.assertEquals(actualBadgeValue, expectedBadgeValue);
-
-            }
-            TestUtils.goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, getDriver());
-            currentPage += currentPage;
-        }
+        Assert.assertTrue(actualBadgeValueList.contains(expectedBadgeValue),"Item is not found");
     }
 }

@@ -123,7 +123,8 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "notAddedBrandProvider")
-    public void filterByNotAddedBrandsTest(String brandNames) {
+    public void filteringByNotAddedBrandsTest
+(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.MEN_CATALOG_BUTTON)).click();
@@ -136,7 +137,8 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "addedBrandProvider")
-    public void filterByBrandTest(String brandNames) {
+    public void filteringByBrandTest
+(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.MEN_CATALOG_BUTTON)).click();
@@ -148,7 +150,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void itemListBySeveralBrandsInFilterTest() {
+    public void filteringBySeveralBrandsTest() {
 
         int qttBandsInCheckbox = 2;
         List<String> addedBrandNamesList = List.of("New Balance", "Nike", "Reebok", "Salomon");
@@ -164,7 +166,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void itemListBySeveralBrandsAndSizesInFilterTest() {
+    public void filteringSeveralBrandsAndSizesTest() {
 
         int qttBandsInCheckbox = 2;
         int qttSizesInCheckbox = 4;
@@ -184,7 +186,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "availableSizesProvider")
-    public void filterBySizeTest(String sizeValue) {
+    public void filteringBySizeTest(String sizeValue) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.MEN_CATALOG_BUTTON)).click();
@@ -197,7 +199,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
-    public void filterBySeasonTest(String seasonValue) {
+    public void filteringBySeasonTest(String seasonValue) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.MEN_CATALOG_BUTTON)).click();
@@ -210,7 +212,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void productsListInAscendingOderTest() {
+    public void sortingInAscendingOderTest() {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.MEN_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
@@ -223,7 +225,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void productsListInDescOderTest() {
+    public void sortingInDescendingOderTest() {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.MEN_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
@@ -236,7 +238,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void productListSortedByNewestTest() {
+    public void sortingByNewTest() {
 
         List<String> expectedProductList = List.of(
                 "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
@@ -263,7 +265,7 @@ public class MenCatalogTest extends BaseTest {
     }
 
     @Test
-    public void presenceOfAllItemsInCatalog() {
+    public void presenceOfAllProductsTest() {
 
         List<String> expectedProductIdList = List.of(
                 "65de2dd5ae9bb15396c0fb9a", "65df7b2495aaba554cab83b2", "65f8a62fc11d83d79ea7e89a",
