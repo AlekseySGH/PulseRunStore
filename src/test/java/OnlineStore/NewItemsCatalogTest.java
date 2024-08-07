@@ -126,8 +126,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "notAddedBrandProvider")
-    public void filteringByNotAddedBrandsTest
-(String brandNames) {
+    public void filteringByNotAddedBrandsTest(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -140,8 +139,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "addedBrandProvider")
-    public void filteringByBrandTest
-(String brandNames) {
+    public void filteringByBrandTest(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
