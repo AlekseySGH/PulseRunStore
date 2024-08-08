@@ -18,6 +18,8 @@ public class TestUtils {
 
     public static final By NEW_ITEMS_CATALOG_BUTTON = By.xpath("//li/a[text()='Новинки']");
 
+    public static final By CATALOG_BUTTON = By.xpath("//li/a[text()='Каталог товарів']");
+
     public static final By SHOW_ALL_BRANDS_IN_FILTER = By.xpath(
             "//h3[text() = 'Брeнд']/following-sibling::div[1]//span[text() = 'Показати все']");
 
@@ -196,7 +198,9 @@ public class TestUtils {
 
     public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriver driver) {
         if (pageQttInCatalog > currentPage) {
-            driver.findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
+//            driver.findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
+            driver.findElement(By.xpath("//div/ul/li/button[text() = '" + (currentPage + 1) + "']")).click();;
+
         }
     }
 
