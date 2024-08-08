@@ -3,7 +3,6 @@ package OnlineStore;
 import OnlineStore.runner.BaseTest;
 import OnlineStore.utils.TestUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -22,7 +21,7 @@ public class ProductPageTest extends BaseTest {
 
 
     @Test
-    public void sizeListByModelTest() {
+    public void testSizeListByModel() {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.MEN_CATALOG_BUTTON)).click();

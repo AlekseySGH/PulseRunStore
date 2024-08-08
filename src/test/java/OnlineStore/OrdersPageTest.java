@@ -55,7 +55,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void loginFormEmailFieldWithValidDataTest() {
+    public void testLoginFormEmailFieldWithValidData() {
 
         List<String> validEmailsList = TestUtils.VALID_EMAILS_LIST;
 
@@ -79,7 +79,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void loginFormEmailFieldWithInvalidDataTest() {
+    public void testLoginFormEmailFieldWithInvalidData() {
 
         List<String> invalidEmailsList = TestUtils.INVALID_EMAILS_LIST;
 
@@ -103,7 +103,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void loginFormPasswordFieldWithValidDataTest() {
+    public void testLoginFormPasswordFieldWithValidData() {
 
         List<String> validPasswordsList = TestUtils.VALID_PASSWORDS_LIST;
 
@@ -128,7 +128,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void loginFormPasswordFieldWithInvalidDataTest() {
+    public void testLoginFormPasswordFieldWithInvalidData() {
 
         List<String> invalidPasswordsList = TestUtils.INVALID_PASSWORDS_LIST;
 
@@ -153,7 +153,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void registrationFormEmailFieldWithValidDataTest() {
+    public void testRegistrationFormEmailFieldWithValidData() {
 
         List<String> validEmailsList = TestUtils.VALID_EMAILS_LIST;
 
@@ -178,7 +178,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void registrationFormEmailFieldWithInvalidDataTest() {
+    public void testRegistrationFormEmailFieldWithInvalidData() {
 
         List<String> invalidEmailsList = TestUtils.INVALID_EMAILS_LIST;
 
@@ -203,7 +203,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void registrationFormPasswordFieldWithValidDataTest() {
+    public void testRegistrationFormPasswordFieldWithValidData() {
 
         List<String> validPasswordsList = TestUtils.VALID_PASSWORDS_LIST;
 
@@ -229,7 +229,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void registrationFormPasswordFieldWithInvalidDataTest() {
+    public void testRegistrationFormPasswordFieldWithInvalidData() {
 
         List<String> invalidPasswordsList = TestUtils.INVALID_PASSWORDS_LIST;
 
@@ -255,7 +255,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void firstNameFieldWithValidDataTest() {
+    public void testFirstNameFieldWithValidData() {
 
         List<String> validNameList = TestUtils.VALID_NAMES_LIST;
 
@@ -280,7 +280,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void firstNameFieldWithInvalidDataTest() {
+    public void testFirstNameFieldWithInvalidData() {
 
         List<String> invalidNameList = TestUtils.INVALID_NAMES_LIST;
 
@@ -305,7 +305,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void lastNameFieldWithValidDataTest() {
+    public void testLastNameFieldWithValidData() {
 
         List<String> validNameList = TestUtils.VALID_NAMES_LIST;
 
@@ -330,7 +330,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void lastNameFieldWithInvalidDataTest() {
+    public void testLastNameFieldWithInvalidData() {
 
         List<String> invalidNameList = TestUtils.INVALID_NAMES_LIST;
 
@@ -355,7 +355,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
     @Test
-    public void userDataFirstNameFieldWithValidDataTest() {
+    public void testUserDataFirstNameFieldWithValidData() {
 
         List<String> validNameList = TestUtils.VALID_NAMES_LIST;
 
@@ -379,7 +379,7 @@ public class OrdersPageTest extends BaseTest {
     }
 
        @Test
-    public void userDataFirstNameFieldWithInvalidDataTest() {
+    public void testUserDataFirstNameFieldWithInvalidData() {
 
         List<String> invalidNameList = TestUtils.INVALID_NAMES_LIST;
 

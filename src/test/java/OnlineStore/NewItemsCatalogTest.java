@@ -66,7 +66,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void presenceOfBrandsItemsInFilterTest() {
+    public void testPresenceOfBrandsItemsInFilter() {
         List<String> expectedFilterItemList = List.of("Adidas", "Asics", "Converse", "Dr.Martens", "Hoka",
                 "Jordan", "Native", "New Balance", "Nike", "Puma", "Reebok", "Salomon", "Vans");
 
@@ -86,7 +86,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void presenceOfSizeItemsInFilterTest() {
+    public void testPresenceOfSizeItemsInFilter() {
         List<String> expectedFilterItemList = List.of("36", "37", "38", "39", "40", "41", "42", "43", "44",
                 "45", "36.5", "37.5", "38.5", "39.5", "40.5", "41.5", "42.5", "43.5", "44.5", "45.5", "46.5", "47.5");
 
@@ -106,7 +106,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void presenceOfColorItemsInFilterTest() {
+    public void testPresenceOfColorItemsInFilter() {
         List<String> expectedFilterItemList = List.of("Бежевий", "Білий", "Зелений", "Рожевий", "Синій",
                 "Сірий", "Срібний", "Фіолетовий", "Червоний", "Чорний");
 
@@ -126,7 +126,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "notAddedBrandProvider")
-    public void filteringByNotAddedBrandsTest(String brandNames) {
+    public void testFilteringByNotAddedBrands(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -139,7 +139,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "addedBrandProvider")
-    public void filteringByBrandTest(String brandNames) {
+    public void testFilteringByBrand(String brandNames) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -151,7 +151,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void filteringBySeveralBrandsTest() {
+    public void testFilteringBySeveralBrands() {
 
         int qttBandsInCheckbox = 2;
         List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Reebok", "Salomon");
@@ -166,7 +166,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void filteringSeveralBrandsAndSizesTest() {
+    public void testFilteringSeveralBrandsAndSizes() {
 
         int qttBandsInCheckbox = 2;
         int qttSizesInCheckbox = 4;
@@ -186,7 +186,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "availableSizesProvider")
-    public void filteringBySizeTest(String sizeValue) {
+    public void testFilteringBySize(String sizeValue) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -199,7 +199,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test(dataProvider = "availableSeasonValuesProvider")
-    public void filteringBySeasonTest(String seasonValue) {
+    public void testFilteringBySeason(String seasonValue) {
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
@@ -212,7 +212,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void sortingInAscendingOderTest() {
+    public void testSortingInAscendingOder() {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
@@ -225,7 +225,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void sortingInDescendingOderTest() {
+    public void testSortingInDescendingOder() {
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         getDriver().findElement(By.xpath("//span[text()='Сортування']")).click();
@@ -238,7 +238,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void presenceOfAllProductsTest() {
+    public void testPresenceOfAllProducts() {
 
         List<String> expectedProductIdList = List.of(
                 "65df7b2495aaba554cab83b2", "65f8a643c11d83d79ea7e89b", "66152cd72295ced5df7b6105",
@@ -259,7 +259,7 @@ public class NewItemsCatalogTest extends BaseTest {
     }
 
     @Test
-    public void onlyNewItemsAreShownTest() {
+    public void testOnlyNewItemsAreShown() {
 
         String expectedBadgeValue = "NEW";
 

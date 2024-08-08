@@ -20,7 +20,7 @@ public class SupportPageTest extends BaseTest {
             "//label[contains(text(), 'Ваше ім’я*')]/following-sibling::div[1]/p");
 
     @Test
-    public void userDataFirstNameFieldWithValidDataTest() {
+    public void testUserDataFirstNameFieldWithValidData() {
 
         List<String> validNameList = TestUtils.VALID_NAMES_LIST;
 
@@ -37,7 +37,7 @@ public class SupportPageTest extends BaseTest {
     }
 
     @Test
-    public void userDataFirstNameFieldWithInvalidDataTest() {
+    public void testUserDataFirstNameFieldWithInvalidData() {
 
         List<String> invalidNameList = TestUtils.INVALID_NAMES_LIST;
 

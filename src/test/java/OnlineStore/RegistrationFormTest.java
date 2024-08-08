@@ -38,7 +38,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void emailFieldWithValidDataTest() {
+    public void testEmailFieldWithValidData() {
 
         List<String> validEmailsList = TestUtils.VALID_EMAILS_LIST;
 
@@ -57,7 +57,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void emailFieldWithInvalidDataTest() {
+    public void testEmailFieldWithInvalidData() {
 
         List<String> invalidEmailsList = TestUtils.INVALID_EMAILS_LIST;
 
@@ -76,7 +76,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void passwordFieldWithValidDataTest() {
+    public void testPasswordFieldWithValidData() {
 
         List<String> validPasswordsList = TestUtils.VALID_PASSWORDS_LIST;
 
@@ -96,7 +96,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void passwordFieldWithInvalidDataTest() {
+    public void testPasswordFieldWithInvalidData() {
 
         List<String> invalidPasswordsList = TestUtils.INVALID_PASSWORDS_LIST;
 
@@ -116,7 +116,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void firstNameFieldWithValidDataTest() {
+    public void testFirstNameFieldWithValidData() {
 
         List<String> validNameList = TestUtils.VALID_NAMES_LIST;
 
@@ -135,7 +135,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void firstNameFieldWithInvalidDataTest() {
+    public void testFirstNameFieldWithInvalidData() {
 
         List<String> invalidNameList = TestUtils.INVALID_NAMES_LIST;
 
@@ -154,7 +154,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void lastNameFieldWithValidDataTest() {
+    public void testLastNameFieldWithValidData() {
 
         List<String> validNameList = TestUtils.VALID_NAMES_LIST;
 
@@ -173,7 +173,7 @@ public class RegistrationFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void lastNameFieldWithInvalidDataTest() {
+    public void testLastNameFieldWithInvalidData() {
 
         List<String> invalidNameList = TestUtils.INVALID_NAMES_LIST;
 

@@ -1,20 +1,22 @@
 package OnlineStore;
 
 import OnlineStore.runner.BaseTest;
-import org.openqa.selenium.By;
+import OnlineStore.utils.TestUtils;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class HomeTest extends BaseTest {
 
     @Test
-    public void mainPageHeaderTest() {
+    public void testMainPageHeader() {
 
         final String expectedResult = "ОБИРАЙ КОМФОРТ ТА СВОБОДУ";
 
         openBaseURL();
 
-        String actualResult = getDriver().findElement(By.xpath("//h1")).getText().toUpperCase();
+        String actualResult = TestUtils.getText(getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(TestUtils.H1_HEADER))).toUpperCase();
 
         Assert.assertEquals(actualResult, expectedResult);
 

@@ -28,7 +28,7 @@ public class LoginFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void emailFieldWithValidDataTest() {
+    public void testEmailFieldWithValidData() {
 
         List<String> validEmailsList = TestUtils.VALID_EMAILS_LIST;
 
@@ -46,7 +46,7 @@ public class LoginFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void emailFieldWithInvalidDataTest() {
+    public void testEmailFieldWithInvalidData() {
 
         List<String> invalidEmailsList = TestUtils.INVALID_EMAILS_LIST;
 
@@ -63,7 +63,7 @@ public class LoginFormTest extends BaseTest {
     }
 
     @Test
-    public void passwordFieldWithValidDataTest() {
+    public void testPasswordFieldWithValidData() {
 
         List<String> validPasswordsList = TestUtils.VALID_PASSWORDS_LIST;
 
@@ -82,7 +82,7 @@ public class LoginFormTest extends BaseTest {
 
     @Ignore
     @Test
-    public void passwordFieldWithInvalidDataTest() {
+    public void testPasswordFieldWithInvalidData() {
 
         List<String> invalidPasswordsList = TestUtils.INVALID_PASSWORDS_LIST;
 

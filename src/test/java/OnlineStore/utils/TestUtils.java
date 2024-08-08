@@ -1,6 +1,7 @@
 package OnlineStore.utils;
 
 import OnlineStore.runner.BaseTest;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -51,9 +52,11 @@ public class TestUtils {
 
     public final static By CATEGORY_VALUE_IN_PRODUCT_PAGE = By.xpath("//p/span[text() = 'Категорія:']/following-sibling::span[1]");
 
-    private final static By H1_HEADER = By.xpath("//h1");
+    public final static By H1_HEADER = By.xpath("//h1");
 
     private final static By PAGE_BUTTON_LIST = By.xpath("//div/ul/li/button");
+
+    private final static By SEARCH_FIELD = By.xpath("//input[@Type = 'text']");
 
     public static final List<String> VALID_EMAILS_LIST = List.of("test1@auto.com", "test1@auto-1.com", "test_1@auto.com",
             "test+1@auto.com", "test~1@auto.com", "test1@auto_1.com", "TEST1@AUTO.COM", "test-1@auto.com",
@@ -124,12 +127,43 @@ public class TestUtils {
         return isExists;
     }
 
+    public static String getText(WebElement element) {
+
+        return element.getText();
+    }
+
     public static List<String> getTexts(List<WebElement> elementList) {
         return elementList.stream().map(WebElement::getText).toList();
     }
 
     public static List<String> getTexts(By by, WebDriver driver) {
         return driver.findElements(by).stream().map(WebElement::getText).toList();
+    }
+
+    public static String getRandomName(int length) {
+
+        return RandomStringUtils.random(
+                length, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+    }
+
+    public static String getSubstring(String text, String separator) {
+        int index = text.indexOf(separator);
+
+        return text.substring(0, index);
+    }
+
+    public static String getRandomSubstring(String text) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+
+        Random random = new Random();
+
+        int length = text.length();
+        int substringLength = random.nextInt(length) + 1;
+        int start = random.nextInt(length - substringLength + 1);
+
+        return text.substring(start, start + substringLength);
     }
 
     public static void chooseBandInCheckbox(String brandName, WebDriver driver) {
@@ -190,6 +224,24 @@ public class TestUtils {
         }
 
         return randomBrandNamesList;
+    }
+
+    public static void inputSearchCriteriaIntoSearchFieldAndClickEnter(String text, WebDriver driver) {
+        if (!getText(driver.findElement(SEARCH_FIELD)).isEmpty() && !getText(driver.findElement(SEARCH_FIELD)).isBlank()) {
+            clear(driver.findElement(SEARCH_FIELD));
+        }
+        input(text, driver.findElement(SEARCH_FIELD));
+        driver.findElement(SEARCH_FIELD).sendKeys(Keys.ENTER);
+    }
+
+    protected static void clear(WebElement element) {
+
+        element.clear();
+    }
+
+    protected static void input(String text, WebElement element) {
+
+        element.sendKeys(text);
     }
 
     private static List<String> getSizeLisByBrand(Catalog catalog, String brandName) {
