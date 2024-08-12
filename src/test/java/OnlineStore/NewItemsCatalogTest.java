@@ -179,7 +179,7 @@ public class NewItemsCatalogTest extends BaseTest {
         List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(
                 TestUtils.Catalog.NEW_PRODUCTS, randomBandsList, qttSizesInCheckbox, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isDataExistOnProductPage(
+        boolean isFilteredCorrect = TestUtils.checkFilteredSize(
                 randomSizesList, TestUtils.SIZES_LIST_IN_PRODUCT_PAGE, getDriver(), getWait30());
 
         Assert.assertTrue(isFilteredCorrect, "Item is not found");
@@ -192,7 +192,7 @@ public class NewItemsCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseSizeInCheckbox(sizeValue, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isDataExistOnProductPage(
+        boolean isFilteredCorrect = TestUtils.checkFilteredSize(
                 sizeValue, TestUtils.SIZES_LIST_IN_PRODUCT_PAGE, getDriver(), getWait30());
 
         Assert.assertTrue(isFilteredCorrect, "Item is not found");
@@ -205,10 +205,12 @@ public class NewItemsCatalogTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
         TestUtils.chooseSeasonInFilter(seasonValue, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.isDataExistOnProductPage(
-                seasonValue, TestUtils.SEASON_VALUE_IN_PRODUCT_PAGE, getDriver(), getWait30());
+        List<String> seasonOnProductPageList = TestUtils.collectDataFromProductPage(
+                TestUtils.SEASON_VALUE_IN_PRODUCT_PAGE, getDriver(), getWait30());
 
-        Assert.assertTrue(isFilteredCorrect, "Item is not found");
+        boolean actualResult = TestUtils.areAllItemsInListEqualsValue(seasonOnProductPageList, seasonValue);
+
+        Assert.assertTrue(actualResult, "Item is not found");
     }
 
     @Test
@@ -268,6 +270,8 @@ public class NewItemsCatalogTest extends BaseTest {
 
         List<String> actualBadgeValueList = TestUtils.collectDataFromCatalog(NEW_ITEM_BADGE, getDriver(), getWait30());
 
-        Assert.assertTrue(actualBadgeValueList.contains(expectedBadgeValue),"Item is not found");
+        boolean actualResult = TestUtils.areAllItemsInListEqualsValue(actualBadgeValueList, expectedBadgeValue);
+
+        Assert.assertTrue(actualResult, "Item is not found");
     }
 }

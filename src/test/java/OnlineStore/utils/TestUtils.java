@@ -413,7 +413,7 @@ public class TestUtils {
         List<String> productDataList = new ArrayList<>();
 
         for (int i = 0; i < pageQttInCatalog; i++) {
-            productDataList.addAll(getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(dataBy))));
+            productDataList.addAll(getTexts(wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(dataBy))));
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += 1;
         }
@@ -425,34 +425,34 @@ public class TestUtils {
         int currentPage = 1;
         int pageQttInCatalog = getCatalogPageQtt(driver);
 
-        HashSet<String> sizeSet = new HashSet<>();
+        HashSet<String> dataSet = new HashSet<>();
 
         for (int i = 0; i < pageQttInCatalog; i++) {
             int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).size();
 
             for (int j = 0; j < itemQttOnPage; j++) {
                 wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).get(j).click();
-                sizeSet.addAll(getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(dataBy))));
+                dataSet.addAll(getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(dataBy))));
                 driver.navigate().back();
             }
             goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
             currentPage += 1;
         }
 
-        return new ArrayList<>(sizeSet);
+        return new ArrayList<>(dataSet);
     }
 
-    public static boolean isDataExistOnProductPage(String sizesValue, By dataBy, WebDriver driver, WebDriverWait wait) {
-        List<String> sizesList = new ArrayList<>();
-        sizesList.add(sizesValue);
+    public static boolean checkFilteredSize(String sizeValue, By dataBy, WebDriver driver, WebDriverWait wait) {
+        List<String> valuesList = new ArrayList<>();
+        valuesList.add(sizeValue);
 
-        return isDataExistOnProductPage(sizesList, dataBy, driver, wait);
+        return checkFilteredSize(valuesList, dataBy, driver, wait);
     }
 
-    public static boolean isDataExistOnProductPage(List<String> sizesList, By dataBy, WebDriver driver, WebDriverWait wait) {
-        List<String> sizeLit = collectDataFromProductPage(dataBy, driver, wait);
+    public static boolean checkFilteredSize(List<String> sizeList, By dataBy, WebDriver driver, WebDriverWait wait) {
+        List<String> valueList = collectDataFromProductPage(dataBy, driver, wait);
 
-        return isItemsInListEqualsChosenItems(sizesList, sizeLit);
+        return isItemsInListEqualsChosenItems(sizeList, valueList);
     }
 
     public static List<Integer> getAllPricesInTheCatalog(WebDriver driver, WebDriverWait wait) {
@@ -574,5 +574,17 @@ public class TestUtils {
         resultMap.put("massage", notAcceptedValues);
 
         return resultMap;
+    }
+
+    public static boolean areAllItemsInListEqualsValue(List<String> valueList, String value) {
+        boolean result = true;
+        for (int i = 0; i < valueList.size(); i++) {
+            if (!valueList.get(i).equals(value)) {
+                result = false;
+                break;
+            }
+        }
+
+        return result;
     }
 }
