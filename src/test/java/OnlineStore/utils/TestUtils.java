@@ -196,11 +196,11 @@ public class TestUtils {
         return Integer.parseInt(pageList.get(pageList.size() - 2));
     }
 
-    public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriver driver) {
+    public static void goToNextPageIfItExistsInCatalog(int currentPage, int pageQttInCatalog, WebDriverWait wait) {
         if (pageQttInCatalog > currentPage) {
 //            driver.findElements(PAGE_BUTTON_LIST).get(currentPage + 1).click();
-            driver.findElement(By.xpath("//div/ul/li/button[text() = '" + (currentPage + 1) + "']")).click();;
-
+//            driver.findElement(By.xpath("//div/ul/li/button[text() = '" + (currentPage + 1) + "']")).click();;
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div/ul/li/button[text() = '" + (currentPage + 1) + "']"))).click();
         }
     }
 
@@ -414,7 +414,7 @@ public class TestUtils {
 
         for (int i = 0; i < pageQttInCatalog; i++) {
             productDataList.addAll(getTexts(wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(dataBy))));
-            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, wait);
             currentPage += 1;
         }
 
@@ -431,11 +431,11 @@ public class TestUtils {
             int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).size();
 
             for (int j = 0; j < itemQttOnPage; j++) {
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).get(j).click();
+                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).get(j).click();
                 dataSet.addAll(getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(dataBy))));
                 driver.navigate().back();
             }
-            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, wait);
             currentPage += 1;
         }
 
@@ -477,7 +477,7 @@ public class TestUtils {
             for (int j = 0; j < itemQttOnPage; j++) {
                 hrefList.add(driver.findElements(PRODUCTS_ID_LIST).get(j).getAttribute("href"));
             }
-            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, driver);
+            goToNextPageIfItExistsInCatalog(currentPage, pageQttInCatalog, wait);
             currentPage += 1;
         }
 
@@ -522,11 +522,23 @@ public class TestUtils {
     }
 
     public static Map<String, Object> checkFieldWithValidData(
-            List<String> validDataList, By fieldLocator, By massageLocator, WebDriver driver) {
+            List<String> validDataList, By fieldLocator, By messageLocator, WebDriver driver) {
 
         Map<String, Object> resultMap = new HashMap<>();
         List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageNotShown = true;
+        boolean isValidationMessageNotShown = true;
+
+        driver.findElement(fieldLocator).sendKeys("@");
+        driver.findElement(fieldLocator).submit();
+
+        if (driver.findElements(messageLocator).isEmpty()) {
+            isValidationMessageNotShown = false;
+            String notAcceptedValues = "The validation message locator was not found";
+            resultMap.put("actualResult", isValidationMessageNotShown);
+            resultMap.put("message", notAcceptedValues);
+
+            return resultMap;
+        }
 
         for (int i = 0; i < validDataList.size(); i++) {
             driver.findElement(fieldLocator).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
@@ -534,44 +546,57 @@ public class TestUtils {
             driver.findElement(fieldLocator).submit();
 
             try {
-                if (driver.findElement(massageLocator).isDisplayed()) {
+                if (driver.findElement(messageLocator).isDisplayed()) {
                     notAcceptedValuesList.add("\"" + validDataList.get(i) + "\"");
-                    isValidationMassageNotShown = false;
+                    isValidationMessageNotShown = false;
                 }
             } catch (NoSuchElementException ignored) {
             }
         }
+
         String notAcceptedValues = String.join("\n", notAcceptedValuesList + " - Не принято системой");
-        resultMap.put("actualResult", isValidationMassageNotShown);
-        resultMap.put("massage", notAcceptedValues);
+        resultMap.put("actualResult", isValidationMessageNotShown);
+        resultMap.put("message", notAcceptedValues);
 
         return resultMap;
     }
 
     public static Map<String, Object> checkFieldWithInvalidData(
-            List<String> invalidDataList, By fieldLocator, By massageLocator, WebDriver driver) {
+            List<String> invalidDataList, By fieldLocator, By messageLocator, WebDriver driver) {
 
         Map<String, Object> resultMap = new HashMap<>();
         List<String> notAcceptedValuesList = new ArrayList<>();
-        boolean isValidationMassageShown = true;
+        boolean isValidationMessageShown = true;
+
+        driver.findElement(fieldLocator).sendKeys("@");
+        driver.findElement(fieldLocator).submit();
+
+        if (driver.findElements(messageLocator).isEmpty()) {
+            isValidationMessageShown = false;
+            String notAcceptedValues = "The validation message locator was not found";
+            resultMap.put("actualResult", isValidationMessageShown);
+            resultMap.put("message", notAcceptedValues);
+
+            return resultMap;
+        }
 
         for (int i = 0; i < invalidDataList.size(); i++) {
             driver.findElement(fieldLocator).sendKeys(invalidDataList.get(i));
             driver.findElement(fieldLocator).submit();
 
             try {
-                driver.findElement(massageLocator).isDisplayed();
+                driver.findElement(messageLocator).isDisplayed();
             } catch (NoSuchElementException ignored) {
                 notAcceptedValuesList.add("\"" + invalidDataList.get(i) + "\"");
-                isValidationMassageShown = false;
+                isValidationMessageShown = false;
             }
 
             driver.findElement(fieldLocator).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         }
         String notAcceptedValues = String.join("\n", notAcceptedValuesList + " - Не валидируется системой");
 
-        resultMap.put("actualResult", isValidationMassageShown);
-        resultMap.put("massage", notAcceptedValues);
+        resultMap.put("actualResult", isValidationMessageShown);
+        resultMap.put("message", notAcceptedValues);
 
         return resultMap;
     }

@@ -16,7 +16,7 @@ public class SupportPageTest extends BaseTest {
     final static By USER_DATA_FIRST_NAME_INPUT_FIELD = By.xpath(
             "//label[contains(text(), 'Ваше ім’я*')]/following-sibling::div[1]/input[@name= 'name']");
 
-    final static By USER_DATA_FIRST_NAME_VALIDATION_MASSAGE= By.xpath(
+    final static By USER_DATA_FIRST_NAME_VALIDATION_MESSAGE= By.xpath(
             "//label[contains(text(), 'Ваше ім’я*')]/following-sibling::div[1]/p");
 
     @Test
@@ -27,13 +27,13 @@ public class SupportPageTest extends BaseTest {
         openBaseURL();
         getDriver().findElement(By.xpath("//a[text() = 'Підтримка']")).click();
 
-        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
-                validNameList, USER_DATA_FIRST_NAME_INPUT_FIELD, USER_DATA_FIRST_NAME_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageNotShownMap = TestUtils.checkFieldWithValidData(
+                validNameList, USER_DATA_FIRST_NAME_INPUT_FIELD, USER_DATA_FIRST_NAME_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
+        boolean isValidationMessageNotShown = (boolean) isValidationMessageNotShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageNotShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
+        Assert.assertTrue(isValidationMessageNotShown, resultMessage);
     }
 
     @Test
@@ -44,12 +44,12 @@ public class SupportPageTest extends BaseTest {
         openBaseURL();
         getDriver().findElement(By.xpath("//a[text() = 'Підтримка']")).click();
 
-        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
-                invalidNameList, USER_DATA_FIRST_NAME_INPUT_FIELD, USER_DATA_FIRST_NAME_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidNameList, USER_DATA_FIRST_NAME_INPUT_FIELD, USER_DATA_FIRST_NAME_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageShownMap.get("massage");
+        boolean isValidationMessageShown = (boolean) isValidationMessageShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageShown, resultMassage);
+        Assert.assertTrue(isValidationMessageShown, resultMessage);
     }
 }

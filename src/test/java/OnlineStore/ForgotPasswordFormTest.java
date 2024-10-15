@@ -20,7 +20,7 @@ public class ForgotPasswordFormTest extends BaseTest {
 
     final static By EMAIL_INPUT_FIELD = By.xpath("//label[text() = 'Email']/following-sibling::div[1]/input[@name= 'email']");
 
-    final static By EMAIL_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Email']/following-sibling::div[1]/p");
+    final static By EMAIL_FIELD_VALIDATION_MESSAGE = By.xpath("//label[text() = 'Email']/following-sibling::div[1]/p");
 
     @Ignore
     @Test
@@ -32,13 +32,13 @@ public class ForgotPasswordFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(FORGOT_PASSWORD_LINK)).click();
 
-        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
-                validEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageNotShownMap = TestUtils.checkFieldWithValidData(
+                validEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
+        boolean isValidationMessageNotShown = (boolean) isValidationMessageNotShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageNotShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
+        Assert.assertTrue(isValidationMessageNotShown, resultMessage);
     }
 
     @Ignore
@@ -51,12 +51,12 @@ public class ForgotPasswordFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(FORGOT_PASSWORD_LINK)).click();
 
-        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
-                invalidEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageShownMap.get("massage");
+        boolean isValidationMessageShown = (boolean) isValidationMessageShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageShown, resultMassage);
+        Assert.assertTrue(isValidationMessageShown, resultMessage);
     }
 }
