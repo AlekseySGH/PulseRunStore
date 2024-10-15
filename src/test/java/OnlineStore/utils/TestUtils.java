@@ -431,7 +431,8 @@ public class TestUtils {
             int itemQttOnPage = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).size();
 
             for (int j = 0; j < itemQttOnPage; j++) {
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).get(j).click();
+                wait.until(ExpectedConditions.elementToBeClickable(driver.findElements(PRODUCTS_NAME_LIST).get(j))).click();
+//                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(PRODUCTS_NAME_LIST)).get(j).click();
                 dataSet.addAll(getTexts(wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(dataBy))));
                 driver.navigate().back();
             }
