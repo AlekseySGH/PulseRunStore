@@ -20,21 +20,21 @@ public class RegistrationFormTest extends BaseTest {
 
     final static By EMAIL_INPUT_FIELD = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/input[@name= 'email']");
 
-    final static By EMAIL_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Email*']/following-sibling::div[1]/p");
+    final static By EMAIL_FIELD_VALIDATION_MESSAGE = By.xpath("//label[text() = 'Email*']/following-sibling::div[2]");
 
     final static By PASSWORD_INPUT_FIELD = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]/input[@name= 'password']");
 
     final static By SHOW_PASSWORD_ICON = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]//button");
 
-    final static By PASSWORD_FIELD_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]/p");
+    final static By PASSWORD_FIELD_VALIDATION_MESSAGE = By.xpath("//label[text() = 'Пароль*']/following-sibling::div[1]/p");
 
     final static By FIRST_NAME_INPUT_FIELD = By.xpath("//label[text() = 'Ім’я*']/following-sibling::div[1]/input[@name= 'firstName']");
 
     final static By LAST_NAME_INPUT_FIELD = By.xpath("//label[text() = 'Прізвище*']/following-sibling::div[1]/input[@name= 'lastName']");
 
-    final static By FIRST_NAME_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Ім’я*']/following-sibling::div[1]/p");
+    final static By FIRST_NAME_VALIDATION_MESSAGE = By.xpath("//label[text() = 'Ім’я*']/following-sibling::div[1]/p");
 
-    final static By LAST_NAME_VALIDATION_MASSAGE = By.xpath("//label[text() = 'Прізвище*']/following-sibling::div[1]/p");
+    final static By LAST_NAME_VALIDATION_MESSAGE = By.xpath("//label[text() = 'Прізвище*']/following-sibling::div[1]/p");
 
     @Ignore
     @Test
@@ -46,13 +46,13 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
-        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
-                validEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageNotShownMap = TestUtils.checkFieldWithValidData(
+                validEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
+        boolean isValidationMessageNotShown = (boolean) isValidationMessageNotShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageNotShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
+        Assert.assertTrue(isValidationMessageNotShown, resultMessage);
     }
 
     @Ignore
@@ -65,13 +65,13 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
-        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
-                invalidEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidEmailsList, EMAIL_INPUT_FIELD, EMAIL_FIELD_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageShownMap.get("massage");
+        boolean isValidationMessageShown = (boolean) isValidationMessageShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageShown, resultMassage);
+        Assert.assertTrue(isValidationMessageShown, resultMessage);
     }
 
     @Ignore
@@ -85,13 +85,13 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
         getDriver().findElement(SHOW_PASSWORD_ICON).click();
 
-        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
-                validPasswordsList, PASSWORD_INPUT_FIELD, PASSWORD_FIELD_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageNotShownMap = TestUtils.checkFieldWithValidData(
+                validPasswordsList, PASSWORD_INPUT_FIELD, PASSWORD_FIELD_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
+        boolean isValidationMessageNotShown = (boolean) isValidationMessageNotShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageNotShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
+        Assert.assertTrue(isValidationMessageNotShown, resultMessage);
     }
 
     @Ignore
@@ -105,13 +105,13 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
         getDriver().findElement(SHOW_PASSWORD_ICON).click();
 
-        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
-                invalidPasswordsList, PASSWORD_INPUT_FIELD, PASSWORD_FIELD_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidPasswordsList, PASSWORD_INPUT_FIELD, PASSWORD_FIELD_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageShownMap.get("massage");
+        boolean isValidationMessageShown = (boolean) isValidationMessageShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageShown, resultMassage);
+        Assert.assertTrue(isValidationMessageShown, resultMessage);
     }
 
     @Ignore
@@ -124,13 +124,13 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
-        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
-                validNameList, FIRST_NAME_INPUT_FIELD, FIRST_NAME_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageNotShownMap = TestUtils.checkFieldWithValidData(
+                validNameList, FIRST_NAME_INPUT_FIELD, FIRST_NAME_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
+        boolean isValidationMessageNotShown = (boolean) isValidationMessageNotShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageNotShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
+        Assert.assertTrue(isValidationMessageNotShown, resultMessage);
     }
 
     @Ignore
@@ -143,13 +143,13 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
-        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
-                invalidNameList, FIRST_NAME_INPUT_FIELD, FIRST_NAME_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidNameList, FIRST_NAME_INPUT_FIELD, FIRST_NAME_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageShownMap.get("massage");
+        boolean isValidationMessageShown = (boolean) isValidationMessageShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageShown, resultMassage);
+        Assert.assertTrue(isValidationMessageShown, resultMessage);
     }
 
     @Ignore
@@ -162,13 +162,13 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
-        Map<String, Object> isValidationMassageNotShownMap = TestUtils.checkFieldWithValidData(
-                validNameList, LAST_NAME_INPUT_FIELD, LAST_NAME_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageNotShownMap = TestUtils.checkFieldWithValidData(
+                validNameList, LAST_NAME_INPUT_FIELD, LAST_NAME_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageNotShown = (boolean) isValidationMassageNotShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageNotShownMap.get("massage");
+        boolean isValidationMessageNotShown = (boolean) isValidationMessageNotShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageNotShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageNotShown, resultMassage);
+        Assert.assertTrue(isValidationMessageNotShown, resultMessage);
     }
 
     @Ignore
@@ -181,12 +181,12 @@ public class RegistrationFormTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(USER_PROFILE_ICON)).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(REGISTRATION_FORM_SECTION)).click();
 
-        Map<String, Object> isValidationMassageShownMap = TestUtils.checkFieldWithInvalidData(
-                invalidNameList, LAST_NAME_INPUT_FIELD, LAST_NAME_VALIDATION_MASSAGE, getDriver());
+        Map<String, Object> isValidationMessageShownMap = TestUtils.checkFieldWithInvalidData(
+                invalidNameList, LAST_NAME_INPUT_FIELD, LAST_NAME_VALIDATION_MESSAGE, getDriver());
 
-        boolean isValidationMassageShown = (boolean) isValidationMassageShownMap.get("actualResult");
-        String resultMassage = (String) isValidationMassageShownMap.get("massage");
+        boolean isValidationMessageShown = (boolean) isValidationMessageShownMap.get("actualResult");
+        String resultMessage = (String) isValidationMessageShownMap.get("message");
 
-        Assert.assertTrue(isValidationMassageShown, resultMassage);
+        Assert.assertTrue(isValidationMessageShown, resultMessage);
     }
 }

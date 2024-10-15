@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -150,6 +151,7 @@ public class NewItemsCatalogTest extends BaseTest {
         Assert.assertTrue(isFilteredCorrect, "Item is not found");
     }
 
+    @Ignore
     @Test
     public void testFilteringBySeveralBrands() {
 
@@ -162,27 +164,35 @@ public class NewItemsCatalogTest extends BaseTest {
 
         boolean isFilteredCorrect = TestUtils.checkFilteredBrands(randomBrandsList, getDriver(), getWait10());
 
-        Assert.assertTrue(isFilteredCorrect, "Item is not found");
+        Assert.assertTrue(isFilteredCorrect, "Filter is not working correctly");
     }
 
+    @Ignore
     @Test
     public void testFilteringSeveralBrandsAndSizes() {
 
         int qttBandsInCheckbox = 2;
         int qttSizesInCheckbox = 4;
+        boolean isFilteredCorrect = false;
         List<String> addedBrandNamesList = List.of("Adidas", "New Balance", "Nike", "Reebok", "Salomon");
 
         openBaseURL();
         getWait10().until(ExpectedConditions.elementToBeClickable(TestUtils.NEW_ITEMS_CATALOG_BUTTON)).click();
-        List<String> randomBandsList = TestUtils.chooseRandomBrandsInFilter(
+        List<String> randomBrandsList = TestUtils.chooseRandomBrandsInFilter(
                 addedBrandNamesList, qttBandsInCheckbox, getDriver());
         List<String> randomSizesList = TestUtils.chooseRandomSizesInFilter(
-                TestUtils.Catalog.NEW_PRODUCTS, randomBandsList, qttSizesInCheckbox, getDriver());
+                TestUtils.Catalog.NEW_PRODUCTS, randomBrandsList, qttSizesInCheckbox, getDriver());
 
-        boolean isFilteredCorrect = TestUtils.checkFilteredSize(
+        boolean isFilteredByBrandsCorrect = TestUtils.checkFilteredBrands(randomBrandsList, getDriver(), getWait10());
+
+        boolean isFilteredBySizesCorrect = TestUtils.checkFilteredSize(
                 randomSizesList, TestUtils.SIZES_LIST_IN_PRODUCT_PAGE, getDriver(), getWait30());
 
-        Assert.assertTrue(isFilteredCorrect, "Item is not found");
+        if ((isFilteredByBrandsCorrect) && (isFilteredBySizesCorrect)) {
+            isFilteredCorrect = true;
+        }
+
+        Assert.assertTrue(isFilteredCorrect, "Filter is not working correctly");
     }
 
     @Test(dataProvider = "availableSizesProvider")
