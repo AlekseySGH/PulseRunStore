@@ -181,7 +181,7 @@ public class WomenCatalogTest extends BaseTest {
 
         boolean isFilteredByBrandsCorrect = TestUtils.checkFilteredBrands(randomBrandsList, getDriver(), getWait10());
 
-
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div/ul/li/button[text() = '1']"))).click();
 
         boolean isFilteredBySizesCorrect = TestUtils.checkFilteredSize(
                 randomSizesList, TestUtils.SIZES_LIST_IN_PRODUCT_PAGE, getDriver(), getWait30());
